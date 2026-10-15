@@ -1,132 +1,70 @@
-# Zenith-Hardware — Full Stack E-commerce
+# Zenith Hardware — Full Stack E-commerce
 
-[🇪🇸 Español](./README.md) | 🇬🇧 **English**
+🇬🇧 English | [🇪🇸 Español](./README.md)
 
-Zenith-Hardware is a **full stack e-commerce application** developed as a practical project to integrate frontend, backend, database, authentication, order management, administration and internationalization.
+Zenith Hardware is a **full-stack e-commerce application** built with Angular, Node.js, Express, and PostgreSQL. The project combines a shopping experience, user authentication, order management, and an administrative dashboard in a frontend/backend architecture connected through a REST API.
 
-The project uses a separated architecture based on **Angular + Node.js/Express + PostgreSQL**, communicating through a JWT-protected REST API.
+The goal is to apply software development best practices, modular architecture, data persistence, security, error handling, and internationalization in an application inspired by a real-world e-commerce platform.
 
----
-
-## 📸 Screenshots
-
-### 🛍️ Product Catalog
-
-![Product Catalog](docs/screenshots/catalog.png)
-
-### 🛒 Shopping Cart
-
-![Shopping Cart](docs/screenshots/cart.png)
-
-### 📦 Order Management
-
-![Orders](docs/screenshots/orders.png)
-
-### 🧑‍💼 Admin Panel
-
-![Admin Panel](docs/screenshots/admin-orders.png)
-
-> Screenshots can be updated as the project evolves.
-
----
-
-## 📑 Contents
-
-- [Main Features](#-main-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Frontend](#-frontend)
-- [Backend](#-backend)
-- [Authentication](#-authentication)
-- [Persistent Cart](#-persistent-cart)
-- [Checkout and Orders](#-checkout-and-orders)
-- [Admin Panel](#-admin-panel)
-- [Order Status Management](#-order-status-management)
-- [Server-side Pagination](#-server-side-pagination)
-- [Automatic Order Progression](#-automatic-order-progression)
-- [Metrics](#-metrics)
-- [Internationalization](#-internationalization)
-- [HTTP Interceptors](#-http-interceptors)
-- [Testing](#-testing)
-- [Project Structure](#-project-structure)
-- [Installation](#-installation)
-- [Running the Project](#-running-the-project)
-- [API](#-api)
-- [Technical Decisions](#-technical-decisions)
-- [Future Improvements](#-future-improvements)
-
----
-
-# ✨ Main Features
+## ✨ Key Features
 
 ### 🛍️ Shopping Experience
 
-- Product catalog.
-- Product search.
-- Price, stock and category information.
-- Shopping cart.
-- Quantity updates.
-- Product removal.
-- Persistent cart storage in the backend.
-- Checkout.
-- Order creation.
-- Order history.
-- Order status tracking.
-- Tracking number.
-- Informational sections for branches, shipping, returns, FAQ and terms.
+- Product catalog organized by categories.
+- Product search and browsing.
+- Product pricing and availability display.
+- Product detail pages.
+- Shopping cart with quantity management.
+- Persistent cart for authenticated users.
+- Product comparison.
+- Favorites list.
+- Checkout process.
+- Order creation and history.
+- Order details and tracking.
+- Informational sections for shipping, returns, store locations, FAQs, and terms.
+- Responsive interface for different screen sizes.
 
 ### 🔐 Authentication and Authorization
 
-- JWT-based login.
-- Session persistence.
-- Authentication interceptor.
-- Protected backend endpoints.
+- User registration and login.
+- JSON Web Token (JWT)-based authentication.
+- HTTP interceptor for attaching authentication tokens.
+- Route protection based on authentication status.
 - User and administrator roles.
-- Protected administrative routes.
-- Order access authorization based on user/role.
+- Authentication and authorization middleware on the backend.
+- Access restrictions based on user permissions.
 
-### 🧑‍💼 Administration
+### 🧑‍💼 Admin Dashboard
 
-The administration panel provides:
-
-- Product management.
-- Product creation.
-- Product editing.
-- Product deletion.
-- Order management.
-- Order status updates.
-- Multiple order selection.
-- Bulk order progression.
-- Kanban order view.
-- List order view.
-- Order search.
-- Order details.
-- Order metrics.
+- Product creation, editing, and deletion.
+- Order overview and management.
+- Kanban and list views for orders.
+- Order search and detail views.
+- Individual and bulk order status updates.
 - Server-side pagination.
+- Dashboard with order metrics.
+- User management and user details.
 
-### ⚙️ Backend
+### ⚙️ Backend Features
 
-- REST API built with Express.
-- PostgreSQL database.
-- SQL queries.
-- PostgreSQL transactions for order creation.
-- Stock updates.
-- Persistent shopping cart.
+- REST API built with Express and TypeScript.
+- PostgreSQL data persistence.
+- SQL queries using the `pg` client.
 - Centralized error handling.
-- Authentication middleware.
-- Authorization middleware.
-- Automatic order progression using `node-cron`.
+- Authentication and authorization middleware.
+- Cart, favorites, and order management.
+- Stock updates during order creation.
+- Database transactions for related order operations.
+- Notification and email services.
+- Automated order status progression.
 
----
+## 🧰 Technology Stack
 
-# 🧰 Tech Stack
-
-## Frontend
+### Frontend
 
 - Angular 18
 - TypeScript
-- HTML5
-- SCSS
+- HTML5 and SCSS
 - RxJS
 - Angular Router
 - Angular Signals
@@ -135,749 +73,515 @@ The administration panel provides:
 - Reactive Forms
 - Lazy loading
 
-## Backend
+### Backend
 
 - Node.js
 - Express
 - TypeScript
-- JWT
 - PostgreSQL
 - `pg`
-- `node-cron`
-- dotenv
+- JSON Web Tokens (JWT)
+- `dotenv`
 - CORS
+- `node-cron` for scheduled tasks, if enabled in the current configuration
 
-## Testing
+### Testing
 
-- Angular testing utilities
-- Jasmine/Karma
-- `HttpTestingController`
+- Vitest for backend testing.
+- Backend unit tests for the modules currently covered by the test suite.
+- Angular component and service tests.
+- HTTP interceptor and error-handling tests.
 
-## Tools
+### Tools and Deployment
 
-- Git
-- GitHub
-- VS Code
+- Git and GitHub
 - npm
+- Docker
+- Docker Compose
+- Nginx
 - PostgreSQL
 
----
+## 🏗️ Architecture
 
-# 🏗️ Architecture
-
-The project is divided into two main applications:
+The project is organized as a single repository containing two main applications:
 
 ```text
-ShopSphere
-│
-├── Frontend
-│   └── Angular
-│
-└── Backend
-    └── Node.js + Express
-            │
-            ▼
-       PostgreSQL
+zenith-hardware/
+├── src/                    # Angular frontend
+├── backend-ecommerce/      # Express backend
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── middlewares/
+│       ├── routes/
+│       ├── services/
+│       └── tests/
+├── scripts/                # Auxiliary scripts
+├── angular.json
+├── package.json
+├── Dockerfile
+├── docker-compose.yml
+├── nginx.conf
+├── README.md
+└── README.en.md
 ```
 
-Communication takes place through a REST API:
+The frontend and backend communicate over HTTP using JSON.
 
 ```text
-Angular
-   │
-   │ HTTP / JSON
-   ▼
-Express API
-   │
-   │ SQL
-   ▼
-PostgreSQL
+┌─────────────────────────┐
+│    Angular Frontend     │
+│  Components / Services  │
+└────────────┬────────────┘
+             │ HTTP / JSON
+             ▼
+┌─────────────────────────┐
+│    Express REST API     │
+│ Controllers / Services  │
+└────────────┬────────────┘
+             │ SQL
+             ▼
+┌─────────────────────────┐
+│       PostgreSQL        │
+└─────────────────────────┘
 ```
 
-This separation keeps frontend and backend responsibilities decoupled.
+This separation keeps client-side responsibilities, business logic, and data persistence decoupled.
 
----
+## 🖥️ Frontend
 
-# 🖥️ Frontend
-
-The frontend is built with Angular and organized around application features.
-
-Main areas include:
+The frontend follows a modular architecture organized around application features.
 
 ```text
 src/app/
 ├── core/
+│   ├── guards/
+│   ├── interceptors/
+│   ├── models/
+│   └── services/
 ├── features/
+│   ├── account/
+│   ├── admin/
+│   ├── auth/
+│   ├── cart/
+│   ├── catalog/
+│   ├── checkout/
+│   ├── favorites/
+│   ├── home/
+│   ├── orders/
+│   └── reviews/
 ├── shared/
+│   ├── components/
+│   └── pipes/
 └── utils/
 ```
 
 ### Core
 
-Contains cross-cutting functionality such as:
+Contains functionality shared across different areas of the application:
 
-- authentication
-- HTTP interceptors
-- global services
-- error handling
-- loading state
-- notifications
+- Authentication services.
+- Route guards.
+- HTTP interceptors.
+- Global loading state.
+- Notifications.
+- Shared data models and utilities.
 
 ### Features
 
-Main application domains are organized as:
+Each feature groups related components, services, and models, making the application easier to maintain and extend.
+
+### Responsive Design
+
+The interface uses Angular, HTML, and SCSS to organize components and adapt the experience to desktop and mobile devices.
+
+## 🔐 Authentication
+
+The authentication flow uses JWT.
 
 ```text
-features/
-├── auth/
-├── cart/
-├── checkout/
-├── orders/
-├── catalog/
-└── admin/
-```
-
-The administration area contains:
-
-```text
-admin/
-├── dashboard/
-├── products/
-└── orders/
-```
-
----
-
-# 🔐 Authentication
-
-Authentication is implemented using **JSON Web Tokens (JWT)**.
-
-Simplified flow:
-
-```text
-Login
-  │
-  ▼
+User
+   │
+   ▼
 POST /api/auth/login
-  │
-  ▼
-Backend validates credentials
-  │
-  ▼
-JWT
-  │
-  ▼
-Angular stores session
-  │
-  ▼
+   │
+   ▼
+Credential validation
+   │
+   ▼
+JWT issuance
+   │
+   ▼
+Authenticated frontend
+   │
+   ▼
 Auth Interceptor
-  │
-  ▼
+   │
+   ▼
 Authorization: Bearer <token>
 ```
 
-The authentication interceptor automatically adds the token to authenticated requests.
+The frontend uses an interceptor to attach the token when required. On the backend, middleware verifies authentication and the permissions needed to access protected resources.
 
-Administrative endpoints also use role-based authorization.
+**Security note:** authorization must be enforced on the backend, regardless of any protected Angular routes.
 
----
+## 🛒 Shopping Cart
 
-# 🛒 Persistent Cart
+The shopping cart allows users to add products, update quantities, and remove items.
 
-The shopping cart was migrated from a purely local state to real persistence in PostgreSQL.
+For authenticated users, the backend manages cart persistence in PostgreSQL through the relevant cart endpoints and services.
 
-The cart is associated with the authenticated user.
+The frontend uses `CartService` and reactive state to keep the interface up to date.
 
-The backend stores cart items using a `cart_items` table.
+## ❤️ Favorites and Product Comparison
 
-The frontend synchronizes cart state through `CartService` and Angular Signals.
+The application includes features for saving favorite products and comparing product specifications.
 
-This allows the cart to remain available after refreshing the application.
+These tools enhance the shopping experience and help users evaluate products before making a decision.
 
----
+## 💳 Checkout and Order Management
 
-# 💳 Checkout and Orders
+The checkout process connects the shopping cart to order creation.
 
-Checkout creates an order using a PostgreSQL transaction.
-
-The process includes:
+The general workflow is:
 
 ```text
-Cart
-  │
-  ▼
+Shopping Cart
+   │
+   ▼
 Checkout
-  │
-  ▼
-Create Order
-  │
-  ├── Create order
-  ├── Create order_items
-  ├── Update stock
-  ├── Clear cart
-  │
-  ▼
-COMMIT
+   │
+   ▼
+Operation validation
+   │
+   ▼
+Order creation
+   ├── Order record
+   ├── Order items
+   ├── Stock update
+   └── Cart update
+   │
+   ▼
+Transaction commit
 ```
 
-If an error occurs during the operation, the transaction can be rolled back.
+Operations performed within a PostgreSQL transaction can be rolled back if an error occurs before the changes are committed.
 
-New orders start with:
+Orders store information related to the user, products, quantities, amounts, status, and available tracking details.
 
-```text
-paid
-```
+The checkout in this project is a practice implementation; it does not imply that a real payment gateway is integrated.
 
-Orders contain information such as:
+## 📦 Order Statuses
 
-- user
-- products
-- quantities
-- subtotal
-- shipping cost
-- total
-- shipping address
-- status
-- tracking number
-- creation date
-- status update timestamp
-
----
-
-# 📦 Order Status Management
-
-Orders use the following progression:
+The order workflow covers the main stages of order processing:
 
 ```text
 Paid
-  ↓
-Preparing
-  ↓
+  │
+  ▼
+Processing
+  │
+  ▼
 Shipped
-  ↓
+  │
+  ▼
 Delivered
 ```
 
-They can also end in:
+Orders may also transition to a final cancellation status when applicable.
 
-```text
-Cancelled
-```
+The admin dashboard allows authorized users to view orders and update their statuses. Available actions depend on the current status and the application's business rules.
 
-The administration panel allows orders to be progressed individually or in bulk.
+## ⏱️ Order Automation
 
-The UI does not offer a progression action when an order is already in a final state.
+The backend includes a service for automating order progression through scheduled tasks.
 
-Status changes also update `status_updated_at`, which is used by the automatic order progression system.
+Its purpose is to simulate order fulfillment stages and reduce the need to update each order manually during testing.
 
----
+The exact intervals, statuses, and conditions depend on the service configuration. In a production environment, these transitions should follow explicit business rules and account for concurrent backend instances.
 
-# 📊 Server-side Pagination
+## 📊 Admin Dashboard
 
-The admin order management uses **server-side pagination**.
+The dashboard brings together metrics related to store activity.
 
-Instead of downloading all orders and paginating them in Angular, the frontend requests only the required page:
+The metrics covered include:
+
+- Total number of orders.
+- Recorded revenue.
+- Monthly revenue.
+- Average order value.
+- Order distribution by status.
+
+Data is retrieved through backend services and displayed in the administrative interface.
+
+## 📄 Server-Side Pagination
+
+The application uses backend pagination to avoid downloading every record when only one page is needed.
+
+Example request:
 
 ```http
 GET /api/orders?page=1&limit=10
 ```
 
-The backend returns:
+The backend can use SQL `LIMIT` and `OFFSET` to retrieve the requested records and return the pagination metadata consumed by the frontend.
 
-```json
-{
-  "data": [],
-  "meta": {
-    "totalItems": 100,
-    "totalPages": 10,
-    "currentPage": 1,
-    "itemsPerPage": 10
-  }
-}
-```
+This approach is useful as the volume of orders grows.
 
-Pagination is therefore handled by the backend and PostgreSQL using `LIMIT` and `OFFSET`.
+## 🌍 Internationalization
 
-This keeps the amount of data transferred to the browser under control.
+Zenith Hardware supports two languages:
 
----
+- 🇪🇸 Spanish
+- 🇬🇧 English
 
-# ⏱️ Automatic Order Progression
+The application uses Angular Localize and XLIFF translation files.
 
-The backend includes an automated process using **node-cron**.
+Main localized routes include:
 
-The job runs every minute:
+| Spanish | English |
+|---|---|
+| `/catalogo` | `/en/catalog` |
+| `/carrito` | `/en/cart` |
+| `/checkout` | `/en/checkout` |
+| `/pedidos` | `/en/orders` |
+| `/sucursales` | `/en/branches` |
+| `/devoluciones` | `/en/returns` |
+| `/faq` | `/en/faq` |
+| `/terminos` | `/en/terms` |
+| `/envios` | `/en/shipping` |
 
-```text
-Every minute
-    │
-    ▼
-Check orders
-    │
-    ├── paid → processing
-    ├── processing → shipped
-    └── shipped → delivered
-```
+Translation files and auxiliary scripts help prepare the resources required to build the localized versions.
 
-The current simulation delays are:
+## 🔄 HTTP Interceptors
 
-| Status | Delay |
-|---|---:|
-| `paid` → `processing` | 1 minute |
-| `processing` → `shipped` | 2 minutes |
-| `shipped` → `delivered` | 3 minutes |
-
-The `status_updated_at` timestamp is used to determine how long an order has remained in its current state.
-
-This provides an automated fulfillment simulation without manually changing every order.
-
----
-
-# 📈 Metrics
-
-The administration dashboard includes order-related metrics such as:
-
-- total number of orders
-- total revenue
-- current-month revenue
-- average order value
-- orders grouped by status
-
-The metrics are calculated and provided by the backend.
-
----
-
-# 🌍 Internationalization
-
-ShopSphere is available in:
-
-🇪🇸 **Spanish**
-
-🇬🇧 **English**
-
-The application uses **Angular Localize / Angular i18n**.
-
-The localized build generates:
-
-```text
-dist/
-└── shopsphere-angular/
-    └── browser/
-        ├── es/
-        └── en/
-```
-
-Localized routes are also supported.
-
-### Spanish
-
-```text
-/catalogo
-/carrito
-/checkout
-/pedidos
-/sucursales
-/devoluciones
-/faq
-/terminos
-/envios
-```
-
-### English
-
-```text
-/en/catalog
-/en/cart
-/en/checkout
-/en/orders
-/en/branches
-/en/returns
-/en/faq
-/en/terms
-/en/shipping
-```
-
-The localization covers interface elements including:
-
-- navigation
-- shopping cart
-- order statuses
-- administration panel
-- interface text
-
----
-
-# 🔄 HTTP Interceptors
-
-The frontend uses several HTTP interceptors.
+The frontend uses interceptors to centralize cross-cutting concerns.
 
 ### Auth Interceptor
 
-Automatically adds the JWT to authenticated requests.
+Attaches the authentication token when required.
 
 ### Loading Interceptor
 
-Centralizes HTTP loading state.
+Centralizes the loading state of HTTP requests.
 
 ### Error Interceptor
 
-Provides centralized HTTP error handling.
+Centralizes HTTP request error handling.
 
 ### Retry Interceptor
 
-Retries transient server errors.
+Retries certain transient failures according to the rules defined in the code.
 
-Current strategy:
+Requests that can produce side effects require special care to prevent duplicate operations during retries.
 
-```text
-500 / 503
-   │
-   ├── retry 1 → 1 second
-   └── retry 2 → 2 seconds
-```
+## 🧪 Testing
 
-Errors such as:
+The project includes frontend and backend tests.
 
-```text
-400
-401
-404
-```
+### Frontend
 
-are not retried.
+Tests cover services, components, and interceptors, including successful responses and HTTP error scenarios.
 
-`POST` requests are also excluded from automatic retries to avoid accidentally repeating operations with side effects.
+### Backend
 
----
+The backend includes Vitest tests for different API areas, such as authentication, cart operations, health checks, and orders.
 
-# 🧪 Testing
-
-Angular services are tested using `HttpTestingController`.
-
-Test scenarios include:
-
-- successful responses
-- HTTP errors
-- backend synchronization
-- cart updates
-- product removal
-- HTTP requests
-- different response scenarios
-
-The `CartService` test suite currently contains **13 tests**.
-
-Dedicated retry interceptor tests cover:
-
-- successful requests
-- HTTP 500
-- HTTP 503
-- HTTP 400
-- HTTP 401
-- HTTP 404
-- `POST` requests
-- retry limits
-- progressive retry delays
-
----
-
-# 📁 Project Structure
-
-```text
-shopsphere-angular/
-│
-├── backend-ecommerce/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middlewares/
-│   │   ├── routes/
-│   │   └── services/
-│   │
-│   └── package.json
-│
-├── src/
-│   ├── app/
-│   │   ├── core/
-│   │   ├── features/
-│   │   ├── shared/
-│   │   └── utils/
-│   │
-│   ├── locale/
-│   │   └── messages.en.xlf
-│   │
-│   └── environments/
-│
-├── angular.json
-├── package.json
-├── package-lock.json
-├── db.json
-├── docker-compose.yml
-├── Dockerfile
-└── README.md
-```
-
----
-
-# 🚀 Installation
-
-## Requirements
-
-- Node.js 20+
-- npm
-- PostgreSQL
-- Angular CLI 18
-
-Clone the repository:
+To run the backend tests:
 
 ```bash
-git clone https://github.com/florc94/shopsphere-angular.git
-cd shopsphere-angular
+cd backend-ecommerce
+npm install
+npm test
 ```
 
-Install frontend dependencies:
+The test results and the number of passing tests should be verified by running the current test suite.
+
+## 🚀 Local Setup and Installation
+
+### Prerequisites
+
+- A Node.js version compatible with Angular 18 and the project dependencies.
+- npm.
+- An accessible PostgreSQL instance.
+- Git.
+
+### 1. Clone the Repository
+
+Once the repository has been published, replace the example URL with the actual GitHub repository URL:
+
+```bash
+git clone https://github.com/florc94/zenith-hardware.git
+cd zenith-hardware
+```
+
+### 2. Install Frontend Dependencies
+
+From the project root:
 
 ```bash
 npm install
 ```
 
-Install backend dependencies:
+### 3. Install Backend Dependencies
 
 ```bash
 cd backend-ecommerce
 npm install
 ```
 
----
+### 4. Configure Environment Variables
 
-# 🗄️ PostgreSQL Configuration
+Create `backend-ecommerce/.env` with your local environment settings.
 
-Create the database:
-
-```sql
-CREATE DATABASE shopsphere_db;
-```
-
-Configure the backend environment variables:
+Illustrative example:
 
 ```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=shopsphere_db
-DB_USER=postgres
-DB_PASSWORD=your_password
-JWT_SECRET=your_secret
+DATABASE_URL=postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require
+JWT_SECRET=replace_with_a_long_random_secret
 ```
 
----
+- `DATABASE_URL`: PostgreSQL connection string.
+- `JWT_SECRET`: secret used to sign JWTs, if this variable is used by the current authentication implementation.
 
-# ▶️ Running the Project
+Verify the exact environment variable names used by the code. Do not use the example values literally.
 
-## Backend
+Do not commit `.env` files. Configure production environment variables through your hosting provider and use a secure secret.
 
-From:
+### 5. Start the Backend
 
-```text
-backend-ecommerce/
-```
-
-run:
+From `backend-ecommerce/`:
 
 ```bash
 npm run dev
 ```
 
-The backend will be available at:
+The default development port is `3000`, unless it has been changed in your local configuration.
 
-```text
-http://localhost:3000
-```
+### 6. Start the Frontend
 
-## Frontend
-
-From the project root:
+Open another terminal and run this command from the project root:
 
 ```bash
 npm start
 ```
 
-The application will be available at:
+The Angular development server is normally available at:
 
 ```text
 http://localhost:4200
 ```
 
-The English version is available under:
+The English version may be available under `/en/`, depending on the localization and development-server configuration.
 
-```text
-http://localhost:4200/en/
+### 7. Build the Applications
+
+From the project root:
+
+```bash
+npm run build
 ```
 
----
+This command uses the scripts configured in the project to prepare translations and build Angular.
 
-# 🔑 Demo Users
+To compile the backend:
 
-The application can be tested using the accounts configured in the development database.
-
-### User
-
-```text
-Role: user
+```bash
+cd backend-ecommerce
+npm run build
 ```
 
-### Administrator
+Building the backend and building the frontend are separate operations.
 
-```text
-Role: admin
-```
+## 🔌 REST API
 
-> Exact credentials depend on the local development environment and are not stored as secrets in the repository.
+The API is organized around resources and uses routes, controllers, services, and middleware.
 
----
+Main resources include:
 
-# 🔌 API
+| Resource | Functionality |
+|---|---|
+| `/api/auth` | Authentication |
+| `/api/products` | Product catalog and administration |
+| `/api/cart` | Shopping cart management |
+| `/api/favorites` | Favorite products |
+| `/api/orders` | Orders and tracking |
+| `/api/reviews` | Product reviews |
+| `/api/users` | Users |
+| `/api/notifications` | Notifications |
+| `/api/health` | Service health |
 
-Main endpoints:
-
-## Authentication
+Examples of common operations:
 
 ```http
 POST /api/auth/login
+
+GET /api/products
+
+GET /api/cart
+
+GET /api/orders
+
+GET /api/orders/:id
 ```
 
-## Products
+Available methods, parameters, and permissions depend on the routes implemented in the backend. Protected endpoints require the appropriate authentication and authorization.
 
-```http
-GET    /api/products
-GET    /api/products/:id
-POST   /api/products
-PATCH  /api/products/:id
-DELETE /api/products/:id
-```
+## 🧠 Technical Decisions
 
-## Cart
+### Frontend/Backend Architecture
 
-```http
-GET    /api/cart
-POST   /api/cart
-PATCH  /api/cart/:productId
-DELETE /api/cart/:productId
-```
+Separating Angular and Express allows each layer to be developed and maintained independently.
 
-## Orders
+### PostgreSQL
 
-```http
-GET   /api/orders
-GET   /api/orders/:id
-POST  /api/orders
-PATCH /api/orders/:id/status
-```
+The relational database models related entities such as users, products, carts, and orders.
 
-## Metrics
+### Transactions
 
-```http
-GET /api/orders/metrics
-```
+Database transactions help preserve consistency across operations involving multiple related changes.
 
-Administrative endpoints require authentication and JWT-based authorization.
+### Angular Signals and RxJS
 
----
-
-# 🧠 Technical Decisions
-
-### PostgreSQL instead of local-only storage
-
-PostgreSQL was chosen to model a more realistic application and establish relationships between:
-
-```text
-users
-products
-cart_items
-orders
-order_items
-```
-
-### Separate frontend and backend
-
-The Angular / Express separation allows:
-
-- decoupled responsibilities
-- independent frontend and backend development
-- API reuse
-- future integrations
-
-### Server-side pagination
-
-Pagination is handled through SQL instead of loading every order into the browser.
-
-### Angular Signals
-
-Signals are used for reactive state such as:
-
-- shopping cart
-- authentication
-- orders
-- loading
-- item selection
+Reactive tools are used to manage application state and asynchronous service interactions.
 
 ### HTTP Interceptors
 
-Interceptors centralize cross-cutting concerns such as:
+Interceptors centralize concerns such as authentication, loading indicators, error handling, and retries.
 
-- authentication
-- loading state
-- error handling
-- retries
+### Modular Organization
 
----
+Organizing the application by feature improves maintainability, reuse, and extensibility.
 
-# 🔮 Future Improvements
+## 🔮 Potential Improvements
 
-Potential improvements for future versions include:
-
-- Refresh tokens.
-- Password recovery.
-- Real payment gateway integration.
-- Real image upload.
-- Server-side filtering and search.
-- Stricter backend validation of order status transitions.
-- Complete Dockerization.
-- CI/CD.
+- Integration with a real payment gateway.
+- Password recovery and advanced session management.
 - End-to-end testing.
 - Accessibility improvements.
-- Image optimization.
-- Cloud deployment.
+- Image optimization and storage.
+- Expanded test coverage.
+- Stricter validation of order status transitions.
+- Improved observability and error logging.
+- Continuous integration and delivery (CI/CD) pipeline.
+- Documented production deployment and configuration.
 
----
+## 🎯 Learning Objectives
 
-# 🎯 What This Project Demonstrates
+This project provides hands-on experience with:
 
-ShopSphere was developed to demonstrate practical knowledge of:
-
-- Angular
-- TypeScript
-- Node.js
-- Express
-- PostgreSQL
-- REST APIs
-- JWT
-- authentication and authorization
-- SQL
-- database transactions
-- state management
-- Angular Signals
-- RxJS
-- HTTP interceptors
-- testing
-- internationalization
-- server-side pagination
-- scheduled backend processes
-- frontend/backend architecture
-- Git and GitHub
-
-The main goal was to build an application closer to a real-world full stack scenario, combining customer-facing functionality with administrative tools and backend processes.
-
----
+- Frontend development using Angular and TypeScript.
+- Backend development using Node.js and Express.
+- REST API design and integration.
+- Relational databases and SQL.
+- JWT-based authentication and authorization.
+- Reactive state management and services.
+- HTTP error handling.
+- Internationalization.
+- Software testing.
+- Full-stack project organization.
+- Version control with Git.
 
 ## 📄 License
 
-This project was developed for educational and portfolio purposes.
+This project was developed for educational and portfolio purposes. If the project is released under a specific license, add the corresponding license file and update this section.
