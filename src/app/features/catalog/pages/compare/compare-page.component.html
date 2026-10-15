@@ -1,0 +1,431 @@
+<div class="compare">
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="compare__hero">
+
+    <div class="container">
+
+      <div class="compare__hero-content">
+
+        <span
+          class="compare__eyebrow"
+          i18n="Etiqueta superior del comparador@@compareEyebrow"
+        >
+          COMPARADOR
+        </span>
+
+        <h1 i18n="Título del comparador@@compareTitle">
+          Compará y elegí mejor.
+        </h1>
+
+        <p i18n="Descripción del comparador@@compareDescription">
+          Mirá los productos lado a lado y quedate con el que mejor se adapte a lo que necesitás.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="container compare__content">
+
+    @if (loading()) {
+
+      <!-- =================================================
+           CARGANDO
+           ================================================= -->
+
+      <div class="compare__state">
+
+        <div class="compare__spinner"></div>
+
+        <p i18n="Mensaje de carga del comparador@@compareLoading">
+          Cargando productos...
+        </p>
+
+      </div>
+
+    } @else if (products().length === 0) {
+
+      <!-- =================================================
+           VACÍO
+           ================================================= -->
+
+      <div class="compare__state compare__state--empty">
+
+        <div class="compare__empty-icon">⇄</div>
+
+        <h2 i18n="Título del comparador vacío@@compareEmptyTitle">
+          Todavía no elegiste productos
+        </h2>
+
+        <p i18n="Mensaje del comparador vacío@@compareEmptyDescription">
+          Tocá el botón de comparar en los productos del catálogo y los vas a ver acá, uno al lado del otro.
+        </p>
+
+        <a
+          [href]="catalogUrl"
+          class="compare__button"
+          i18n="Botón para ir al catálogo desde el comparador@@compareGoCatalog"
+        >
+          Ir al catálogo
+        </a>
+
+      </div>
+
+    } @else {
+
+      <!-- =================================================
+           ENCABEZADO
+           ================================================= -->
+
+      <div class="compare__header">
+
+        <div class="compare__count">
+
+          <span
+            class="compare__count-label"
+            i18n="Etiqueta de productos a comparar@@compareCountLabel"
+          >
+            Productos a comparar
+          </span>
+
+          <strong>{{ products().length }}</strong>
+
+          <span class="compare__category">
+            {{ products()[0].category }}
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="compare__clear"
+          (click)="clear()"
+          i18n="Botón para limpiar el comparador@@compareClear"
+        >
+          Limpiar todo
+        </button>
+
+      </div>
+
+
+      @if (products().length === 1) {
+
+        <p
+          class="compare__hint"
+          i18n="Aviso para agregar otro producto al comparador@@compareHint"
+        >
+          Agregá al menos otro producto de la misma categoría para poder compararlos.
+        </p>
+
+      }
+
+
+      <!-- =================================================
+           TABLA
+           ================================================= -->
+
+      <div class="compare__scroll">
+
+        <table class="cmp">
+
+          <caption class="visually-hidden">
+            Comparación de productos
+          </caption>
+
+          <tbody>
+
+
+            <!-- PRODUCTO -->
+
+            <tr class="cmp__row cmp__row--head">
+
+              <th scope="row" class="cmp__label"></th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell cmp__cell--product">
+
+                  <button
+                    type="button"
+                    class="cmp__remove"
+                    aria-label="Quitar del comparador"
+                    i18n-aria-label="Quitar producto del comparador@@compareRemove"
+                    (click)="remove(product.id)"
+                  >
+                    ×
+                  </button>
+
+                  <a
+                    [href]="productUrl(product.id)"
+                    class="cmp__product-link"
+                  >
+
+                    <span class="cmp__image">
+
+                      <img
+                        [src]="product.imageUrl"
+                        [alt]="product.name"
+                        loading="lazy"
+                      />
+
+                    </span>
+
+                    <span class="cmp__name">
+                      {{ product.name }}
+                    </span>
+
+                  </a>
+
+                </td>
+
+              }
+
+            </tr>
+
+
+            <!-- PRECIO -->
+
+            <tr class="cmp__row">
+
+              <th
+                scope="row"
+                class="cmp__label"
+                i18n="Fila de precio del comparador@@comparePrice"
+              >
+                Precio
+              </th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell">
+
+                  <span
+                    class="cmp__price"
+                    [class.cmp__price--best]="product.price === lowestPrice()"
+                  >
+                    {{ product.price | usd }}
+                  </span>
+
+                  @if (product.price === lowestPrice()) {
+
+                    <span
+                      class="cmp__tag"
+                      i18n="Etiqueta del precio más bajo@@compareBestPrice"
+                    >
+                      Más económico
+                    </span>
+
+                  }
+
+                </td>
+
+              }
+
+            </tr>
+
+
+            <!-- DISPONIBILIDAD -->
+
+            <tr class="cmp__row">
+
+              <th
+                scope="row"
+                class="cmp__label"
+                i18n="Fila de disponibilidad del comparador@@compareStock"
+              >
+                Disponibilidad
+              </th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell">
+
+                  @if (product.stock === 0) {
+
+                    <span class="cmp__stock cmp__stock--out">
+                      <ng-container i18n="Producto sin stock en el comparador@@compareOutOfStock">
+                        Sin stock
+                      </ng-container>
+                    </span>
+
+                  } @else if (product.stock < 5) {
+
+                    <span class="cmp__stock cmp__stock--low">
+                      <ng-container i18n="Pocas unidades en el comparador@@compareLowStock">
+                        Quedan {{ product.stock }}
+                      </ng-container>
+                    </span>
+
+                  } @else {
+
+                    <span class="cmp__stock">
+                      <ng-container i18n="Producto en stock en el comparador@@compareInStock">
+                        En stock
+                      </ng-container>
+                    </span>
+
+                  }
+
+                </td>
+
+              }
+
+            </tr>
+
+
+            <!-- CATEGORÍA -->
+
+            <tr class="cmp__row">
+
+              <th
+                scope="row"
+                class="cmp__label"
+                i18n="Fila de categoría del comparador@@compareCategory"
+              >
+                Categoría
+              </th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell">
+                  {{ product.category }}
+                </td>
+
+              }
+
+            </tr>
+
+
+            <!-- VALORACIÓN -->
+
+            <tr class="cmp__row">
+
+              <th
+                scope="row"
+                class="cmp__label"
+                i18n="Fila de valoración del comparador@@compareRating"
+              >
+                Valoración
+              </th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell">
+
+                  <span class="cmp__rating">
+                    <span aria-hidden="true">★</span>
+                    {{ product.rating | number: '1.1-1' }}
+                  </span>
+
+                </td>
+
+              }
+
+            </tr>
+
+
+            <!-- DESCRIPCIÓN -->
+
+            <tr class="cmp__row">
+
+              <th
+                scope="row"
+                class="cmp__label"
+                i18n="Fila de descripción del comparador@@compareDescriptionRow"
+              >
+                Descripción
+              </th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell cmp__cell--text">
+                  {{ product.description || '—' }}
+                </td>
+
+              }
+
+            </tr>
+
+
+            <!-- ESPECIFICACIONES (una fila por cada clave) -->
+
+            @for (key of specKeys(); track key) {
+
+              <tr class="cmp__row">
+
+                <th scope="row" class="cmp__label">
+                  {{ key }}
+                </th>
+
+                @for (product of products(); track product.id) {
+
+                  <td class="cmp__cell cmp__cell--text">
+                    {{ spec(product, key) }}
+                  </td>
+
+                }
+
+              </tr>
+
+            }
+
+
+            <!-- AGREGAR AL CARRITO -->
+
+            <tr class="cmp__row cmp__row--actions">
+
+              <th scope="row" class="cmp__label"></th>
+
+              @for (product of products(); track product.id) {
+
+                <td class="cmp__cell">
+
+                  <button
+                    type="button"
+                    class="cmp__add"
+                    [disabled]="product.stock === 0"
+                    (click)="addToCart(product)"
+                  >
+
+                    @if (product.stock === 0) {
+
+                      <span i18n="Botón de producto agotado en el comparador@@compareSoldOut">
+                        Agotado
+                      </span>
+
+                    } @else {
+
+                      <span i18n="Botón para agregar al carrito desde el comparador@@compareAddToCart">
+                        Agregar al carrito
+                      </span>
+
+                      <span aria-hidden="true">+</span>
+
+                    }
+
+                  </button>
+
+                </td>
+
+              }
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

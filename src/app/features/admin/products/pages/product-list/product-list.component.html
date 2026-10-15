@@ -1,0 +1,285 @@
+<div class="admin-page">
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <div class="admin-page__header">
+
+<div>
+
+  <h1
+    i18n="Título de la administración de productos@@productListTitle"
+  >
+    Productos
+  </h1>
+
+  <p>
+    {{ total() }}
+
+    <span
+      i18n="Texto que indica cantidad de productos del catálogo@@productListCatalogCount"
+    >
+      productos en el catálogo
+    </span>
+  </p>
+
+</div>
+
+<a
+  routerLink="/admin/products/new"
+  class="btn btn-primary"
+  i18n="Botón para crear un nuevo producto@@productListNewProduct"
+>
+  Nuevo producto
+</a>
+
+  </div>
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+@if (loading()) {
+
+<p
+  class="admin-page__loading"
+  i18n="Mensaje mostrado mientras se cargan los productos@@productListLoading"
+>
+  Cargando productos…
+</p>
+
+} @else {
+
+<!-- ===================================================
+     PRODUCT TABLE
+     =================================================== -->
+
+<div class="table-wrap panel">
+
+  <table class="table">
+
+    <thead>
+
+      <tr>
+
+        <th
+          i18n="Encabezado de columna del producto@@productListProduct"
+        >
+          Producto
+        </th>
+
+        <th
+          i18n="Encabezado de columna de categoría@@productListCategory"
+        >
+          Categoría
+        </th>
+
+        <th
+          i18n="Encabezado de columna de precio@@productListPrice"
+        >
+          Precio
+        </th>
+
+        <th
+          i18n="Encabezado de columna de stock@@productListStock"
+        >
+          Stock
+        </th>
+
+        <th
+          class="table__actions-col"
+          i18n="Encabezado de columna de acciones@@productListActions"
+        >
+          Acciones
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      @for (product of products(); track product.id) {
+
+        <tr>
+
+          <!-- =========================================
+               PRODUCT
+               ========================================= -->
+
+          <td class="table__product">
+
+            <div class="product-info">
+
+              <img
+                [src]="product.imageUrl"
+                [alt]="product.name"
+              />
+
+              <div class="product-info__text">
+
+                <span class="product-info__name">
+                  {{ product.name }}
+                </span>
+
+                <!--
+                  En mobile la categoría aparece debajo
+                  del nombre.
+                -->
+                <span class="product-info__category">
+                  {{ product.category }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </td>
+
+
+          <!-- =========================================
+               CATEGORY
+               ========================================= -->
+
+          <td class="table__category">
+
+            {{ product.category }}
+
+          </td>
+
+
+          <!-- =========================================
+               PRICE
+               ========================================= -->
+
+          <td class="price">
+
+            {{ product.price | usd }}
+
+          </td>
+
+
+          <!-- =========================================
+               STOCK
+               ========================================= -->
+
+          <td
+            class="table__stock"
+            [class.table__stock--low]="product.stock < 5"
+          >
+
+            <span class="stock-label">
+              <span
+                i18n="Etiqueta de stock en producto@@productListStockLabel"
+              >
+                Stock
+              </span>:
+            </span>
+
+            <span class="stock-value">
+              {{ product.stock }}
+            </span>
+
+          </td>
+
+
+          <!-- =========================================
+               ACTIONS
+               ========================================= -->
+
+          <td class="table__actions">
+
+            <div class="table__actions-inner">
+
+              <a
+                [routerLink]="[
+                  '/admin/products',
+                  product.id,
+                  'edit'
+                ]"
+                class="btn btn-outline btn-sm"
+                i18n="Botón para editar un producto@@productListEdit"
+              >
+                Editar
+              </a>
+
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="remove(product)"
+                i18n="Botón para borrar un producto@@productListDelete"
+              >
+                Borrar
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+<!-- ===================================================
+     PAGINATION
+     =================================================== -->
+
+@if (totalPages > 1) {
+
+  <nav
+    class="pager"
+    aria-label="Paginación de productos"
+  >
+
+    <button
+      type="button"
+      class="btn btn-outline"
+      [disabled]="page() === 1"
+      (click)="goToPage(page() - 1)"
+      i18n="Botón para ir a la página anterior de productos@@productListPrevious"
+    >
+      Anterior
+    </button>
+
+
+    <span class="pager__state">
+
+      {{ page() }}
+
+      <span
+        i18n="Texto que separa la página actual del total@@productListPageOf"
+      >
+        de
+      </span>
+
+      {{ totalPages }}
+
+    </span>
+
+
+    <button
+      type="button"
+      class="btn btn-outline"
+      [disabled]="page() === totalPages"
+      (click)="goToPage(page() + 1)"
+      i18n="Botón para ir a la página siguiente de productos@@productListNext"
+    >
+      Siguiente
+    </button>
+
+  </nav>
+
+}
+
+}
+
+</div>

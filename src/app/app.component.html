@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+
+<app-spinner></app-spinner>
+
+<app-toast></app-toast>
+
+<!-- Notificación de producto agregado al carrito -->
+@if (cartService.notification(); as message) {
+  <div class="cart-notification">
+    <span class="cart-notification-icon">🛒</span>
+
+    <span class="cart-notification-message">
+      {{ message }}
+    </span>
+  </div>
+}
+
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- El footer y WhatsApp solo se muestran si NO estamos en admin -->
+@if (!isAdminRoute) {
+  <app-footer></app-footer>
+}
+
+<!-- Barra flotante del comparador (no en admin ni en la propia página de comparar) -->
+@if (!isAdminRoute && !isCompareRoute) {
+  <app-compare-bar></app-compare-bar>
+}

@@ -1,0 +1,813 @@
+<div class="admin-page admin-page--wide">
+
+  <div class="admin-page__header">
+
+    <div>
+
+      <h1 i18n="Título del panel de fulfillment@@fulfillmentTitle">
+        Fulfillment
+      </h1>
+
+      <p>
+        {{ filteredOrders().length }}
+
+        <span
+          i18n="Texto que indica pedidos filtrados sobre pedidos totales@@fulfillmentOrderCount"
+        >
+          de
+        </span>
+
+        {{ orders().length }}
+
+        <span i18n="Texto para indicar cantidad de pedidos@@fulfillmentOrders">
+          pedidos
+        </span>
+      </p>
+
+    </div>
+
+
+    <div class="view-toggle">
+
+      <button
+        class="view-toggle__btn"
+        [class.is-active]="viewMode() === 'kanban'"
+        (click)="setViewMode('kanban')"
+        i18n="Botón para cambiar a vista Kanban@@fulfillmentKanbanView"
+      >
+        Kanban
+      </button>
+
+
+      <button
+        class="view-toggle__btn"
+        [class.is-active]="viewMode() === 'list'"
+        (click)="setViewMode('list')"
+        i18n="Botón para cambiar a vista de lista@@fulfillmentListView"
+      >
+        Lista
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <input
+    type="text"
+    class="control search-bar"
+    placeholder="Buscar por ID, tracking, nombre o email del cliente"
+    i18n-placeholder="Texto de ayuda del buscador de pedidos@@fulfillmentSearchPlaceholder"
+    [ngModel]="search()"
+    (ngModelChange)="onSearchInput($event)"
+  />
+
+
+  @if (loading()) {
+
+    <p
+      class="admin-page__loading"
+      i18n="Mensaje mostrado mientras se cargan los pedidos@@fulfillmentLoading"
+    >
+      Cargando pedidos…
+    </p>
+
+  } @else if (viewMode() === 'kanban') {
+
+    <div class="board">
+
+      @for (status of columns; track status) {
+
+        <section
+          class="board__column"
+          [class.is-expanded]="expandedColumns().has(status)"
+        >
+
+          <header
+            class="board__column-header"
+            (click)="toggleColumn(status)"
+          >
+
+            <div class="board__column-title">
+
+              <span>
+                {{ statusLabels[status] }}
+              </span>
+
+              <span class="board__count">
+                {{ ordersInColumn(status).length }}
+              </span>
+
+            </div>
+
+
+            <span class="board__chevron">
+
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+
+            </span>
+
+          </header>
+
+
+          <div class="board__column-content">
+
+            @if (!isFinalStatus(status) && selectedCountIn(status) > 0) {
+
+              <button
+                class="btn btn-primary btn-sm board__bulk"
+                (click)="bulkAdvance(status)"
+              >
+
+                <span
+                  i18n="Acción para avanzar pedidos seleccionados@@fulfillmentBulkAdvance"
+                >
+                  Avanzar
+                </span>
+
+                {{ selectedCountIn(status) }}
+
+                <span
+                  i18n="Texto para indicar pedidos seleccionados@@fulfillmentSelectedOrders"
+                >
+                  seleccionado(s)
+                </span>
+
+              </button>
+
+            }
+
+
+            <div class="board__cards">
+
+              @for (order of ordersInColumn(status); track order.id) {
+
+                <article class="order-card">
+
+                  @if (!isFinalStatus(status)) {
+
+                    <input
+                      type="checkbox"
+                      class="order-card__check"
+                      [checked]="isSelected(order.id)"
+                      (change)="toggleSelection(order.id)"
+                      [attr.aria-label]="'Seleccionar pedido ' + order.id"
+                      i18n-aria-label="Etiqueta accesible para seleccionar un pedido@@fulfillmentSelectOrder"
+                    />
+
+                  }
+
+
+                  <div class="order-card__body">
+
+                    <div class="order-card__top">
+
+                      <strong>
+
+                        <span
+                          i18n="Etiqueta de pedido en tarjeta@@fulfillmentOrderNumber"
+                        >
+                          Pedido
+                        </span>
+
+                        {{ order.id }}
+
+                      </strong>
+
+
+                      <span class="price">
+                        {{ order.total | usd }}
+                      </span>
+
+                    </div>
+
+
+                    <p class="order-card__customer">
+                      {{ order.client }}
+                    </p>
+
+
+                    <p class="order-card__meta">
+
+                      <span
+                        i18n="Etiqueta del número de tracking@@fulfillmentTracking"
+                      >
+                        Tracking
+                      </span>
+
+                      {{ order.trackingNumber }}
+
+                    </p>
+
+
+                    <div class="order-card__actions">
+
+                      <button
+                        class="btn btn-secondary btn-sm"
+                        (click)="openOrderDetails(order)"
+                        i18n="Botón para ver el detalle de un pedido@@fulfillmentViewDetails"
+                      >
+                        Ver detalle
+                      </button>
+
+
+                      @if (!isFinalStatus(status)) {
+
+                        @if (nextStatus(order.status); as next) {
+
+                          <button
+                            class="btn btn-outline btn-sm"
+                            (click)="advance(order)"
+                          >
+
+                            <span
+                              i18n="Acción para avanzar un pedido a otro estado@@fulfillmentAdvanceTo"
+                            >
+                              Avanzar a
+                            </span>
+
+                            {{ statusLabels[next] }}
+
+                          </button>
+
+                        }
+
+
+                        <button
+                          class="btn btn-danger btn-sm"
+                          (click)="cancel(order)"
+                          i18n="Botón para cancelar un pedido@@fulfillmentCancel"
+                        >
+                          Cancelar
+                        </button>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                </article>
+
+              } @empty {
+
+                <p
+                  class="board__empty"
+                  i18n="Mensaje cuando una columna no tiene pedidos@@fulfillmentEmptyColumn"
+                >
+                  Sin pedidos acá
+                </p>
+
+              }
+
+            </div>
+
+          </div>
+
+        </section>
+
+      }
+
+    </div>
+
+  } @else {
+
+    <div class="table-wrap panel">
+
+      <table class="table">
+
+        <thead>
+
+          <tr>
+
+            <th
+              i18n="Encabezado de columna de número de pedido@@fulfillmentTableOrder"
+            >
+              Pedido
+            </th>
+
+            <th
+              i18n="Encabezado de columna de cliente@@fulfillmentTableCustomer"
+            >
+              Cliente
+            </th>
+
+            <th
+              i18n="Encabezado de columna de tracking@@fulfillmentTableTracking"
+            >
+              Tracking
+            </th>
+
+            <th
+              i18n="Encabezado de columna de total@@fulfillmentTableTotal"
+            >
+              Total
+            </th>
+
+            <th
+              i18n="Encabezado de columna de estado@@fulfillmentTableStatus"
+            >
+              Estado
+            </th>
+
+            <th
+              class="table__actions-col"
+              i18n="Encabezado de columna de acciones@@fulfillmentTableActions"
+            >
+              Acciones
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (order of filteredOrders(); track order.id) {
+
+            <tr
+              [class.is-expanded]="expandedListRows().has(order.id)"
+            >
+
+              <td
+                class="table__row-header"
+                (click)="toggleListRow(order.id)"
+                data-label="Pedido"
+              >
+
+                <span class="desktop-only">
+                  {{ order.id }}
+                </span>
+
+
+                <div class="mobile-only">
+
+                  <strong>
+
+                    <span
+                      i18n="Etiqueta de pedido en vista móvil@@fulfillmentMobileOrderNumber"
+                    >
+                      Pedido #
+                    </span>
+
+                    {{ order.id }}
+
+                  </strong>
+
+
+                  <span class="table__chevron">
+
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <td
+                class="table__row-content"
+                data-label="Cliente"
+              >
+                {{ order.client }}
+              </td>
+
+
+              <td
+                class="table__row-content"
+                data-label="Tracking"
+              >
+                {{ order.trackingNumber }}
+              </td>
+
+
+              <td
+                class="table__row-content price"
+                data-label="Total"
+              >
+                {{ order.total | usd }}
+              </td>
+
+
+              <td
+                class="table__row-content"
+                data-label="Estado"
+              >
+
+                <span
+                  class="badge"
+                  [attr.data-status]="order.status"
+                >
+                  {{ statusLabels[order.status] }}
+                </span>
+
+              </td>
+
+
+              <td
+                class="table__row-content table__actions"
+                data-label="Acciones"
+              >
+
+                <div class="action-btns">
+
+                  <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="openOrderDetails(order)"
+                    i18n="Botón para ver detalle desde la lista@@fulfillmentListViewDetails"
+                  >
+                    Ver detalle
+                  </button>
+
+
+                  @if (!isFinalStatus(order.status)) {
+
+                    @if (nextStatus(order.status); as next) {
+
+                      <button
+                        class="btn btn-outline btn-sm"
+                        (click)="advance(order)"
+                        i18n="Botón para avanzar un pedido desde la lista@@fulfillmentListAdvance"
+                      >
+                        Avanzar
+                      </button>
+
+                    }
+
+
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="cancel(order)"
+                      i18n="Botón para cancelar un pedido desde la lista@@fulfillmentListCancel"
+                    >
+                      Cancelar
+                    </button>
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          } @empty {
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="table__muted"
+                data-label="Búsqueda"
+                i18n="Mensaje cuando no hay pedidos que coincidan con la búsqueda@@fulfillmentNoResults"
+              >
+                Sin pedidos que coincidan con la búsqueda
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+
+  <!-- CONTROLES DE PAGINACIÓN SERVER-SIDE -->
+
+  <div class="pagination">
+
+    <button
+      class="pagination__btn"
+      (click)="prevPage()"
+      [disabled]="currentPage() === 1"
+      aria-label="Página anterior"
+      i18n-aria-label="Botón accesible para ir a la página anterior@@fulfillmentPreviousPage"
+    >
+
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+
+
+      <span
+        i18n="Botón para ir a la página anterior@@fulfillmentPreviousPageButton"
+      >
+        Anterior
+      </span>
+
+    </button>
+
+
+    <div class="pagination__info">
+
+      <span
+        class="pagination__label"
+        i18n="Texto que indica la página actual@@fulfillmentPageInfo"
+      >
+        Página
+      </span>
+
+
+      <span class="pagination__current">
+        {{ currentPage() }}
+      </span>
+
+
+      <span
+        class="pagination__label"
+        i18n="Texto que indica la cantidad total de páginas@@fulfillmentPageOf"
+      >
+        de
+      </span>
+
+
+      <span class="pagination__total-pages">
+        {{ totalPages() }}
+      </span>
+
+
+      <span class="pagination__separator">
+        ·
+      </span>
+
+
+      <span
+        class="pagination__total-label"
+        i18n="Texto que indica el total de pedidos@@fulfillmentTotalOrders"
+      >
+        {{ totalItems() }} pedidos
+      </span>
+
+    </div>
+
+
+    <button
+      class="pagination__btn"
+      (click)="nextPage()"
+      [disabled]="currentPage() === totalPages()"
+      aria-label="Página siguiente"
+      i18n-aria-label="Botón accesible para ir a la página siguiente@@fulfillmentNextPage"
+    >
+
+      <span
+        i18n="Botón para ir a la página siguiente@@fulfillmentNextPageButton"
+      >
+        Siguiente
+      </span>
+
+
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- MODAL DE DETALLES DEL PEDIDO -->
+
+@if (selectedOrderToView(); as detailOrder) {
+
+  <div
+    class="modal-overlay"
+    (click)="closeOrderDetails()"
+  >
+
+    <div
+      class="modal-dialog"
+      (click)="$event.stopPropagation()"
+    >
+
+      <header class="modal-header">
+
+        <h2>
+
+          <span
+            i18n="Etiqueta del número de pedido en el modal@@fulfillmentModalOrderNumber"
+          >
+            Pedido #
+          </span>
+
+          {{ detailOrder.id }}
+
+
+          <span
+            class="badge"
+            [attr.data-status]="detailOrder.status"
+          >
+            {{ statusLabels[detailOrder.status] }}
+          </span>
+
+        </h2>
+
+
+        <button
+          class="btn-close"
+          (click)="closeOrderDetails()"
+          aria-label="Cerrar"
+          i18n-aria-label="Botón para cerrar el detalle del pedido@@fulfillmentCloseModal"
+        >
+          ✖
+        </button>
+
+      </header>
+
+
+      <div class="modal-body">
+
+        <p class="modal-date">
+
+          <span
+            i18n="Texto que precede la fecha del pedido@@fulfillmentModalDate"
+          >
+            Realizado el
+          </span>
+
+          {{ detailOrder.createdAt | date:'medium' }}
+
+        </p>
+
+
+        <div class="modal-tracking">
+
+          <p>
+
+            <span
+              i18n="Etiqueta del número de seguimiento@@fulfillmentModalTracking"
+            >
+              Número de seguimiento:
+            </span>
+
+            <strong>
+              {{ detailOrder.trackingNumber || 'No asignado' }}
+            </strong>
+
+          </p>
+
+        </div>
+
+
+        <div class="modal-customer-info">
+
+          <p>
+
+            <strong
+              i18n="Etiqueta del cliente en el detalle@@fulfillmentModalCustomer"
+            >
+              Cliente:
+            </strong>
+
+            {{ detailOrder.client }}
+
+          </p>
+
+
+          <p>
+
+            <strong
+              i18n="Etiqueta de la dirección en el detalle@@fulfillmentModalAddress"
+            >
+              Dirección:
+            </strong>
+
+            {{ detailOrder.shippingAddress }}
+
+          </p>
+
+        </div>
+
+
+        <hr class="modal-divider">
+
+
+        <ul class="modal-items">
+
+          @if (detailOrder.items && detailOrder.items.length > 0) {
+
+            @for (item of detailOrder.items; track item.productId) {
+
+              <li class="item-row">
+
+                <span>
+                  {{ item.name }} &times; {{ item.quantity }}
+                </span>
+
+                <span>
+                  {{ item.subtotal | usd }}
+                </span>
+
+              </li>
+
+            }
+
+          } @else {
+
+            <li
+              class="item-row"
+              style="color: #dc3545; font-size: 0.9rem; justify-content: center; text-align: center;"
+              i18n="Mensaje de error cuando el backend no envía los productos de la compra@@fulfillmentMissingItems"
+            >
+              ⚠️ El backend no está enviando los productos de esta compra.
+            </li>
+
+          }
+
+        </ul>
+
+
+        <hr class="modal-divider">
+
+
+        <div class="modal-totals">
+
+          <div class="total-row">
+
+            <span
+              i18n="Etiqueta del costo de envío@@fulfillmentShippingCost"
+            >
+              Costo de envío
+            </span>
+
+            <span
+              class="free-shipping"
+              i18n="Indicación de envío gratuito@@fulfillmentFreeShipping"
+            >
+              Gratis
+            </span>
+
+          </div>
+
+
+          <div class="total-row grand-total">
+
+            <span
+              i18n="Etiqueta del total final del pedido@@fulfillmentGrandTotal"
+            >
+              Total
+            </span>
+
+            <span>
+              {{ detailOrder.total | usd }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

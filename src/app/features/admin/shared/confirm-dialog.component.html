@@ -1,0 +1,44 @@
+@if (dialog.request(); as req) {
+  <div
+    class="overlay"
+    (click)="dialog.resolve(false)"
+  >
+    <div
+      class="dialog panel"
+      (click)="$event.stopPropagation()"
+      role="alertdialog"
+      aria-modal="true"
+    >
+
+      <h2>
+        {{ req.title }}
+      </h2>
+
+      <p>
+        {{ req.message }}
+      </p>
+
+      <div class="dialog__actions">
+
+        <button
+          class="btn btn-outline"
+          (click)="dialog.resolve(false)"
+          i18n="Botón para cancelar el diálogo de confirmación@@confirmDialogCancel"
+        >
+          Cancelar
+        </button>
+
+        <button
+          class="btn"
+          [class.btn-primary]="!req.danger"
+          [class.btn-danger]="req.danger"
+          (click)="dialog.resolve(true)"
+        >
+          {{ req.confirmLabel }}
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+}

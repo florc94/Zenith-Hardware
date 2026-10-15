@@ -1,0 +1,423 @@
+/* =========================================================
+   PALETA GAMING (misma que el resto de la tienda)
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+  --on-accent: #04110a;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.25);
+
+  --cut: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+.faq-item:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+.page-container {
+  display: flex;
+  justify-content: center;
+
+  padding: 3.5rem 1.5rem 4rem;
+
+  background:
+    radial-gradient(circle at 80% 0%, rgba(var(--accent-rgb), 0.1), transparent 40%),
+    radial-gradient(circle at 10% 100%, rgba(var(--accent-2-rgb), 0.08), transparent 40%),
+    var(--bg);
+
+  min-height: 70vh;
+
+  .faq-content-wrapper {
+    max-width: 720px;
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 2.5rem;
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    margin: 0 0 0.85rem;
+
+    padding: 0.4rem 0.8rem;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.45);
+    border-radius: 4px;
+    background: rgba(var(--accent-rgb), 0.08);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.18em;
+
+    color: var(--accent);
+  }
+
+  h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 2.25rem;
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
+
+    text-transform: uppercase;
+
+    @media (max-width: 640px) {
+      font-size: 1.9rem;
+    }
+  }
+}
+
+/* =========================================================
+   BUSCADOR
+   ========================================================= */
+
+.search-box {
+  margin-bottom: 1.5rem;
+
+  input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 0.9rem 1rem;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border-strong);
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    font-size: 1rem;
+
+    outline: none;
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: #7d839b;
+    }
+
+    &:focus {
+      border-color: var(--accent);
+
+      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+    }
+  }
+}
+
+/* =========================================================
+   SIN RESULTADOS
+   ========================================================= */
+
+.no-results {
+  color: var(--muted);
+
+  font-size: 0.95rem;
+
+  text-align: center;
+
+  padding: 2.5rem 1rem;
+
+  border: 1px dashed var(--border-strong);
+
+  border-radius: 14px;
+
+  background: var(--surface);
+}
+
+/* =========================================================
+   LISTA FAQ
+   ========================================================= */
+
+.faq-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.75rem;
+
+  margin-bottom: 2rem;
+}
+
+/* =========================================================
+   TARJETAS FAQ
+   ========================================================= */
+
+.order-card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &.faq-item {
+    cursor: pointer;
+
+    padding: 1.1rem 1.25rem;
+
+    &:hover {
+      border-color: rgba(var(--accent-rgb), 0.6);
+
+      box-shadow: var(--glow);
+
+      transform: translateY(-1px);
+    }
+  }
+
+  .faq-question-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 1rem;
+
+    .faq-q-text {
+      margin: 0;
+
+      color: #ffffff;
+
+      font-size: 1rem;
+
+      font-weight: 700;
+
+      line-height: 1.45;
+    }
+
+    .faq-toggle-icon {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      width: 30px;
+      height: 30px;
+
+      border: 1px solid rgba(var(--accent-rgb), 0.4);
+
+      border-radius: 8px;
+
+      background: rgba(var(--accent-rgb), 0.1);
+
+      color: var(--accent);
+
+      font-size: 1.1rem;
+
+      font-weight: 700;
+
+      line-height: 1;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+  }
+
+  &:hover {
+    .faq-toggle-icon {
+      background: var(--grad);
+
+      border-color: transparent;
+
+      color: var(--on-accent);
+    }
+  }
+
+  .faq-answer-text {
+    margin-top: 0.9rem;
+
+    margin-bottom: 0;
+
+    padding-top: 0.9rem;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 0.98rem;
+
+    line-height: 1.7;
+  }
+}
+
+/* =========================================================
+   SOPORTE
+   ========================================================= */
+
+.support-card {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.14), transparent 60%),
+    var(--surface);
+
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  padding: 2rem 1.5rem;
+
+  box-shadow: var(--glow);
+
+  .support-title {
+    margin: 0 0 0.35rem;
+
+    color: #ffffff;
+
+    font-size: 1.1rem;
+
+    font-weight: 800;
+  }
+
+  .support-subtitle {
+    margin: 0 0 1.25rem;
+
+    color: var(--muted);
+
+    font-size: 0.95rem;
+
+    line-height: 1.6;
+  }
+
+  .btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--grad);
+
+    border: none;
+
+    clip-path: var(--cut);
+
+    color: var(--on-accent);
+
+    padding: 0.7rem 1.4rem;
+
+    text-decoration: none;
+
+    font-weight: 800;
+
+    font-size: 0.88rem;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    transition:
+      transform 0.2s ease,
+      filter 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+
+      filter: brightness(1.12) drop-shadow(0 0 12px rgba(var(--accent-rgb), 0.5));
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .order-card {
+    &.faq-item {
+      padding: 1rem;
+    }
+
+    .faq-question-row {
+      .faq-q-text {
+        font-size: 0.95rem;
+      }
+    }
+
+    .faq-answer-text {
+      font-size: 0.95rem;
+    }
+  }
+
+  .support-card {
+    padding: 1.75rem 1rem;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

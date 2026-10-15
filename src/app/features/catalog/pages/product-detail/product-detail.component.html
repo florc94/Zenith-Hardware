@@ -1,0 +1,997 @@
+<section class="container detail">
+
+  @if (product(); as p) {
+
+    <!-- ================================================= -->
+    <!-- MIGAS DE PAN -->
+    <!-- ================================================= -->
+
+    <nav
+      class="detail__breadcrumb"
+      aria-label="Ruta de navegación"
+    >
+
+      <a [href]="homeUrl">
+        Inicio
+      </a>
+
+      <span
+        class="detail__breadcrumb-sep"
+        aria-hidden="true"
+      >
+        ›
+      </span>
+
+      <a [href]="categoryUrl(p.category)">
+        {{ p.category }}
+      </a>
+
+      <span
+        class="detail__breadcrumb-sep"
+        aria-hidden="true"
+      >
+        ›
+      </span>
+
+      <span aria-current="page">
+        {{ p.name }}
+      </span>
+
+    </nav>
+
+    <!-- ================================================= -->
+    <!-- PRODUCTO -->
+    <!-- ================================================= -->
+
+    <div class="detail__grid">
+
+      <!-- ================================================= -->
+      <!-- GALERÍA -->
+      <!-- ================================================= -->
+
+      <div class="detail__gallery">
+
+        <div class="detail__frame">
+
+          <img
+            [src]="selectedImage() || p.imageUrl"
+            [alt]="p.name"
+          />
+
+        </div>
+
+        @if (galleryImages().length > 1) {
+
+          <div class="detail__thumbnails-wrapper">
+
+            @if (
+              galleryImages().length >
+              thumbnailsPerPage
+            ) {
+
+              <button
+                type="button"
+                class="detail__thumbnail-arrow"
+                aria-label="Miniaturas anteriores"
+                i18n-aria-label="Botón para mostrar miniaturas anteriores@@detailPreviousThumbnails"
+                (click)="previousThumbnails()"
+              >
+                <span aria-hidden="true">
+                  ‹
+                </span>
+              </button>
+
+            } @else {
+
+              <span aria-hidden="true"></span>
+
+            }
+
+            <div
+              class="detail__thumbnails"
+              role="list"
+              aria-label="Galería de imágenes"
+              i18n-aria-label="Galería de imágenes del producto@@detailGallery"
+            >
+
+              @for (
+                image of visibleThumbnailImages();
+                track image
+              ) {
+
+                <button
+                  type="button"
+                  class="detail__thumbnail"
+                  [class.detail__thumbnail--active]="
+                    selectedImage() === image
+                  "
+                  [attr.aria-label]="
+                    'Ver imagen ' +
+                    (galleryImages().indexOf(image) + 1)
+                  "
+                  [attr.aria-current]="
+                    selectedImage() === image
+                      ? 'true'
+                      : null
+                  "
+                  (click)="selectImage(image)"
+                >
+
+                  <img
+                    [src]="image"
+                    [alt]="
+                      p.name +
+                      ' - imagen ' +
+                      (galleryImages().indexOf(image) + 1)
+                    "
+                    loading="lazy"
+                  />
+
+                </button>
+
+              }
+
+            </div>
+
+            @if (
+              galleryImages().length >
+              thumbnailsPerPage
+            ) {
+
+              <button
+                type="button"
+                class="detail__thumbnail-arrow"
+                aria-label="Más miniaturas"
+                i18n-aria-label="Botón para mostrar más miniaturas@@detailNextThumbnails"
+                (click)="nextThumbnails()"
+              >
+                <span aria-hidden="true">
+                  ›
+                </span>
+              </button>
+
+            } @else {
+
+              <span aria-hidden="true"></span>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+      <!-- ================================================= -->
+      <!-- INFORMACIÓN -->
+      <!-- ================================================= -->
+
+      <div class="detail__info">
+
+        <p class="detail__category">
+          {{ p.category }}
+        </p>
+
+        <h1>
+          {{ p.name }}
+        </h1>
+
+        <div class="detail__price-row">
+
+          <p class="price detail__price">
+            {{ p.price | usd }}
+          </p>
+
+          <div class="detail__price-actions">
+
+            @if (p.stock > 0) {
+
+              <span
+                class="detail__badge"
+                i18n="Etiqueta de producto con stock@@detailInStockBadge"
+              >
+                En stock
+              </span>
+
+            } @else {
+
+              <span
+                class="detail__badge detail__badge--out"
+                i18n="Etiqueta de producto sin stock@@detailOutOfStockBadge"
+              >
+                Sin stock
+              </span>
+
+            }
+
+            <button
+              type="button"
+              class="detail__favorite"
+              [class.detail__favorite--active]="isFavorite()"
+              [disabled]="favoriteBusy()"
+              [attr.aria-pressed]="isFavorite()"
+              aria-label="Favoritos"
+              i18n-aria-label="Botón de favoritos@@detailFavorite"
+              (click)="toggleFavorite()"
+            >
+
+              @if (isFavorite()) {
+
+                <span aria-hidden="true">
+                  ♥
+                </span>
+
+              } @else {
+
+                <span aria-hidden="true">
+                  ♡
+                </span>
+
+              }
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <p class="detail__description">
+          {{ p.description }}
+        </p>
+
+        <p
+          class="detail__stock"
+          [class.detail__stock--low]="
+            p.stock > 0 && p.stock < 5
+          "
+        >
+
+          @if (p.stock === 0) {
+
+            <span
+              i18n="Mensaje cuando un producto no tiene stock@@detailOutOfStock"
+            >
+              Sin stock por ahora
+            </span>
+
+          } @else if (p.stock < 5) {
+
+            <ng-container
+              i18n="Mensaje indicando que quedan pocas unidades@@detailFewUnits"
+            >
+              Quedan {{ p.stock }} unidades
+            </ng-container>
+
+          } @else {
+
+            <ng-container
+              i18n="Mensaje indicando que hay unidades disponibles@@detailAvailableUnits"
+            >
+              {{ p.stock }} unidades disponibles
+            </ng-container>
+
+          }
+
+        </p>
+
+        @if (p.stock > 0) {
+
+          <div class="detail__buy">
+
+            <div class="stepper">
+
+              <button
+                type="button"
+                (click)="decrementQty()"
+                aria-label="Quitar una unidad"
+                i18n-aria-label="Botón para quitar una unidad@@detailDecreaseQuantity"
+              >
+                −
+              </button>
+
+              <span>
+                {{ quantity() }}
+              </span>
+
+              <button
+                type="button"
+                (click)="incrementQty()"
+                aria-label="Agregar una unidad"
+                i18n-aria-label="Botón para agregar una unidad@@detailIncreaseQuantity"
+              >
+                +
+              </button>
+
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary detail__cta"
+              (click)="buyNow()"
+              i18n="Botón para comprar ahora@@detailBuyNow"
+            >
+              Comprar ahora
+            </button>
+
+          </div>
+
+          <button
+            type="button"
+            class="detail__cta-secondary"
+            (click)="addToCart()"
+            i18n="Botón para agregar el producto al carrito@@detailAddToCart"
+          >
+            Agregar al carrito
+          </button>
+
+        }
+
+        <!-- ================================================= -->
+        <!-- BENEFICIOS -->
+        <!-- ================================================= -->
+
+        <ul class="detail__perks">
+
+          <li>
+
+            <button
+              type="button"
+              class="detail__perk detail__perk-button"
+              (click)="scrollToReviews()"
+            >
+
+              <span
+                class="detail__perk-icon"
+                aria-hidden="true"
+              >
+                💬
+              </span>
+
+              <span
+                i18n="Enlace a las opiniones del producto@@detailPerkReviews"
+              >
+                Ver opiniones sobre este artículo
+              </span>
+
+            </button>
+
+          </li>
+
+          <li class="detail__perk">
+
+            <span
+              class="detail__perk-icon"
+              aria-hidden="true"
+            >
+              🚚
+            </span>
+
+            <span
+              i18n="Beneficio de envío@@detailPerkShipping"
+            >
+              Envío a todo el país
+            </span>
+
+          </li>
+
+          <li class="detail__perk">
+
+            <span
+              class="detail__perk-icon"
+              aria-hidden="true"
+            >
+              🛡️
+            </span>
+
+            <span
+              i18n="Beneficio de garantía@@detailPerkWarranty"
+            >
+              Garantía oficial
+            </span>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- ESPECIFICACIONES -->
+    <!-- ================================================= -->
+
+    @if (specs().length > 0) {
+
+      <section class="specs-section">
+
+        <h2
+          class="section-title"
+          i18n="Título de las especificaciones@@detailSpecsTitle"
+        >
+          Especificación
+        </h2>
+
+        <dl class="specs">
+
+          @for (
+            spec of specs();
+            track spec.label
+          ) {
+
+            <div class="specs__row">
+
+              <dt>
+                {{ spec.label }}
+              </dt>
+
+              <dd>
+                {{ spec.value }}
+              </dd>
+
+            </div>
+
+          }
+
+        </dl>
+
+      </section>
+
+    }
+
+    <!-- ================================================= -->
+    <!-- PRODUCTOS RELACIONADOS -->
+    <!-- ================================================= -->
+
+    @if (related().length > 0) {
+
+      <section class="related">
+
+        <h2
+          class="section-title"
+          i18n="Título de productos relacionados@@detailRelatedTitle"
+        >
+          Quienes vieron este producto también compraron
+        </h2>
+
+        <div class="related__wrapper">
+
+          <button
+            type="button"
+            class="related__arrow related__arrow--prev"
+            aria-label="Productos anteriores"
+            (click)="scrollRelated(-1)"
+          >
+            <span aria-hidden="true">
+              ‹
+            </span>
+          </button>
+
+          <ul
+            class="related__track"
+            #relatedTrack
+            (touchstart)="pauseRelatedAutoplay()"
+            (touchend)="resumeRelatedAutoplay()"
+            (mouseenter)="pauseRelatedAutoplay()"
+            (mouseleave)="resumeRelatedAutoplay()"
+          >
+
+            @for (
+              item of related();
+              track item.id
+            ) {
+
+              <li class="related-card">
+
+                <a
+                  class="related-card__link"
+                  [href]="productUrl(item.id)"
+                >
+
+                  <div class="related-card__image">
+
+                    <img
+                      [src]="item.imageUrl"
+                      [alt]="item.name"
+                      loading="lazy"
+                    />
+
+                  </div>
+
+                  <h3>
+                    {{ item.name }}
+                  </h3>
+
+                  <div class="related-card__footer">
+
+                    <span class="related-card__price">
+                      {{ item.price | usd }}
+                    </span>
+
+                    @if (item.stock === 0) {
+
+                      <span class="related-card__sold">
+                        Sin stock
+                      </span>
+
+                    }
+
+                  </div>
+
+                </a>
+
+              </li>
+
+            }
+
+          </ul>
+
+          <button
+            type="button"
+            class="related__arrow related__arrow--next"
+            aria-label="Más productos"
+            (click)="scrollRelated(1)"
+          >
+            <span aria-hidden="true">
+              ›
+            </span>
+          </button>
+
+        </div>
+
+      </section>
+
+    }
+
+    <!-- ================================================= -->
+    <!-- REVIEWS -->
+    <!-- ================================================= -->
+
+    <section
+      class="reviews"
+      id="reviews"
+    >
+
+      <div class="reviews__header">
+
+        <div>
+
+          <p class="reviews__eyebrow">
+            Opiniones
+          </p>
+
+          <h2>
+            Reviews de {{ p.name }}
+          </h2>
+
+        </div>
+
+        @if (reviewCount > 0) {
+
+          <div class="reviews__summary">
+
+            <div class="reviews__average">
+
+              <strong>
+                {{ averageRating | number:'1.1-1' }}
+              </strong>
+
+              <div class="reviews__stars">
+
+                @for (
+                  star of getAverageStars();
+                  track $index
+                ) {
+
+                  <span>
+                    {{ star }}
+                  </span>
+
+                }
+
+              </div>
+
+            </div>
+
+            <span class="reviews__count">
+
+              {{ reviewCount }}
+
+              @if (reviewCount === 1) {
+                review
+              } @else {
+                reviews
+              }
+
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+      @if (reviewsLoading()) {
+
+        <div class="reviews__loading">
+          Cargando opiniones...
+        </div>
+
+      } @else if (reviewsError()) {
+
+        <div class="reviews__empty">
+
+          <p>
+            No pudimos cargar las opiniones.
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="loadReviews(p.id)"
+          >
+            Reintentar
+          </button>
+
+        </div>
+
+      } @else {
+
+        <!-- ================================================= -->
+        <!-- LISTA DE REVIEWS -->
+        <!-- ================================================= -->
+
+        @if (reviewCount > 0) {
+
+          <div class="reviews__list">
+
+            @for (
+              review of reviews();
+              track review.id
+            ) {
+
+              <article class="review-card">
+
+                <div class="review-card__top">
+
+                  <div class="review-card__user">
+
+                    <div class="review-card__avatar">
+                      {{ (review.user_name || 'U').charAt(0).toUpperCase() }}
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        {{ review.user_name || 'Usuario' }}
+                      </strong>
+
+                      <time
+                        [attr.datetime]="review.created_at"
+                      >
+                        {{ review.created_at | date:'dd/MM/yyyy' }}
+                      </time>
+
+                    </div>
+
+                  </div>
+
+                  <div class="review-card__rating">
+
+                    @for (
+                      star of getStars(review.rating);
+                      track $index
+                    ) {
+
+                      <span>
+                        {{ star }}
+                      </span>
+
+                    }
+
+                  </div>
+
+                </div>
+
+                @if (review.comment) {
+
+                  <p class="review-card__comment">
+                    {{ review.comment }}
+                  </p>
+
+                }
+
+                <!-- ========================================= -->
+                <!-- BOTÓN ELIMINAR SOLO PARA SU PROPIA REVIEW -->
+                <!-- ========================================= -->
+
+                @if (isOwnReview(review)) {
+
+                  <button
+                    type="button"
+                    class="review-card__delete"
+                    [disabled]="
+                      deletingReviewId() === review.id
+                    "
+                    (click)="deleteReview(review)"
+                  >
+
+                    @if (
+                      deletingReviewId() === review.id
+                    ) {
+
+                      Eliminando...
+
+                    } @else {
+
+                      Eliminar review
+
+                    }
+
+                  </button>
+
+                }
+
+              </article>
+
+            }
+
+          </div>
+
+        } @else {
+
+          <div class="reviews__empty">
+
+            <div class="reviews__empty-icon">
+              ☆
+            </div>
+
+            <h3>
+              Todavía no hay opiniones
+            </h3>
+
+            <p>
+              Sé la primera persona en dejar una review.
+            </p>
+
+          </div>
+
+        }
+
+      }
+
+      <!-- ================================================= -->
+      <!-- FORMULARIO / ESTADO DE REVIEW -->
+      <!-- ================================================= -->
+
+      @if (
+        auth.isAuthenticated() &&
+        auth.currentUser()?.role !== 'admin'
+      ) {
+
+        <!-- ================================================= -->
+        <!-- USUARIO NORMAL CON REVIEW -->
+        <!-- ================================================= -->
+
+        @if (hasUserReview()) {
+
+          <div class="review-form__already">
+
+            <span>
+              ✓
+            </span>
+
+            <div>
+
+              <strong>
+                Ya dejaste tu opinión
+              </strong>
+
+              <p>
+                Podés eliminarla y publicar una nueva si querés.
+              </p>
+
+            </div>
+
+          </div>
+
+        }
+
+        <!-- ================================================= -->
+        <!-- USUARIO NORMAL SIN REVIEW -->
+        <!-- ================================================= -->
+
+        @else {
+
+          <div class="review-form">
+
+            <div class="review-form__header">
+
+              <h3>
+                Dejá tu opinión
+              </h3>
+
+              <p>
+                Contanos qué te pareció este producto.
+              </p>
+
+            </div>
+
+            <div class="review-form__rating">
+
+              <span>
+                Tu calificación
+              </span>
+
+              <div class="review-form__stars">
+
+                @for (
+                  star of [1, 2, 3, 4, 5];
+                  track star
+                ) {
+
+                  <button
+                    type="button"
+                    class="review-form__star"
+                    [class.review-form__star--active]="
+                      star <= selectedRating()
+                    "
+                    [disabled]="reviewSubmitting()"
+                    [attr.aria-label]="
+                      star + ' estrellas'
+                    "
+                    (click)="selectRating(star)"
+                  >
+                    {{
+                      star <= selectedRating()
+                        ? '★'
+                        : '☆'
+                    }}
+                  </button>
+
+                }
+
+              </div>
+
+            </div>
+
+            <div class="review-form__field">
+
+              <label for="review-comment">
+                Comentario
+              </label>
+
+              <textarea
+                id="review-comment"
+                rows="4"
+                maxlength="1000"
+                [value]="reviewComment()"
+                [disabled]="reviewSubmitting()"
+                (input)="setReviewComment($event)"
+                placeholder="Escribí tu opinión sobre este producto..."
+              ></textarea>
+
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary review-form__submit"
+              [disabled]="
+                reviewSubmitting() ||
+                selectedRating() === 0
+              "
+              (click)="submitReview()"
+            >
+
+              @if (reviewSubmitting()) {
+
+                Publicando...
+
+              } @else {
+
+                Publicar review
+
+              }
+
+            </button>
+
+          </div>
+
+        }
+
+      }
+
+      <!-- ================================================= -->
+      <!-- USUARIO NO AUTENTICADO -->
+      <!-- ================================================= -->
+
+      @else if (!auth.isAuthenticated()) {
+
+        <div class="review-form__login">
+
+          <h3>
+            ¿Probaste este producto?
+          </h3>
+
+          <p>
+            Iniciá sesión para dejar una review.
+          </p>
+
+          <a
+            routerLink="/login"
+            class="btn btn-primary"
+          >
+            Iniciar sesión
+          </a>
+
+        </div>
+
+      }
+
+      <!-- ================================================= -->
+      <!-- ADMIN -->
+      <!-- ================================================= -->
+      <!--
+        Si el usuario es admin no se muestra absolutamente
+        nada debajo de las reviews.
+      -->
+
+    </section>
+
+  }
+
+  @else if (loading()) {
+
+    <!-- ================================================= -->
+    <!-- SKELETON -->
+    <!-- ================================================= -->
+
+    <div class="detail__skeleton">
+
+      <div class="detail__skeleton-block"></div>
+
+      <div class="detail__skeleton-lines">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </div>
+
+    </div>
+
+  }
+
+  @else {
+
+    <!-- ================================================= -->
+    <!-- PRODUCTO NO ENCONTRADO -->
+    <!-- ================================================= -->
+
+    <div class="detail__missing">
+
+      <h1
+        i18n="Título cuando el producto no fue encontrado@@detailProductNotFound"
+      >
+        Ese producto ya no está
+      </h1>
+
+      <p
+        i18n="Mensaje cuando el producto ya no está disponible@@detailProductNotFoundDescription"
+      >
+        Puede haberse dado de baja del catálogo. Mirá qué más hay disponible.
+      </p>
+
+      <a
+        routerLink="/catalogo"
+        class="btn btn-primary"
+        i18n="Botón para ver el catálogo@@detailViewCatalog"
+      >
+        Ver el catálogo
+      </a>
+
+    </div>
+
+  }
+
+</section>

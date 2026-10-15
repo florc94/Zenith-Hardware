@@ -1,0 +1,145 @@
+@if (compare.count() > 0) {
+
+  <aside
+    class="bar"
+    role="region"
+    aria-label="Comparador de productos"
+    i18n-aria-label="Etiqueta accesible de la barra del comparador@@compareBarLabel"
+  >
+
+    <!-- =====================================================
+         AVISO
+         ===================================================== -->
+
+    @if (compare.notice(); as notice) {
+
+      <p
+        class="bar__notice"
+        role="status"
+      >
+        {{ notice }}
+      </p>
+
+    }
+
+
+    <div class="bar__inner">
+
+      <!-- ===================================================
+           CONTADOR
+           =================================================== -->
+
+      <div class="bar__title">
+
+        <strong>
+          {{ compare.count() }}/{{ compare.max }}
+        </strong>
+
+        <span class="bar__category">
+          {{ compare.category() }}
+        </span>
+
+      </div>
+
+
+      <!-- ===================================================
+           PRODUCTOS
+           =================================================== -->
+
+      <ul class="bar__items">
+
+        @for (
+          item of compare.items();
+          track item.id
+        ) {
+
+          <li class="bar__item">
+
+            <span class="bar__thumb">
+
+              <img
+                [src]="item.imageUrl"
+                [alt]="item.name"
+              />
+
+            </span>
+
+            <span class="bar__name">
+              {{ item.name }}
+            </span>
+
+            <button
+              type="button"
+              class="bar__remove"
+              aria-label="Quitar del comparador"
+              i18n-aria-label="Quitar producto de la barra del comparador@@compareBarRemove"
+              (click)="compare.remove(item.id)"
+            >
+              ×
+            </button>
+
+          </li>
+
+        }
+
+
+        <!-- SLOTS VACÍOS -->
+
+        @for (
+          slot of emptySlots();
+          track $index
+        ) {
+
+          <li
+            class="bar__slot"
+            aria-hidden="true"
+          >
+            +
+          </li>
+
+        }
+
+      </ul>
+
+
+      <!-- ===================================================
+           ACCIONES
+           =================================================== -->
+
+      <div class="bar__actions">
+
+        <button
+          type="button"
+          class="bar__clear"
+          (click)="compare.clear()"
+          i18n="Botón para limpiar la barra del comparador@@compareBarClear"
+        >
+          Limpiar
+        </button>
+
+        <button
+          type="button"
+          class="bar__cta"
+          [disabled]="compare.count() < 2"
+          (click)="goToCompare()"
+        >
+
+          <span
+            i18n="Botón para ir a comparar@@compareBarCompare"
+          >
+            Comparar
+          </span>
+
+          <span aria-hidden="true">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+}

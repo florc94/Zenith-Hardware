@@ -1,0 +1,258 @@
+/* =========================================================
+   PALETA GAMING
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.25);
+}
+
+/* =========================================================
+   ADMIN SHELL
+   ========================================================= */
+
+.admin-shell {
+  min-width: 0;
+  min-height: 100%;
+}
+
+/* =========================================================
+   ADMIN NAVIGATION
+   ========================================================= */
+
+.admin-nav {
+  position: relative;
+
+  --nb-bg: rgba(8, 9, 15, 0.92);
+  --nb-border: var(--border);
+  --nb-muted: var(--muted);
+
+  --nb-accent-rgb: var(--accent-rgb);
+  --nb-accent-2-rgb: var(--accent-2-rgb);
+
+  --nb-accent: var(--accent);
+  --nb-accent-2: var(--accent-2);
+
+  --nb-grad: linear-gradient(
+    90deg,
+    var(--nb-accent),
+    var(--nb-accent-2)
+  );
+
+  background: var(--nb-bg);
+
+  border-bottom: 1px solid var(--nb-border);
+
+  backdrop-filter: blur(10px);
+
+  /* Debe quedar POR DEBAJO del navbar principal (z-index 20)
+     para que sus desplegables (cuenta, categorías) no queden tapados. */
+  z-index: 1;
+}
+
+/* =========================================================
+   NAV INNER
+   El margen lateral lo aporta la clase .admin-page,
+   así las pestañas quedan alineadas con el contenido.
+   ========================================================= */
+
+.admin-nav__inner {
+  display: flex;
+  align-items: center;
+
+  gap: 1.5rem;
+
+  min-width: 0;
+
+  padding-top: 0;
+  padding-bottom: 0;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+.admin-nav__inner::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================================
+   NAV LINKS
+   ========================================================= */
+
+.admin-nav__inner a {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  min-height: 48px;
+
+  padding: 0.9rem 0;
+
+  border-bottom: 2px solid transparent;
+
+  color: var(--nb-muted);
+
+  font-size: 0.92rem;
+  font-weight: 700;
+
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    text-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-nav__inner a:hover {
+  color: #ffffff;
+}
+
+.admin-nav__inner a:focus-visible {
+  outline: 2px solid var(--nb-accent-2);
+
+  outline-offset: -2px;
+
+  border-radius: 4px;
+}
+
+.admin-nav__inner a.is-active {
+  color: var(--nb-accent);
+
+  border-image: var(--nb-grad) 1;
+
+  text-shadow:
+    0 0 14px rgba(var(--nb-accent-rgb), 0.45);
+}
+
+/* =========================================================
+   ACTIVE LINK GLOW
+   ========================================================= */
+
+.admin-nav__inner a.is-active::after {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -1px;
+
+  height: 2px;
+
+  background: var(--nb-grad);
+
+  box-shadow:
+    0 0 10px rgba(var(--nb-accent-rgb), 0.35);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-nav__inner {
+    gap: 1.25rem;
+  }
+
+  .admin-nav__inner a {
+    min-height: 46px;
+
+    padding: 0.8rem 0;
+
+    font-size: 0.88rem;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .admin-nav {
+    position: sticky;
+    top: 0;
+  }
+
+  .admin-nav__inner {
+    gap: 1.15rem;
+  }
+
+  .admin-nav__inner a {
+    min-height: 44px;
+
+    padding: 0.75rem 0;
+
+    font-size: 0.85rem;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   350px – 380px
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .admin-nav__inner {
+    gap: 1rem;
+  }
+
+  .admin-nav__inner a {
+    min-height: 42px;
+
+    padding: 0.7rem 0;
+
+    font-size: 0.8rem;
+  }
+}
+
+/* =========================================================
+   EXTREMELY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 340px) {
+  .admin-nav__inner {
+    gap: 0.85rem;
+  }
+
+  .admin-nav__inner a {
+    min-height: 40px;
+
+    padding: 0.65rem 0;
+
+    font-size: 0.76rem;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-nav__inner a {
+    transition: none;
+  }
+}

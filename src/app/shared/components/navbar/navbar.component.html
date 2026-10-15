@@ -1,0 +1,924 @@
+<header class="navbar">
+
+  <!-- ============================================
+       FILA 1
+       Logo + buscador + acciones
+       (en mobile: logo + lupa + campana + carrito
+        + hamburguesa)
+       ============================================ -->
+
+  <div class="container navbar__inner">
+
+    <!-- MARCA -->
+
+    <a
+      [href]="language === 'en' ? '/en/' : '/'"
+      class="navbar__brand"
+      aria-label="Zenith Hardware"
+    >
+
+      <span class="navbar__brand-name">
+        Zenith<span>Hardware</span>
+      </span>
+
+      <span
+        class="navbar__brand-dot"
+        aria-hidden="true"
+      ></span>
+
+    </a>
+
+
+    <!-- BUSCADOR
+         Desktop: siempre visible en la fila 1.
+         Mobile: panel que se abre con la lupa. -->
+
+    <form
+      class="navbar__search"
+      [class.navbar__search--open]="mobileSearchOpen()"
+      role="search"
+      (submit)="onSearch($event, searchInput.value)"
+    >
+
+      <div class="navbar__search-field">
+
+        <input
+          #searchInput
+          type="search"
+          name="q"
+          class="navbar__search-input"
+          autocomplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-controls="navbar-suggestions"
+          [attr.aria-expanded]="suggestionsOpen()"
+          [attr.aria-activedescendant]="activeIndex() >= 0 ? 'navbar-suggestion-' + activeIndex() : null"
+          [attr.placeholder]="language === 'en' ? 'Search products...' : 'Buscar productos...'"
+          [attr.aria-label]="language === 'en' ? 'Search products' : 'Buscar productos'"
+          (input)="onSearchInput(searchInput.value)"
+          (focus)="onSearchFocus()"
+          (keydown)="onSearchKeydown($event)"
+        />
+
+        <button
+          type="submit"
+          class="navbar__search-submit"
+          [attr.aria-label]="language === 'en' ? 'Search' : 'Buscar'"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- SUGERENCIAS EN VIVO -->
+
+      @if (
+        suggestionsOpen() &&
+        (
+          suggestions().length > 0 ||
+          searchLoading() ||
+          noResults()
+        )
+      ) {
+
+        <div
+          id="navbar-suggestions"
+          class="navbar__suggestions"
+          role="listbox"
+        >
+
+          @if (suggestions().length > 0) {
+
+            @for (
+              item of suggestions();
+              track item.id;
+              let i = $index
+            ) {
+
+              <a
+                class="navbar__suggestion"
+                [class.navbar__suggestion--active]="i === activeIndex()"
+                [id]="'navbar-suggestion-' + i"
+                [href]="productUrl(item)"
+                role="option"
+                [attr.aria-selected]="i === activeIndex()"
+                (mouseenter)="activeIndex.set(i)"
+              >
+
+                <span class="navbar__suggestion-thumb">
+
+                  @if (item.imageUrl) {
+
+                    <img
+                      [src]="item.imageUrl"
+                      alt=""
+                      loading="lazy"
+                    />
+
+                  }
+
+                </span>
+
+                <span class="navbar__suggestion-name">
+                  {{ item.name }}
+                </span>
+
+                <span class="navbar__suggestion-price">
+                  {{ formatPrice(item.price) }}
+                </span>
+
+              </a>
+
+            }
+
+
+            <a
+              class="navbar__suggestions-all"
+              [href]="searchResultsUrl(searchTerm())"
+            >
+              {{
+                language === 'en'
+                  ? 'See all results for'
+                  : 'Ver todos los resultados para'
+              }}
+              "{{ searchTerm().trim() }}"
+            </a>
+
+          } @else if (searchLoading()) {
+
+            <div class="navbar__suggestions-state">
+              {{
+                language === 'en'
+                  ? 'Searching...'
+                  : 'Buscando...'
+              }}
+            </div>
+
+          } @else if (noResults()) {
+
+            <div class="navbar__suggestions-state">
+              {{
+                language === 'en'
+                  ? 'No products found for'
+                  : 'No encontramos productos para'
+              }}
+              "{{ searchTerm().trim() }}"
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </form>
+
+
+    <!-- ACCIONES: favoritos + notificaciones + carrito -->
+
+    <div class="navbar__actions">
+
+      @if (!auth.isAdmin()) {
+
+        <!-- FAVORITOS (desktop; en mobile está en el menú) -->
+
+        <a
+          [href]="language === 'en' ? '/en/favorites' : '/favoritos'"
+          class="navbar__favorites"
+          [attr.aria-label]="language === 'en' ? 'Favorites' : 'Favoritos'"
+          [attr.title]="language === 'en' ? 'Favorites' : 'Favoritos'"
+        >
+
+          <span
+            class="navbar__favorites-icon"
+            aria-hidden="true"
+          >
+            ♡
+          </span>
+
+          <span
+            class="navbar__favorites-label"
+            i18n="@@navFavorites"
+          >
+            Favoritos
+          </span>
+
+        </a>
+
+
+        <!-- NOTIFICACIONES (solo clientes autenticados) -->
+
+        @if (auth.isAuthenticated()) {
+
+          <div
+            class="navbar__notifications"
+          >
+
+            <button
+              type="button"
+              class="navbar__notifications-button"
+              [class.navbar__notifications-button--active]="notificationsOpen()"
+              [attr.aria-label]="
+                language === 'en'
+                  ? 'Notifications'
+                  : 'Notificaciones'
+              "
+              [attr.title]="
+                language === 'en'
+                  ? 'Notifications'
+                  : 'Notificaciones'
+              "
+              [attr.aria-expanded]="notificationsOpen()"
+              aria-haspopup="true"
+              (click)="toggleNotifications()"
+            >
+
+              <span
+                class="navbar__notifications-icon"
+                aria-hidden="true"
+              >
+                🔔
+              </span>
+
+
+              @if (notifications.unreadCount() > 0) {
+
+                <span
+                  class="navbar__notifications-count"
+                  aria-hidden="true"
+                >
+                  {{
+                    notifications.unreadCount() > 99
+                      ? '99+'
+                      : notifications.unreadCount()
+                  }}
+                </span>
+
+              }
+
+            </button>
+
+
+            <!-- PANEL DE NOTIFICACIONES -->
+
+            @if (notificationsOpen()) {
+
+              <div
+                class="navbar__notifications-panel"
+              >
+
+                <div
+                  class="navbar__notifications-header"
+                >
+
+                  <div>
+
+                    <h3>
+                      {{
+                        language === 'en'
+                          ? 'Notifications'
+                          : 'Notificaciones'
+                      }}
+                    </h3>
+
+                    <span>
+                      {{
+                        notifications.unreadCount()
+                      }}
+                      {{
+                        language === 'en'
+                          ? 'unread'
+                          : 'sin leer'
+                      }}
+                    </span>
+
+                  </div>
+
+
+                  @if (
+                    notifications.unreadCount() > 0
+                  ) {
+
+                    <button
+                      type="button"
+                      class="navbar__notifications-read-all"
+                      (click)="markAllNotificationsAsRead()"
+                    >
+                      {{
+                        language === 'en'
+                          ? 'Mark all as read'
+                          : 'Marcar todas'
+                      }}
+                    </button>
+
+                  }
+
+                </div>
+
+
+                <!-- Loading -->
+
+                @if (
+                  notifications.loading()
+                ) {
+
+                  <div
+                    class="navbar__notifications-empty"
+                  >
+                    {{
+                      language === 'en'
+                        ? 'Loading...'
+                        : 'Cargando...'
+                    }}
+                  </div>
+
+                }
+
+
+                <!-- Lista -->
+
+                @if (
+                  !notifications.loading() &&
+                  notifications.notifications().length > 0
+                ) {
+
+                  <div
+                    class="navbar__notifications-list"
+                  >
+
+                    @for (
+                      notification of notifications.notifications();
+                      track notification.id
+                    ) {
+
+                      <button
+                        type="button"
+                        class="navbar__notification"
+                        [class.navbar__notification--unread]="!notification.isRead"
+                        (click)="openNotification(notification)"
+                      >
+
+                        <span
+                          class="navbar__notification-icon"
+                          aria-hidden="true"
+                        >
+
+                          @switch (notification.type) {
+
+                            @case ('order_confirmed') {
+                              ✓
+                            }
+
+                            @case ('order_processing') {
+                              ⚙
+                            }
+
+                            @case ('order_shipped') {
+                              📦
+                            }
+
+                            @case ('order_delivered') {
+                              ✓
+                            }
+
+                            @case ('order_cancelled') {
+                              !
+                            }
+
+                            @default {
+                              🔔
+                            }
+
+                          }
+
+                        </span>
+
+
+                        <span
+                          class="navbar__notification-content"
+                        >
+
+                          <span
+                            class="navbar__notification-title"
+                          >
+                            {{ notification.title }}
+                          </span>
+
+                          <span
+                            class="navbar__notification-message"
+                          >
+                            {{ notification.message }}
+                          </span>
+
+                          <span
+                            class="navbar__notification-date"
+                          >
+                            {{
+                              notificationDate(
+                                notification.createdAt
+                              )
+                            }}
+                          </span>
+
+                        </span>
+
+
+                        @if (!notification.isRead) {
+
+                          <span
+                            class="navbar__notification-dot"
+                            aria-label="Sin leer"
+                          ></span>
+
+                        }
+
+                      </button>
+
+                    }
+
+                  </div>
+
+                }
+
+
+                <!-- Sin notificaciones -->
+
+                @if (
+                  !notifications.loading() &&
+                  notifications.notifications().length === 0
+                ) {
+
+                  <div
+                    class="navbar__notifications-empty"
+                  >
+
+                    <span
+                      class="navbar__notifications-empty-icon"
+                      aria-hidden="true"
+                    >
+                      🔔
+                    </span>
+
+                    <span>
+                      {{
+                        language === 'en'
+                          ? 'No notifications yet'
+                          : 'No tenés notificaciones'
+                      }}
+                    </span>
+
+                  </div>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+        <!-- CARRITO -->
+
+        <a
+          [href]="language === 'en' ? '/en/cart' : '/carrito'"
+          class="navbar__cart"
+        >
+
+          <span
+            class="navbar__cart-icon"
+            aria-hidden="true"
+          >
+            🛒
+          </span>
+
+          <span
+            class="navbar__cart-label"
+            i18n="@@navCart"
+          >
+            Carrito
+          </span>
+
+          <span class="navbar__count">
+            {{ cart.itemCount() }}
+          </span>
+
+        </a>
+
+      }
+
+    </div>
+
+
+    <!-- LUPA (solo mobile) -->
+
+    <button
+      type="button"
+      class="navbar__search-toggle"
+      [class.navbar__search-toggle--open]="mobileSearchOpen()"
+      [attr.aria-label]="language === 'en' ? 'Search' : 'Buscar'"
+      [attr.aria-expanded]="mobileSearchOpen()"
+      (click)="toggleMobileSearch(searchInput)"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+
+    </button>
+
+
+    <!-- HAMBURGUESA (solo mobile) -->
+
+    <button
+      type="button"
+      class="navbar__burger"
+      [class.navbar__burger--open]="mobileMenuOpen()"
+      [attr.aria-label]="language === 'en' ? 'Menu' : 'Menú'"
+      [attr.aria-expanded]="mobileMenuOpen()"
+      (click)="toggleMobileMenu()"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+
+  <!-- ============================================
+       FILA 2
+       Barra con los links + cuenta de usuario
+       (en mobile: panel desplegable)
+       ============================================ -->
+
+  <div
+    class="navbar__bar"
+    [class.navbar__bar--open]="mobileMenuOpen()"
+  >
+
+    <div class="container navbar__bar-inner">
+
+      <!-- NAVEGACIÓN -->
+
+      <nav
+        class="navbar__links"
+        aria-label="Navegación principal"
+      >
+
+        @if (categories().length > 0) {
+
+          <div
+            class="navbar__dropdown"
+            (mouseenter)="onProductsMouseEnter()"
+            (mouseleave)="onProductsMouseLeave()"
+          >
+
+            <button
+              type="button"
+              class="navbar__link navbar__link--toggle"
+              aria-haspopup="true"
+              aria-controls="navbar-products-menu"
+              [attr.aria-expanded]="productsMenuOpen()"
+              (click)="toggleProductsMenu()"
+            >
+
+              <span i18n="@@navCategories">
+                Categorías
+              </span>
+
+              <span
+                class="navbar__caret"
+                aria-hidden="true"
+              ></span>
+
+            </button>
+
+
+            @if (productsMenuOpen()) {
+
+              <div
+                id="navbar-products-menu"
+                class="navbar__mega"
+              >
+
+                <ul
+                  class="navbar__mega-list"
+                  [style.--rows]="menuRows()"
+                >
+
+                  @for (
+                    cat of categories();
+                    track cat
+                  ) {
+
+                    <li>
+
+                      <a
+                        class="navbar__mega-link"
+                        [href]="categoryUrl(cat)"
+                      >
+                        {{ cat }}
+                      </a>
+
+                    </li>
+
+                  }
+
+                </ul>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+        <!-- Catálogo -->
+
+        <a
+          [href]="language === 'en' ? '/en/catalog' : '/catalogo'"
+          class="navbar__link"
+        >
+
+          <span i18n="@@navCatalog">
+            Catálogo
+          </span>
+
+        </a>
+
+
+        <!-- Pedidos -->
+
+        @if (
+          auth.isAuthenticated() &&
+          !auth.isAdmin()
+        ) {
+
+          <a
+            [href]="ordersUrl"
+            class="navbar__link navbar__link--mobile-only"
+          >
+
+            <span i18n="@@navOrders">
+              Mis pedidos
+            </span>
+
+          </a>
+
+        }
+
+
+        <!-- Favoritos (solo se muestra en mobile vía CSS) -->
+
+        @if (!auth.isAdmin()) {
+
+          <a
+            [href]="language === 'en' ? '/en/favorites' : '/favoritos'"
+            class="navbar__link navbar__link--mobile-only"
+          >
+
+            <span i18n="@@navFavorites">
+              Favoritos
+            </span>
+
+          </a>
+
+        }
+
+
+        <!-- Mi cuenta (solo se muestra en mobile vía CSS;
+             en desktop está en el desplegable) -->
+
+        @if (
+          auth.isAuthenticated() &&
+          !auth.isAdmin()
+        ) {
+
+          <a
+            [href]="accountUrl"
+            class="navbar__link navbar__link--mobile-only"
+          >
+
+            <span i18n="@@navMyAccount">
+              Mi cuenta
+            </span>
+
+          </a>
+
+        }
+
+
+        <!-- Administración -->
+
+        @if (auth.isAdmin()) {
+
+          <a
+            [href]="language === 'en' ? '/en/admin' : '/admin'"
+            class="navbar__link navbar__link--admin"
+          >
+
+            <span
+              class="navbar__admin-dot"
+              aria-hidden="true"
+            ></span>
+
+            <span i18n="@@navAdmin">
+              Admin
+            </span>
+
+          </a>
+
+        }
+
+
+        <!-- Ingresar (solo se muestra en mobile vía CSS) -->
+
+        @if (!auth.isAuthenticated()) {
+
+          <a
+            [href]="language === 'en' ? '/en/login' : '/login'"
+            class="navbar__link navbar__link--mobile-only navbar__link--login"
+            i18n="@@navLogin"
+          >
+            Ingresar
+          </a>
+
+        }
+
+      </nav>
+
+
+      <!-- CUENTA
+           Desktop: botón con desplegable (Mi cuenta,
+           Mis pedidos, Salir).
+           Mobile: usuario + salir al pie del menú. -->
+
+      <div class="navbar__account">
+
+        @if (auth.isAuthenticated()) {
+
+          <!-- DESKTOP: desplegable -->
+
+          <div
+            class="navbar__account-menu"
+            (mouseenter)="onAccountMouseEnter()"
+            (mouseleave)="onAccountMouseLeave()"
+          >
+
+            <button
+              type="button"
+              class="navbar__account-toggle"
+              aria-haspopup="true"
+              aria-controls="navbar-account-menu"
+              [attr.aria-expanded]="accountMenuOpen()"
+              (click)="toggleAccountMenu()"
+            >
+
+              <span
+                class="navbar__user-avatar"
+                aria-hidden="true"
+              >
+                {{ auth.currentUser()?.name?.charAt(0)?.toUpperCase() }}
+              </span>
+
+              <span class="navbar__user-name">
+                {{ auth.currentUser()?.name }}
+              </span>
+
+              <span
+                class="navbar__caret"
+                aria-hidden="true"
+              ></span>
+
+            </button>
+
+
+            @if (accountMenuOpen()) {
+
+              <div
+                id="navbar-account-menu"
+                class="navbar__account-panel"
+              >
+
+                <span class="navbar__account-hello">
+                  {{ language === 'en' ? 'Hi,' : 'Hola,' }}
+                  {{ firstName }}
+                </span>
+
+
+                @if (!auth.isAdmin()) {
+
+                  <a
+                    class="navbar__account-link"
+                    [href]="accountUrl"
+                    i18n="@@navMyAccount"
+                  >
+                    Mi cuenta
+                  </a>
+
+                  <a
+                    class="navbar__account-link"
+                    [href]="ordersUrl"
+                    i18n="@@navOrders"
+                  >
+                    Mis pedidos
+                  </a>
+
+                }
+
+
+                <button
+                  type="button"
+                  class="navbar__account-link navbar__account-link--danger"
+                  (click)="logout()"
+                  i18n="@@navLogout"
+                >
+                  Salir
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- MOBILE: usuario + salir -->
+
+          <div class="navbar__account-mobile">
+
+            <div class="navbar__user">
+
+              <span
+                class="navbar__user-avatar"
+                aria-hidden="true"
+              >
+                {{ auth.currentUser()?.name?.charAt(0)?.toUpperCase() }}
+              </span>
+
+              <span class="navbar__user-name">
+                {{ auth.currentUser()?.name }}
+              </span>
+
+            </div>
+
+            <button
+              type="button"
+              class="navbar__logout"
+              (click)="logout()"
+              i18n="@@navLogout"
+            >
+              Salir
+            </button>
+
+          </div>
+
+        } @else {
+
+          <!-- Login (desktop) -->
+
+          <a
+            [href]="language === 'en' ? '/en/login' : '/login'"
+            class="navbar__login"
+            i18n="@@navLogin"
+          >
+            Ingresar
+          </a>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>

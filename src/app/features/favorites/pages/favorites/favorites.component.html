@@ -1,0 +1,261 @@
+<main class="favorites">
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="favorites__hero">
+
+    <div class="container">
+
+      <span
+        class="favorites__eyebrow"
+        i18n="Etiqueta superior de favoritos@@favoritesEyebrow"
+      >
+        ZENITH-HARDWARE · FAVORITOS
+      </span>
+
+      <h1
+        i18n="Título de la página de favoritos@@favoritesTitle"
+      >
+        Mis favoritos
+      </h1>
+
+      <p
+        i18n="Descripción de la página de favoritos@@favoritesDescription"
+      >
+        Guardá los productos que más te interesan
+        y encontralos fácilmente.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       CONTENIDO
+       ===================================================== -->
+
+  <section class="container favorites__content">
+
+
+    <!-- ===================================================
+         CARGANDO
+         =================================================== -->
+
+    @if (loading) {
+
+      <div class="favorites__loading">
+
+        <span
+          class="favorites__spinner"
+          aria-hidden="true"
+        ></span>
+
+        <p
+          i18n="Mensaje de carga de favoritos@@favoritesLoading"
+        >
+          Cargando favoritos...
+        </p>
+
+      </div>
+
+    }
+
+
+    <!-- ===================================================
+         ERROR
+         =================================================== -->
+
+    @else if (error) {
+
+      <div class="favorites__empty">
+
+        <div
+          class="favorites__empty-icon"
+          aria-hidden="true"
+        >
+          !
+        </div>
+
+        <h2
+          i18n="Título de error de favoritos@@favoritesErrorTitle"
+        >
+          No pudimos cargar tus favoritos
+        </h2>
+
+        <p>
+          {{ error }}
+        </p>
+
+        <button
+          type="button"
+          class="favorites__retry"
+          (click)="loadFavorites()"
+          i18n="Botón para volver a cargar favoritos@@favoritesRetry"
+        >
+          Intentar nuevamente
+        </button>
+
+      </div>
+
+    }
+
+
+    <!-- ===================================================
+         SIN FAVORITOS
+         =================================================== -->
+
+    @else if (favorites().length === 0) {
+
+      <div class="favorites__empty">
+
+        <div
+          class="favorites__empty-heart"
+          aria-hidden="true"
+        >
+          ♡
+        </div>
+
+        <h2
+          i18n="Título cuando no hay favoritos@@favoritesEmptyTitle"
+        >
+          Todavía no tenés favoritos
+        </h2>
+
+        <p
+          i18n="Descripción cuando no hay favoritos@@favoritesEmptyDescription"
+        >
+          Explorá nuestro catálogo y guardá los productos
+          que más te gusten.
+        </p>
+
+        <a
+          class="favorites__catalog-button"
+          [routerLink]="getCatalogRoute()"
+          i18n="Botón para ir al catálogo desde favoritos@@favoritesGoCatalog"
+        >
+          Explorar catálogo
+        </a>
+
+      </div>
+
+    }
+
+
+    <!-- ===================================================
+         FAVORITOS
+         =================================================== -->
+
+    @else {
+
+      <div class="favorites__header">
+
+        <div>
+
+          <span
+            class="favorites__count-label"
+            i18n="Etiqueta de cantidad de favoritos@@favoritesCountLabel"
+          >
+            Productos guardados
+          </span>
+
+          <strong>
+            {{ favorites().length }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <ul class="favorites__grid">
+
+        @for (
+          product of favorites();
+          track product.id
+        ) {
+
+          <li class="favorite-card">
+
+            <a
+              [routerLink]="[
+                getCatalogRoute(),
+                product.id
+              ]"
+              class="favorite-card__link"
+            >
+
+              <div class="favorite-card__image">
+
+                <img
+                  [src]="product.imageUrl"
+                  [alt]="product.name"
+                  loading="lazy"
+                />
+
+
+                <span class="favorite-card__category">
+                  {{ product.category }}
+                </span>
+
+
+                @if (product.stock === 0) {
+
+                  <span
+                    class="favorite-card__sold"
+                    i18n="Producto favorito sin stock@@favoritesOutOfStock"
+                  >
+                    Sin stock
+                  </span>
+
+                }
+
+
+                <span class="favorite-card__price">
+                  {{ product.price | usd }}
+                </span>
+
+              </div>
+
+
+              <div class="favorite-card__body">
+
+                <h2>
+                  {{ product.name }}
+                </h2>
+
+                <span
+                  class="favorite-card__rating"
+                  aria-label="5 estrellas"
+                >
+                  ★★★★★
+                </span>
+
+              </div>
+
+            </a>
+
+
+            <button
+              type="button"
+              class="favorite-card__remove"
+              (click)="removeFavorite(product.id, $event)"
+              aria-label="Eliminar de favoritos"
+              i18n-aria-label="Eliminar producto de favoritos@@favoritesRemove"
+            >
+              ♥
+            </button>
+
+          </li>
+
+        }
+
+      </ul>
+
+    }
+
+  </section>
+
+</main>

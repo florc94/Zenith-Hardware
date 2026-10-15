@@ -1,0 +1,625 @@
+/* =========================================================
+   PALETA GAMING
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+  --on-accent: #04110a;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --grad: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent-2)
+  );
+
+  --glow:
+    0 0 24px rgba(var(--accent-rgb), 0.25);
+
+  --cut: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.page-container {
+  display: flex;
+  justify-content: center;
+
+  min-height: 70vh;
+
+  padding: 3.5rem 1.5rem 4rem;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(var(--accent-rgb), 0.1),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 10% 100%,
+      rgba(var(--accent-2-rgb), 0.08),
+      transparent 40%
+    ),
+    var(--bg);
+
+  .policy-content-wrapper {
+    width: 100%;
+    max-width: 720px;
+  }
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 2.5rem;
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    margin: 0 0 0.85rem;
+
+    padding: 0.4rem 0.8rem;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.45);
+    border-radius: 4px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+
+    color: var(--accent);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 2.25rem;
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
+
+    text-transform: uppercase;
+  }
+}
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.policy-body {
+  color: var(--muted);
+
+  line-height: 1.75;
+
+  .intro-text {
+    margin: 0 0 2rem;
+
+    color: var(--muted);
+
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+/* =========================================================
+   TARJETA DE SUCURSAL
+   ========================================================= */
+
+.branch-card {
+  margin-bottom: 1.5rem;
+
+  overflow: hidden;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    border-color:
+      rgba(var(--accent-2-rgb), 0.6);
+
+    box-shadow:
+      0 0 28px
+      rgba(var(--accent-2-rgb), 0.2);
+
+    transform: translateY(-2px);
+  }
+}
+
+/* =========================================================
+   HEADER DE SUCURSAL
+   ========================================================= */
+
+.branch-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  padding: 1.25rem 1.35rem;
+
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(var(--accent-2-rgb), 0.12),
+      transparent 60%
+    ),
+    var(--surface-2);
+
+  border-bottom: 1px solid var(--border);
+
+  .eyebrow {
+    margin: 0 0 0.25rem;
+
+    color: var(--accent-2);
+
+    font-size: 0.75rem;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 1.35rem;
+    font-weight: 800;
+
+    letter-spacing: -0.02em;
+
+    text-transform: uppercase;
+  }
+}
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+
+.branch-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.45rem;
+
+  flex-shrink: 0;
+
+  padding: 0.4rem 0.7rem;
+
+  border: 1px solid
+    rgba(var(--accent-rgb), 0.3);
+
+  border-radius: 999px;
+
+  background:
+    rgba(var(--accent-rgb), 0.08);
+
+  color: var(--accent);
+
+  font-size: 0.72rem;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+
+  box-shadow:
+    0 0 10px
+    rgba(var(--accent-rgb), 0.8);
+}
+
+/* =========================================================
+   INFORMACIÓN
+   ========================================================= */
+
+.branch-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 1px;
+
+  background: var(--border);
+
+  border-bottom: 1px solid var(--border);
+}
+
+.info-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 0.7rem;
+
+  min-width: 0;
+
+  padding: 1rem;
+
+  background: var(--surface);
+
+  .info-icon {
+    display: grid;
+
+    place-items: center;
+
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 7px;
+
+    background: var(--surface-2);
+
+    font-size: 0.9rem;
+  }
+
+  > div {
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+  }
+}
+
+.info-label {
+  margin-bottom: 0.2rem;
+
+  color: var(--accent-2);
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+.info-value {
+  color: #ffffff;
+
+  font-size: 0.82rem;
+
+  line-height: 1.45;
+}
+
+/* =========================================================
+   MAPA
+   ========================================================= */
+
+.map-frame-wrapper {
+  width: 100%;
+  height: 270px;
+
+  overflow: hidden;
+
+  background: var(--surface-2);
+
+  iframe {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
+  }
+}
+
+/* =========================================================
+   PIE DE SUCURSAL
+   ========================================================= */
+
+.branch-footer {
+  padding: 1rem 1.35rem;
+
+  background: var(--surface);
+
+  p {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 0.6rem;
+
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 0.88rem;
+
+    line-height: 1.6;
+  }
+
+  .footer-icon {
+    flex-shrink: 0;
+
+    color: var(--accent);
+  }
+}
+
+/* =========================================================
+   AYUDA RÁPIDA
+   ========================================================= */
+
+.order-card.quick-help-box {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 1rem;
+
+  padding: 1.35rem 1.5rem;
+
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(var(--accent-rgb), 0.12),
+      transparent 60%
+    ),
+    var(--surface);
+
+  border: 1px solid
+    rgba(var(--accent-rgb), 0.4);
+
+  border-radius: 14px;
+
+  box-shadow: var(--glow);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    border-color:
+      rgba(var(--accent-2-rgb), 0.7);
+
+    box-shadow:
+      0 0 28px
+      rgba(var(--accent-2-rgb), 0.3);
+  }
+
+  .quick-help-title {
+    margin: 0 0 0.25rem;
+
+    color: #ffffff;
+
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .quick-help-subtitle {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 0.92rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.65rem 1.25rem;
+
+    background: var(--grad);
+
+    border: none;
+
+    clip-path: var(--cut);
+
+    color: var(--on-accent);
+
+    text-decoration: none;
+
+    font-size: 0.85rem;
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    transition:
+      transform 0.2s ease,
+      filter 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+
+      filter:
+        brightness(1.12)
+        drop-shadow(
+          0 0 12px
+          rgba(var(--accent-rgb), 0.5)
+        );
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .branch-info {
+    grid-template-columns: 1fr;
+  }
+
+  .info-item {
+    padding: 0.85rem 1rem;
+  }
+
+  .map-frame-wrapper {
+    height: 240px;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .page-container {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.9rem;
+    }
+  }
+
+  .policy-body {
+
+    .intro-text {
+      font-size: 0.95rem;
+    }
+  }
+
+  .branch-header {
+    padding: 1rem;
+
+    .eyebrow {
+      font-size: 0.68rem;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+    }
+  }
+
+  .branch-status {
+    padding: 0.35rem 0.55rem;
+
+    font-size: 0.65rem;
+  }
+
+  .map-frame-wrapper {
+    height: 220px;
+  }
+
+  .branch-footer {
+    padding: 0.9rem 1rem;
+  }
+
+  .order-card.quick-help-box {
+    align-items: stretch;
+
+    .btn-primary {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+
+  .page-container {
+    padding-inline: 0.75rem;
+  }
+
+  .branch-header {
+    flex-direction: column;
+  }
+
+  .branch-status {
+    align-self: flex-start;
+  }
+
+  .map-frame-wrapper {
+    height: 200px;
+  }
+}
+
+/* =========================================================
+   REDUCCIÓN DE MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

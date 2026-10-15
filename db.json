@@ -1,0 +1,399 @@
+{
+  "products": [
+    {
+      "name": "Zapatillas urbanas",
+      "category": "Calzado",
+      "description": "Zapatillas urbanas de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 22.3,
+      "stock": 0,
+      "imageUrl": "https://picsum.photos/seed/shopsphere1/600/450",
+      "rating": 3.8,
+      "id": 1
+    },
+    {
+      "name": "Campera impermeable",
+      "category": "Indumentaria",
+      "description": "Campera impermeable de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 29.6,
+      "stock": 2,
+      "imageUrl": "https://picsum.photos/seed/shopsphere2/600/450",
+      "rating": 4.1,
+      "id": 2
+    },
+    {
+      "name": "Mochila de cuero",
+      "category": "Accesorios",
+      "description": "Mochila de cuero de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 36.9,
+      "stock": 8,
+      "imageUrl": "https://picsum.photos/seed/shopsphere3/600/450",
+      "rating": 4.4,
+      "id": 3
+    },
+    {
+      "name": "Auriculares inalámbricos",
+      "category": "Tecnología",
+      "description": "Auriculares inalámbricos de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 44.2,
+      "stock": 0,
+      "imageUrl": "https://picsum.photos/seed/shopsphere4/600/450",
+      "rating": 4.7,
+      "id": 4
+    },
+    {
+      "name": "Lámpara de escritorio",
+      "category": "Accesorios",
+      "description": "Lámpara de escritorio de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 51.5,
+      "stock": 3,
+      "imageUrl": "https://picsum.photos/seed/shopsphere5/600/450",
+      "rating": 3.5,
+      "id": 5
+    },
+    {
+      "id": 6,
+      "name": "Remera de algodón",
+      "description": "Remera de algodón de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 58.8,
+      "category": "Indumentaria",
+      "imageUrl": "https://picsum.photos/seed/shopsphere6/600/450",
+      "stock": 6,
+      "rating": 3.8
+    },
+    {
+      "name": "Botas de trekking",
+      "category": "Calzado",
+      "description": "Botas de trekking de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 66.1,
+      "stock": 9,
+      "imageUrl": "https://picsum.photos/seed/shopsphere7/600/450",
+      "rating": 4.1,
+      "id": 7
+    },
+    {
+      "name": "Reloj minimalista",
+      "category": "Tecnología",
+      "description": "Reloj minimalista de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 73.4,
+      "stock": 0,
+      "imageUrl": "https://picsum.photos/seed/shopsphere8/600/450",
+      "rating": 4.4,
+      "id": 8
+    },
+    {
+      "name": "Cargador portátil",
+      "category": "Tecnología",
+      "description": "Cargador portátil de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 80.7,
+      "stock": 3,
+      "imageUrl": "https://picsum.photos/seed/shopsphere9/600/450",
+      "rating": 4.7,
+      "id": 9
+    },
+    {
+      "name": "Set de tazas",
+      "category": "Hogar",
+      "description": "Set de tazas de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 88,
+      "stock": 6,
+      "imageUrl": "https://picsum.photos/seed/shopsphere10/600/450",
+      "rating": 3.5,
+      "id": 10
+    },
+    {
+      "id": 11,
+      "name": "Pantalón cargo",
+      "description": "Pantalón cargo de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 95.3,
+      "category": "Indumentaria",
+      "imageUrl": "https://picsum.photos/seed/shopsphere11/600/450",
+      "stock": 9,
+      "rating": 3.8
+    },
+    {
+      "id": 12,
+      "name": "Gorra deportiva",
+      "description": "Gorra deportiva de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 102.6,
+      "category": "Accesorios",
+      "imageUrl": "https://picsum.photos/seed/shopsphere12/600/450",
+      "stock": 0,
+      "rating": 4.1
+    },
+    {
+      "name": "Parlante bluetooth",
+      "category": "Tecnología",
+      "description": "Parlante bluetooth de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 109.9,
+      "stock": 3,
+      "imageUrl": "https://picsum.photos/seed/shopsphere13/600/450",
+      "rating": 4.4,
+      "id": 13
+    },
+    {
+      "id": 14,
+      "name": "Silla ergonómica",
+      "description": "Silla ergonómica de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 117.2,
+      "category": "Hogar",
+      "imageUrl": "https://picsum.photos/seed/shopsphere14/600/450",
+      "stock": 6,
+      "rating": 4.7
+    },
+    {
+      "name": "Billetera de cuero",
+      "category": "Accesorios",
+      "description": "Billetera de cuero de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 124.5,
+      "stock": 9,
+      "imageUrl": "https://picsum.photos/seed/shopsphere15/600/450",
+      "rating": 3.5,
+      "id": 15
+    },
+    {
+      "id": 16,
+      "name": "Zapatillas running",
+      "description": "Zapatillas running de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 131.8,
+      "category": "Indumentaria",
+      "imageUrl": "https://picsum.photos/seed/shopsphere16/600/450",
+      "stock": 0,
+      "rating": 3.8
+    },
+    {
+      "name": "Buzo oversize",
+      "category": "Indumentaria",
+      "description": "Buzo oversize de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 139.1,
+      "stock": 3,
+      "imageUrl": "https://picsum.photos/seed/shopsphere17/600/450",
+      "rating": 4.1,
+      "id": 17
+    },
+    {
+      "name": "Cinturón de cuero",
+      "category": "Accesorios",
+      "description": "Cinturón de cuero de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 146.4,
+      "stock": 6,
+      "imageUrl": "https://picsum.photos/seed/shopsphere18/600/450",
+      "rating": 4.4,
+      "id": 18
+    },
+    {
+      "name": "Teclado mecánico",
+      "category": "Tecnología",
+      "description": "Teclado mecánico de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 153.7,
+      "stock": 9,
+      "imageUrl": "https://picsum.photos/seed/shopsphere19/600/450",
+      "rating": 4.7,
+      "id": 19
+    },
+    {
+      "name": "Mouse ergonómico",
+      "category": "Tecnología",
+      "description": "Mouse ergonómico de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 161,
+      "stock": 0,
+      "imageUrl": "https://picsum.photos/seed/shopsphere20/600/450",
+      "rating": 3.5,
+      "id": 20
+    },
+    {
+      "name": "Manta polar",
+      "category": "Accesorios",
+      "description": "Manta polar de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 168.3,
+      "stock": 3,
+      "imageUrl": "https://picsum.photos/seed/shopsphere21/600/450",
+      "rating": 3.8,
+      "id": 21
+    },
+    {
+      "name": "Bufanda de lana",
+      "category": "Indumentaria",
+      "description": "Bufanda de lana de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 175.6,
+      "stock": 6,
+      "imageUrl": "https://picsum.photos/seed/shopsphere22/600/450",
+      "rating": 4.1,
+      "id": 22
+    },
+    {
+      "name": "Anteojos de sol",
+      "category": "Accesorios",
+      "description": "Anteojos de sol de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 182.9,
+      "stock": 9,
+      "imageUrl": "https://picsum.photos/seed/shopsphere23/600/450",
+      "rating": 4.4,
+      "id": 23
+    },
+    {
+      "id": 24,
+      "name": "Termo acero inoxidable",
+      "description": "Termo acero inoxidable de alta calidad, ideal para uso diario. Producto de muestra para el catálogo de práctica.",
+      "price": 190.2,
+      "category": "Hogar",
+      "imageUrl": "https://picsum.photos/seed/shopsphere24/600/450",
+      "stock": 0,
+      "rating": 4.7
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "userId": 2,
+      "customerName": "Valentina Suárez",
+      "customerEmail": "shopper@shopsphere.com",
+      "items": [
+        {
+          "productId": 1,
+          "name": "Zapatillas urbanas",
+          "price": 22.3,
+          "quantity": 2,
+          "subtotal": 44.6
+        }
+      ],
+      "total": 44.6,
+      "shippingAddress": "x, c",
+      "status": "delivered",
+      "trackingNumber": "SS-AJZY9EIG",
+      "statusHistory": [
+        {
+          "status": "paid",
+          "at": "2026-09-24T19:21:09.944Z"
+        },
+        {
+          "status": "processing",
+          "at": "2026-09-24T19:46:24.915Z"
+        },
+        {
+          "status": "shipped",
+          "at": "2026-09-24T19:46:27.132Z"
+        },
+        {
+          "status": "delivered",
+          "at": "2026-09-24T19:46:29.213Z"
+        }
+      ],
+      "createdAt": "2026-09-24T19:21:09.944Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "customerName": "Valentina Suárez",
+      "customerEmail": "shopper@shopsphere.com",
+      "items": [
+        {
+          "productId": 1,
+          "name": "Zapatillas urbanas",
+          "price": 22.3,
+          "quantity": 1,
+          "subtotal": 22.3
+        }
+      ],
+      "total": 22.3,
+      "shippingAddress": "x, c",
+      "status": "shipped",
+      "trackingNumber": "SS-HX5RMNME",
+      "statusHistory": [
+        {
+          "status": "paid",
+          "at": "2026-09-24T19:21:54.938Z"
+        },
+        {
+          "status": "processing",
+          "at": "2026-09-24T19:46:15.683Z"
+        },
+        {
+          "status": "shipped",
+          "at": "2026-09-24T19:46:16.757Z"
+        }
+      ],
+      "createdAt": "2026-09-24T19:21:54.938Z"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "customerName": "Valentina Suárez",
+      "customerEmail": "shopper@shopsphere.com",
+      "items": [
+        {
+          "productId": 2,
+          "name": "Campera impermeable",
+          "price": 29.6,
+          "quantity": 1,
+          "subtotal": 29.6
+        }
+      ],
+      "total": 29.6,
+      "shippingAddress": "x, c",
+      "status": "cancelled",
+      "trackingNumber": "SS-SB1Y7HSN",
+      "statusHistory": [
+        {
+          "status": "paid",
+          "at": "2026-09-24T19:33:07.439Z"
+        },
+        {
+          "status": "cancelled",
+          "at": "2026-09-24T20:08:24.869Z"
+        }
+      ],
+      "createdAt": "2026-09-24T19:33:07.439Z"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "customerName": "Valentina Suárez",
+      "customerEmail": "shopper@shopsphere.com",
+      "items": [
+        {
+          "productId": 2,
+          "name": "Campera impermeable",
+          "price": 29.6,
+          "quantity": 1,
+          "subtotal": 29.6
+        }
+      ],
+      "total": 29.6,
+      "shippingAddress": "x, c",
+      "status": "processing",
+      "trackingNumber": "SS-YDX6LZ6U",
+      "statusHistory": [
+        {
+          "status": "paid",
+          "at": "2026-09-24T19:42:52.103Z"
+        },
+        {
+          "status": "processing",
+          "at": "2026-09-24T19:46:14.368Z"
+        }
+      ],
+      "createdAt": "2026-09-24T19:42:52.103Z"
+    }
+  ],
+  "auth": {},
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@shopsphere.com",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "name": "Valentina Suárez",
+      "email": "shopper@shopsphere.com",
+      "role": "user"
+    },
+    {
+      "id": 3,
+      "name": "Martín Ibáñez",
+      "email": "shopper2@shopsphere.com",
+      "role": "user"
+    }
+  ]
+}

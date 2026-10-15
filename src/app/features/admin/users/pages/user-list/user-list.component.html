@@ -1,0 +1,433 @@
+<section class="admin-page users-page">
+
+  <div class="users-page__header">
+
+    <div>
+      <span class="users-page__eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Usuarios
+      </h1>
+
+      <p>
+        Gestioná los usuarios registrados en ZenithHardware.
+      </p>
+    </div>
+
+    <div class="users-page__count">
+      {{ filteredUsers.length }}
+      <span>usuarios</span>
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       FILTROS
+       ========================================== -->
+
+  @if (!loading() && !error() && users().length > 0) {
+
+    <div class="users-filters">
+
+      <div class="users-filter users-filter--search">
+
+        <label for="user-search">
+          Buscar
+        </label>
+
+        <input
+          id="user-search"
+          type="search"
+          [(ngModel)]="searchTerm"
+          placeholder="Buscar por nombre o email..."
+        >
+
+      </div>
+
+
+      <div class="users-filter">
+
+        <label for="user-role">
+          Rol
+        </label>
+
+        <select
+          id="user-role"
+          [(ngModel)]="selectedRole"
+        >
+
+          <option value="all">
+            Todos los roles
+          </option>
+
+          <option value="user">
+            Usuarios
+          </option>
+
+          <option value="admin">
+            Administradores
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="users-filter">
+
+        <label for="user-orders">
+          Pedidos
+        </label>
+
+        <select
+          id="user-orders"
+          [(ngModel)]="selectedOrders"
+        >
+
+          <option value="all">
+            Todos
+          </option>
+
+          <option value="with-orders">
+            Con pedidos
+          </option>
+
+          <option value="without-orders">
+            Sin pedidos
+          </option>
+
+        </select>
+
+      </div>
+
+
+      @if (
+        searchTerm ||
+        selectedRole !== 'all' ||
+        selectedOrders !== 'all'
+      ) {
+
+        <button
+          type="button"
+          class="users-filters__clear"
+          (click)="clearFilters()"
+        >
+          Limpiar filtros
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       LOADING
+       ========================================== -->
+
+  @if (loading()) {
+
+    <div class="users-state">
+      Cargando usuarios...
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       ERROR
+       ========================================== -->
+
+  @if (!loading() && error()) {
+
+    <div class="users-state users-state--error">
+
+      {{ error() }}
+
+      <button
+        type="button"
+        (click)="loadUsers()"
+      >
+        Reintentar
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       TABLA
+       (en mobile cada fila pasa a ser una tarjeta)
+       ========================================== -->
+
+  @if (
+    !loading() &&
+    !error() &&
+    users().length > 0 &&
+    filteredUsers.length > 0
+  ) {
+
+    <div class="users-table-wrapper">
+
+      <table class="users-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Usuario
+            </th>
+
+            <th>
+              Email
+            </th>
+
+            <th>
+              Rol
+            </th>
+
+            <th>
+              Pedidos
+            </th>
+
+            <th>
+              Registro
+            </th>
+
+            <th>
+              Acciones
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @for (
+            user of filteredUsers;
+            track user.id
+          ) {
+
+            <tr>
+
+              <!-- ID -->
+
+              <td class="users-table__id">
+                #{{ user.id }}
+              </td>
+
+
+              <!-- USUARIO -->
+
+              <td class="users-table__user-cell">
+
+                <div class="users-table__user">
+
+                  <div class="users-table__avatar">
+                    {{ user.name.charAt(0).toUpperCase() }}
+                  </div>
+
+                  <strong>
+                    {{ user.name }}
+                  </strong>
+
+                </div>
+
+              </td>
+
+
+              <!-- EMAIL -->
+
+              <td class="users-table__email">
+                {{ user.email }}
+              </td>
+
+
+              <!-- ROL -->
+
+              <td class="users-table__role-cell">
+
+                <span
+                  class="users-table__role"
+                  [class.users-table__role--admin]="
+                    user.role === 'admin'
+                  "
+                >
+
+                  {{
+                    user.role === 'admin'
+                      ? 'Admin'
+                      : 'Usuario'
+                  }}
+
+                </span>
+
+              </td>
+
+
+              <!-- PEDIDOS -->
+
+              <td
+                class="users-table__orders"
+                data-label="Pedidos"
+              >
+                {{ user.orderCount }}
+              </td>
+
+
+              <!-- REGISTRO -->
+
+              <td
+                class="users-table__date"
+                data-label="Registro"
+              >
+                {{ user.createdAt | date:'dd/MM/yyyy HH:mm' }}
+              </td>
+
+
+              <!-- ACCIONES -->
+
+              <td class="users-table__actions-cell">
+
+                <div class="users-table__actions">
+
+                  <!-- VER -->
+
+                  <a
+                    class="users-action users-action--view"
+                    [routerLink]="[
+                      '/admin/users',
+                      user.id
+                    ]"
+                  >
+                    Ver
+                  </a>
+
+
+                  @if (isCurrentUser(user)) {
+
+                    <span class="users-table__current">
+                      Tu cuenta
+                    </span>
+
+                  } @else {
+
+                    <!-- CAMBIAR ROL -->
+
+                    <button
+                      type="button"
+                      class="users-action users-action--role"
+                      (click)="changeUserRole(user)"
+                      [attr.aria-label]="
+                        user.role === 'admin'
+                          ? 'Cambiar a usuario'
+                          : 'Convertir en administrador'
+                      "
+                    >
+
+                      {{
+                        user.role === 'admin'
+                          ? 'Quitar admin'
+                          : 'Hacer admin'
+                      }}
+
+                    </button>
+
+
+                    <!-- ELIMINAR -->
+
+                    @if (user.role === 'user') {
+
+                      <button
+                        type="button"
+                        class="users-action users-action--delete"
+                        (click)="deleteUser(user)"
+                        aria-label="Eliminar usuario"
+                      >
+                        Eliminar
+                      </button>
+
+                    } @else {
+
+                      <span class="users-table__protected">
+                        Protegido
+                      </span>
+
+                    }
+
+                  }
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       SIN RESULTADOS POR FILTROS
+       ========================================== -->
+
+  @if (
+    !loading() &&
+    !error() &&
+    users().length > 0 &&
+    filteredUsers.length === 0
+  ) {
+
+    <div class="users-state">
+
+      No se encontraron usuarios con los filtros seleccionados.
+
+      <button
+        type="button"
+        class="users-filters__clear"
+        (click)="clearFilters()"
+      >
+        Limpiar filtros
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       SIN USUARIOS
+       ========================================== -->
+
+  @if (
+    !loading() &&
+    !error() &&
+    users().length === 0
+  ) {
+
+    <div class="users-state">
+      No hay usuarios registrados.
+    </div>
+
+  }
+
+</section>

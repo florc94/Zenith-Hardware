@@ -1,0 +1,858 @@
+/* =========================================================
+   PALETA GAMING
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.25);
+
+  --danger: #ff5a6e;
+}
+
+/* =========================================================
+   ADMIN USER LIST
+   ========================================================= */
+
+.admin-page {
+  min-width: 0;
+}
+
+.users-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.users-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.users-page__eyebrow {
+  display: block;
+
+  margin-bottom: 0.4rem;
+
+  color: var(--accent-2);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.users-page__header h1 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.users-page__header p {
+  margin: 0.5rem 0 0;
+
+  color: var(--muted);
+
+  line-height: 1.5;
+}
+
+.users-page__count {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  color: var(--accent);
+
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.users-page__count span {
+  margin-top: 0.25rem;
+
+  color: #737a91;
+
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+.users-filters {
+  display: flex;
+  align-items: flex-end;
+
+  gap: 1rem;
+
+  padding: 1rem;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+}
+
+.users-filter {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.4rem;
+
+  min-width: 180px;
+}
+
+.users-filter--search {
+  flex: 1;
+  min-width: 240px;
+}
+
+.users-filter label {
+  color: #737a91;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.users-filter input,
+.users-filter select {
+  width: 100%;
+  min-height: 40px;
+
+  padding: 0.6rem 0.75rem;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  outline: none;
+
+  background: var(--surface-2);
+  color: var(--text);
+
+  font: inherit;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.users-filter input::placeholder {
+  color: #5f6577;
+}
+
+.users-filter input:focus,
+.users-filter select:focus {
+  border-color: rgba(var(--accent-2-rgb), 0.5);
+
+  box-shadow:
+    0 0 0 2px rgba(var(--accent-2-rgb), 0.08),
+    0 0 12px rgba(var(--accent-2-rgb), 0.06);
+}
+
+.users-filter select {
+  cursor: pointer;
+}
+
+.users-filters__clear {
+  min-height: 40px;
+
+  padding: 0.6rem 0.8rem;
+
+  border: 1px solid rgba(var(--accent-2-rgb), 0.3);
+  border-radius: 7px;
+
+  background: rgba(var(--accent-2-rgb), 0.06);
+  color: var(--accent-2);
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.82rem;
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.users-filters__clear:hover {
+  background: rgba(var(--accent-2-rgb), 0.12);
+  border-color: rgba(var(--accent-2-rgb), 0.5);
+
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   TABLE WRAPPER
+   ========================================================= */
+
+.users-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  scrollbar-width: thin;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.users-table {
+  width: 100%;
+  min-width: 950px;
+
+  border-collapse: collapse;
+}
+
+.users-table th {
+  padding: 0.9rem 1rem;
+
+  border-bottom: 1px solid var(--border);
+
+  color: #737a91;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+
+  white-space: nowrap;
+}
+
+.users-table td {
+  padding: 0.9rem 1rem;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  color: #c5c9d5;
+
+  font-size: 0.85rem;
+
+  vertical-align: middle;
+}
+
+.users-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.users-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.users-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================================================
+   ID
+   ========================================================= */
+
+.users-table__id {
+  color: #737a91 !important;
+
+  font-family: monospace;
+  font-size: 0.8rem !important;
+}
+
+/* =========================================================
+   USER
+   ========================================================= */
+
+.users-table__user {
+  display: flex;
+  align-items: center;
+
+  gap: 0.7rem;
+
+  min-width: 170px;
+}
+
+.users-table__user strong {
+  color: var(--text);
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.users-table__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 50%;
+
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.05);
+}
+
+/* =========================================================
+   ROLE
+   ========================================================= */
+
+.users-table__role {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0.3rem 0.6rem;
+
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  border-radius: 999px;
+
+  background: rgba(var(--accent-rgb), 0.07);
+  color: var(--accent);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.users-table__role--admin {
+  border-color: rgba(var(--accent-2-rgb), 0.3);
+
+  background: rgba(var(--accent-2-rgb), 0.07);
+  color: var(--accent-2);
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.users-table__actions {
+  display: flex;
+  align-items: center;
+
+  gap: 0.5rem;
+
+  flex-wrap: wrap;
+
+  min-width: 270px;
+}
+
+.users-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+
+  padding: 0.45rem 0.7rem;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  line-height: 1;
+
+  white-space: nowrap;
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.users-action:hover {
+  transform: translateY(-1px);
+}
+
+.users-action:focus-visible,
+.users-filters__clear:focus-visible,
+.users-state button:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   VIEW
+   ========================================================= */
+
+.users-action--view {
+  border: 1px solid rgba(var(--accent-2-rgb), 0.35);
+
+  background: rgba(var(--accent-2-rgb), 0.07);
+  color: var(--accent-2);
+}
+
+.users-action--view:hover {
+  border-color: rgba(var(--accent-2-rgb), 0.55);
+
+  background: rgba(var(--accent-2-rgb), 0.14);
+
+  box-shadow: 0 0 14px rgba(var(--accent-2-rgb), 0.08);
+}
+
+/* =========================================================
+   CHANGE ROLE
+   ========================================================= */
+
+.users-action--role {
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+
+  background: rgba(var(--accent-rgb), 0.07);
+  color: var(--accent);
+}
+
+.users-action--role:hover {
+  border-color: rgba(var(--accent-rgb), 0.55);
+
+  background: rgba(var(--accent-rgb), 0.14);
+
+  box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.08);
+}
+
+/* =========================================================
+   DELETE
+   ========================================================= */
+
+.users-action--delete {
+  border: 1px solid rgba(255, 90, 110, 0.35);
+
+  background: rgba(255, 90, 110, 0.07);
+  color: var(--danger);
+}
+
+.users-action--delete:hover {
+  border-color: rgba(255, 90, 110, 0.55);
+
+  background: rgba(255, 90, 110, 0.14);
+
+  box-shadow: 0 0 14px rgba(255, 90, 110, 0.08);
+}
+
+/* =========================================================
+   CURRENT ACCOUNT
+   ========================================================= */
+
+.users-table__current {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 34px;
+
+  padding: 0.45rem 0.7rem;
+
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-radius: 7px;
+
+  background: rgba(var(--accent-rgb), 0.05);
+  color: var(--accent);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   PROTECTED ADMIN
+   ========================================================= */
+
+.users-table__protected {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 34px;
+
+  padding: 0.45rem 0.7rem;
+
+  border: 1px solid rgba(var(--accent-2-rgb), 0.2);
+  border-radius: 7px;
+
+  background: rgba(var(--accent-2-rgb), 0.05);
+  color: var(--accent-2);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+
+.users-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 1rem;
+
+  min-height: 180px;
+
+  padding: 2rem;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  color: var(--muted);
+
+  text-align: center;
+}
+
+.users-state--error {
+  color: var(--danger);
+}
+
+.users-state button {
+  min-height: 36px;
+
+  padding: 0.5rem 0.8rem;
+
+  border: 1px solid rgba(var(--accent-2-rgb), 0.3);
+  border-radius: 7px;
+
+  background: rgba(var(--accent-2-rgb), 0.06);
+  color: var(--accent-2);
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.8rem;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.users-state button:hover {
+  background: rgba(var(--accent-2-rgb), 0.12);
+  border-color: rgba(var(--accent-2-rgb), 0.5);
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .users-filters {
+    flex-wrap: wrap;
+  }
+
+  .users-filter--search {
+    flex-basis: 100%;
+  }
+}
+
+/* =========================================================
+   MOBILE (header, filtros)
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .users-page {
+    gap: 1.15rem;
+  }
+
+  .users-page__header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .users-page__header h1 {
+    font-size: 1.5rem;
+  }
+
+  .users-page__header p {
+    font-size: 0.85rem;
+  }
+
+  .users-page__count {
+    align-items: flex-start;
+
+    font-size: 1.3rem;
+  }
+
+  .users-filters {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 0.85rem;
+
+    padding: 0.85rem;
+
+    border-radius: 8px;
+  }
+
+  .users-filter,
+  .users-filter--search {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .users-filters__clear {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   350px – 380px
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .users-page__header h1 {
+    font-size: 1.35rem;
+  }
+
+  .users-page__header p {
+    font-size: 0.8rem;
+  }
+
+  .users-page__count {
+    font-size: 1.2rem;
+  }
+
+  .users-filter input,
+  .users-filter select {
+    min-height: 38px;
+
+    padding: 0.55rem 0.65rem;
+
+    font-size: 0.82rem;
+  }
+
+  .users-filters__clear {
+    min-height: 38px;
+
+    font-size: 0.78rem;
+  }
+
+  .users-table__actions {
+    gap: 0.4rem;
+  }
+
+  .users-action {
+    min-height: 32px;
+
+    padding: 0.4rem 0.6rem;
+
+    font-size: 0.68rem;
+  }
+}
+
+/* =========================================================
+   EXTREMELY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 340px) {
+  .users-page {
+    gap: 1rem;
+  }
+
+  .users-page__header h1 {
+    font-size: 1.25rem;
+  }
+
+  .users-page__header p {
+    font-size: 0.76rem;
+  }
+
+  .users-filters {
+    padding: 0.7rem;
+  }
+
+  .users-filter label {
+    font-size: 0.65rem;
+  }
+
+  .users-filter input,
+  .users-filter select {
+    font-size: 0.78rem;
+  }
+}
+
+/* =========================================================
+   MOBILE: cada fila pasa a ser una tarjeta
+   (va al final para pisar las reglas anteriores)
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .users-table-wrapper {
+    overflow: visible;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+
+  .users-table,
+  .users-table tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Encabezado oculto visualmente (queda para lectores de pantalla) */
+  .users-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .users-table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "user    role"
+      "email   email"
+      "orders  date"
+      "actions actions";
+    gap: 0.75rem 1rem;
+    align-items: center;
+
+    margin-bottom: 0.75rem;
+    padding: 1rem;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+
+    &:hover {
+      background: var(--surface);
+    }
+  }
+
+  .users-table td {
+    display: block;
+    min-width: 0;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  /* El ID se oculta en mobile para ganar espacio */
+  .users-table td.users-table__id {
+    display: none;
+  }
+
+  .users-table td.users-table__user-cell { grid-area: user; }
+  .users-table td.users-table__role-cell { grid-area: role; }
+
+  .users-table td.users-table__email {
+    grid-area: email;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+
+  .users-table td.users-table__orders { grid-area: orders; }
+  .users-table td.users-table__date   { grid-area: date; text-align: right; }
+
+  /* Etiqueta pequeña arriba de Pedidos y Registro */
+  .users-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.2rem;
+
+    color: #737a91;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .users-table td.users-table__actions-cell {
+    grid-area: actions;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .users-table__user {
+    min-width: 0;
+
+    strong {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .users-table__actions {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .users-action,
+  .users-table__current,
+  .users-table__protected {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .users-table tbody tr,
+  .users-action,
+  .users-filters__clear,
+  .users-filter input,
+  .users-filter select,
+  .users-state button {
+    transition: none;
+  }
+
+  .users-action:hover,
+  .users-filters__clear:hover {
+    transform: none;
+  }
+}

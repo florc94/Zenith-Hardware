@@ -1,0 +1,586 @@
+<div class="admin-page">
+
+  <!-- HEADER -->
+  <header class="dashboard-header">
+
+    <div>
+      <h1>Dashboard</h1>
+
+      <p>
+        Métricas de ventas y fulfillment
+      </p>
+    </div>
+
+    <a
+      routerLink="/admin/orders"
+      class="fulfillment-link"
+    >
+      Ver Fulfillment
+      <span>→</span>
+    </a>
+
+  </header>
+
+
+  <!-- LOADING GENERAL -->
+  @if (loading()) {
+
+    <div class="dashboard-state">
+
+      <div class="state-spinner"></div>
+
+      <p>
+        Calculando métricas...
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- DASHBOARD -->
+  @else if (metrics()) {
+
+    <!-- ========================================= -->
+    <!-- MÉTRICAS PRINCIPALES -->
+    <!-- ========================================= -->
+
+    <section class="metrics-grid">
+
+      <!-- PEDIDOS TOTALES -->
+      <article class="metric-card">
+
+        <div class="metric-card__icon">
+          #
+        </div>
+
+        <div class="metric-card__content">
+
+          <span class="metric-card__label">
+            Pedidos totales
+          </span>
+
+          <strong class="metric-card__value">
+            {{ metrics()!.totalOrders }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- INGRESOS TOTALES -->
+      <article class="metric-card">
+
+        <div class="metric-card__icon">
+          $
+        </div>
+
+        <div class="metric-card__content">
+
+          <span class="metric-card__label">
+            Ingresos totales
+          </span>
+
+          <strong class="metric-card__value">
+            {{ metrics()!.totalRevenue | usd }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- INGRESOS ESTE MES -->
+      <article class="metric-card">
+
+        <div class="metric-card__icon">
+          ↗
+        </div>
+
+        <div class="metric-card__content">
+
+          <span class="metric-card__label">
+            Ingresos este mes
+          </span>
+
+          <strong class="metric-card__value">
+            {{ metrics()!.thisMonthRevenue | usd }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- TICKET PROMEDIO -->
+      <article class="metric-card">
+
+        <div class="metric-card__icon">
+          ◈
+        </div>
+
+        <div class="metric-card__content">
+
+          <span class="metric-card__label">
+            Ticket promedio
+          </span>
+
+          <strong class="metric-card__value">
+            {{ metrics()!.avgOrderValue | usd }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- TIEMPO DE ENTREGA -->
+      <article class="metric-card">
+
+        <div class="metric-card__icon">
+          ◷
+        </div>
+
+        <div class="metric-card__content">
+
+          <span class="metric-card__label">
+            Tiempo de entrega promedio
+          </span>
+
+          <strong class="metric-card__value">
+            {{ formatDeliveryTime(metrics()!.avgDeliveryTimeHours) }}
+          </strong>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ========================================= -->
+    <!-- PEDIDOS + PRODUCTOS -->
+    <!-- ========================================= -->
+
+    <div class="dashboard-columns">
+
+
+      <!-- ======================================= -->
+      <!-- PEDIDOS POR ESTADO -->
+      <!-- ======================================= -->
+
+      <section class="dashboard-block">
+
+        <h2>
+          Pedidos por estado
+        </h2>
+
+
+        <div class="status-bars">
+
+          @for (
+            status of statusOrder;
+            track status
+          ) {
+
+            <div class="status-bars__row">
+
+              <span class="status-bars__label">
+                {{ statusLabels[status] }}
+              </span>
+
+
+              <div class="status-bars__track">
+
+                <div
+                  class="status-bars__fill"
+                  [attr.data-status]="status"
+                  [style.width.%]="
+                    (
+                      metrics()!.ordersByStatus[status]
+                      / maxStatusCount()
+                    ) * 100
+                  "
+                ></div>
+
+              </div>
+
+
+              <span class="status-bars__count">
+                {{ metrics()!.ordersByStatus[status] }}
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+
+      <!-- ======================================= -->
+      <!-- PRODUCTOS MÁS VENDIDOS -->
+      <!-- ======================================= -->
+
+      <section class="dashboard-block">
+
+        <h2>
+          Productos más vendidos
+        </h2>
+
+
+        @if (metrics()!.topProducts.length === 0) {
+
+          <div class="empty-block">
+
+            <span>
+              Todavía no hay ventas suficientes.
+            </span>
+
+          </div>
+
+        }
+
+        @else {
+
+          <div class="top-products">
+
+            @for (
+              product of metrics()!.topProducts;
+              track product.productId;
+              let i = $index
+            ) {
+
+              <div class="top-products__row">
+
+
+                <!-- RANKING -->
+                <div class="top-products__rank">
+                  {{ i + 1 }}
+                </div>
+
+
+                <!-- PRODUCTO -->
+                <div class="top-products__name">
+                  {{ product.name }}
+                </div>
+
+
+                <!-- CANTIDAD -->
+                <div class="top-products__qty">
+
+                  {{ product.quantity }}
+
+                  {{
+                    product.quantity === 1
+                      ? 'unidad'
+                      : 'unidades'
+                  }}
+
+                </div>
+
+
+                <!-- INGRESOS -->
+                <div class="top-products__revenue">
+                  {{ product.revenue | usd }}
+                </div>
+
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+      </section>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- VENTAS POR PERÍODO -->
+    <!-- ========================================= -->
+
+    <section class="sales-period">
+
+
+      <!-- HEADER DE VENTAS -->
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            Ventas por período
+          </h2>
+
+          <p>
+            Evolución de ingresos y pedidos
+          </p>
+
+        </div>
+
+
+        <!-- FILTROS -->
+        <div class="sales-period__filters">
+
+
+          <!-- 7 DÍAS -->
+          <button
+            type="button"
+            [class.active]="selectedSalesPeriod() === '7d'"
+            (click)="changeSalesPeriod('7d')"
+          >
+            7 días
+          </button>
+
+
+          <!-- 30 DÍAS -->
+          <button
+            type="button"
+            [class.active]="selectedSalesPeriod() === '30d'"
+            (click)="changeSalesPeriod('30d')"
+          >
+            30 días
+          </button>
+
+
+          <!-- 3 MESES -->
+          <button
+            type="button"
+            [class.active]="selectedSalesPeriod() === '3m'"
+            (click)="changeSalesPeriod('3m')"
+          >
+            3 meses
+          </button>
+
+
+          <!-- 12 MESES -->
+          <button
+            type="button"
+            [class.active]="selectedSalesPeriod() === '12m'"
+            (click)="changeSalesPeriod('12m')"
+          >
+            12 meses
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================= -->
+      <!-- ESTADOS DE VENTAS -->
+      <!-- ======================================= -->
+
+      @if (salesLoading()) {
+
+        <div class="sales-state">
+
+          <div class="state-spinner"></div>
+
+          <span>
+            Cargando ventas...
+          </span>
+
+        </div>
+
+      }
+
+
+      @else if (salesError()) {
+
+        <div class="sales-state sales-state--error">
+
+          <span>
+            No se pudieron cargar las ventas.
+          </span>
+
+        </div>
+
+      }
+
+
+      @else if (salesData().length === 0) {
+
+        <div class="sales-state">
+
+          <span>
+            No hay datos de ventas para este período.
+          </span>
+
+        </div>
+
+      }
+
+
+      @else {
+
+        <!-- ===================================== -->
+        <!-- GRÁFICO -->
+        <!-- ===================================== -->
+
+        <div class="sales-chart">
+
+          <div class="sales-chart__bars">
+
+            @for (
+              point of salesData();
+              track point.date
+            ) {
+
+              <div class="sales-bar">
+
+
+                <!-- BARRA -->
+                <div
+                  class="sales-bar__value"
+                  [style.height.%]="salesBarWidth(point.revenue)"
+                  [attr.title]="point.revenue | usd"
+                ></div>
+
+
+                <!-- FECHA -->
+                <span class="sales-bar__label">
+                  {{ point.label }}
+                </span>
+
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- DETALLE DE VENTAS -->
+        <!-- ===================================== -->
+
+        <div class="sales-data">
+
+          @for (
+            point of salesData();
+            track point.date
+          ) {
+
+            <div class="sales-data__row">
+
+
+              <!-- FECHA -->
+              <span class="sales-data__date">
+                {{ point.label }}
+              </span>
+
+
+              <!-- INGRESOS -->
+              <span class="sales-data__revenue">
+                {{ point.revenue | usd }}
+              </span>
+
+
+              <!-- PEDIDOS -->
+              <span class="sales-data__orders">
+
+                {{ point.orders }}
+
+                {{
+                  point.orders === 1
+                    ? 'pedido'
+                    : 'pedidos'
+                }}
+
+              </span>
+
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- RESUMEN -->
+        <!-- ===================================== -->
+
+        <div class="sales-summary">
+
+
+          <!-- INGRESOS -->
+          <article class="sales-summary__card">
+
+            <span>
+              Ingresos del período
+            </span>
+
+            <strong>
+              {{ salesPeriodRevenue() | usd }}
+            </strong>
+
+          </article>
+
+
+          <!-- PEDIDOS -->
+          <article class="sales-summary__card">
+
+            <span>
+              Pedidos del período
+            </span>
+
+            <strong>
+              {{ salesPeriodOrders() }}
+            </strong>
+
+          </article>
+
+
+          <!-- TICKET -->
+          <article class="sales-summary__card">
+
+            <span>
+              Ticket promedio
+            </span>
+
+            <strong>
+              {{ salesPeriodAverage() | usd }}
+            </strong>
+
+          </article>
+
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+
+  <!-- ========================================= -->
+  <!-- ERROR GENERAL -->
+  <!-- ========================================= -->
+
+  @else {
+
+    <div class="dashboard-state dashboard-state--error">
+
+      <div class="state-icon">
+        !
+      </div>
+
+      <p>
+        No se pudieron cargar las métricas.
+      </p>
+
+    </div>
+
+  }
+
+</div>

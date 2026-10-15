@@ -1,0 +1,308 @@
+/* =========================================================
+   PALETA GAMING (misma que el resto de la tienda)
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+  --on-accent: #04110a;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.25);
+
+  --cut: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+.page-container {
+  display: flex;
+  justify-content: center;
+
+  padding: 3.5rem 1.5rem 4rem;
+
+  background:
+    radial-gradient(circle at 80% 0%, rgba(var(--accent-rgb), 0.1), transparent 40%),
+    radial-gradient(circle at 10% 100%, rgba(var(--accent-2-rgb), 0.08), transparent 40%),
+    var(--bg);
+
+  min-height: 70vh;
+
+  .policy-content-wrapper {
+    max-width: 720px;
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+  margin-bottom: 2.5rem;
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    margin: 0 0 0.85rem;
+
+    padding: 0.4rem 0.8rem;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.45);
+    border-radius: 4px;
+    background: rgba(var(--accent-rgb), 0.08);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.18em;
+
+    color: var(--accent);
+  }
+
+  h1 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 2.25rem;
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
+
+    text-transform: uppercase;
+
+    @media (max-width: 640px) {
+      font-size: 1.9rem;
+    }
+  }
+}
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.policy-body {
+  color: var(--muted);
+
+  line-height: 1.75;
+
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.65rem;
+
+    color: #ffffff;
+
+    font-size: 1.15rem;
+    font-weight: 800;
+
+    letter-spacing: -0.01em;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 1.35rem;
+
+    color: var(--muted);
+
+    font-size: 1rem;
+
+    &.last-paragraph {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .policy-link {
+    color: var(--accent);
+
+    font-weight: 700;
+
+    text-decoration: underline;
+    text-decoration-color: rgba(var(--accent-rgb), 0.45);
+    text-underline-offset: 3px;
+
+    transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease;
+
+    &:hover {
+      color: var(--accent-2);
+
+      text-decoration-color: var(--accent-2);
+    }
+  }
+}
+
+/* =========================================================
+   BLOQUE DE AYUDA
+   ========================================================= */
+
+.order-card.quick-help-box {
+  background:
+    radial-gradient(circle at 0% 50%, rgba(var(--accent-rgb), 0.12), transparent 60%),
+    var(--surface);
+
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+
+  padding: 1.35rem 1.5rem;
+
+  border-radius: 14px;
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 1rem;
+
+  box-shadow: var(--glow);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba(var(--accent-2-rgb), 0.7);
+
+    box-shadow: 0 0 28px rgba(var(--accent-2-rgb), 0.3);
+  }
+
+  .quick-help-title {
+    margin: 0 0 0.25rem;
+
+    color: #ffffff;
+
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .quick-help-subtitle {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 0.92rem;
+  }
+
+  /* =====================================================
+     BOTÓN PRINCIPAL
+     ===================================================== */
+
+  .btn-primary {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--grad);
+
+    color: var(--on-accent);
+
+    padding: 0.65rem 1.25rem;
+
+    border: none;
+
+    clip-path: var(--cut);
+
+    text-decoration: none;
+
+    font-weight: 800;
+
+    font-size: 0.85rem;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+
+    transition:
+      transform 0.2s ease,
+      filter 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+
+      filter: brightness(1.12) drop-shadow(0 0 12px rgba(var(--accent-rgb), 0.5));
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .policy-body {
+    h3 {
+      font-size: 1.05rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+
+  .order-card.quick-help-box {
+    align-items: stretch;
+
+    .btn-primary {
+      width: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

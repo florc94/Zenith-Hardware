@@ -1,0 +1,698 @@
+.user-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ==========================================
+   HEADER
+   ========================================== */
+
+.user-detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.user-detail__eyebrow {
+  display: block;
+  margin-top: .75rem;
+  margin-bottom: .4rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: rgb(0, 209, 255);
+}
+
+.user-detail__header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.user-detail__header p {
+  margin: .5rem 0 0;
+  color: #8e94a7;
+  line-height: 1.5;
+}
+
+.user-detail__back {
+  display: inline-flex;
+  align-items: center;
+  color: rgb(0, 209, 255);
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 600;
+  transition: color .2s ease;
+}
+
+.user-detail__back:hover {
+  text-decoration: underline;
+  color: rgb(57, 255, 143);
+}
+
+
+/* ==========================================
+   GRID
+   ========================================== */
+
+.user-detail__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+  gap: 1rem;
+}
+
+
+/* ==========================================
+   CARDS
+   ========================================== */
+
+.user-detail-card {
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 12px;
+  background: #11131c;
+  min-width: 0;
+}
+
+.user-detail-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  min-width: 0;
+}
+
+.user-detail-card__label {
+  display: block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #737a91;
+}
+
+.user-detail-card__header h2 {
+  margin: .3rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.user-detail-card__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 .5rem;
+  border-radius: 8px;
+  background: rgba(0, 209, 255, .08);
+  color: rgb(0, 209, 255);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+
+/* ==========================================
+   PERFIL
+   ========================================== */
+
+.user-detail-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.user-detail-profile__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(57, 255, 143, .1);
+  border: 1px solid rgba(57, 255, 143, .3);
+  color: rgb(57, 255, 143);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.user-detail-profile h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.user-detail-profile p {
+  margin: .3rem 0 0;
+  color: #8e94a7;
+  word-break: break-word;
+}
+
+
+/* ==========================================
+   INFO
+   ========================================== */
+
+.user-detail-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.user-detail-info div,
+.user-detail-order div {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  min-width: 0;
+}
+
+.user-detail-info span,
+.user-detail-order span,
+.user-detail-stat span {
+  font-size: .75rem;
+  color: #737a91;
+}
+
+.user-detail-info strong,
+.user-detail-order strong {
+  font-size: .9rem;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   ROL
+   ========================================== */
+
+.user-detail__role {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .35rem .65rem;
+  border-radius: 999px;
+  background: rgba(57, 255, 143, .08);
+  border: 1px solid rgba(57, 255, 143, .25);
+  color: rgb(57, 255, 143);
+  font-size: .75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.user-detail__role--admin {
+  background: rgba(0, 209, 255, .08);
+  border-color: rgba(0, 209, 255, .25);
+  color: rgb(0, 209, 255);
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS
+   ========================================== */
+
+.user-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.user-detail-stat {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  min-width: 0;
+  padding: 1rem;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .025);
+}
+
+.user-detail-stat strong {
+  font-size: 1.3rem;
+  color: rgb(57, 255, 143);
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   ÚLTIMO PEDIDO
+   ========================================== */
+
+.user-detail-order {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+
+/* ==========================================
+   ESTADOS
+   ========================================== */
+
+.user-detail__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: .3rem .6rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.user-detail__status--pending {
+  background: rgba(255, 193, 7, .1);
+  color: #ffc107;
+}
+
+.user-detail__status--paid {
+  background: rgba(0, 209, 255, .1);
+  color: rgb(0, 209, 255);
+}
+
+.user-detail__status--processing {
+  background: rgba(168, 112, 255, .1);
+  color: #a870ff;
+}
+
+.user-detail__status--shipped {
+  background: rgba(57, 255, 143, .1);
+  color: rgb(57, 255, 143);
+}
+
+.user-detail__status--delivered {
+  background: rgba(57, 255, 143, .12);
+  color: rgb(57, 255, 143);
+}
+
+.user-detail__status--cancelled {
+  background: rgba(255, 107, 129, .1);
+  color: #ff6b81;
+}
+
+
+/* ==========================================
+   TABLA PEDIDOS
+   ========================================== */
+
+.user-orders-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.user-orders-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+.user-orders-table th {
+  padding: .75rem;
+  text-align: left;
+  font-size: .72rem;
+  font-weight: 700;
+  color: #737a91;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  white-space: nowrap;
+}
+
+.user-orders-table td {
+  padding: .9rem .75rem;
+  color: #c5c9d5;
+  border-bottom: 1px solid rgba(255, 255, 255, .05);
+  white-space: nowrap;
+}
+
+.user-orders-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* ==========================================
+   ESTADOS DE CARGA / ERROR
+   ========================================== */
+
+.user-detail__state {
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 12px;
+  background: #11131c;
+  color: #8e94a7;
+  text-align: center;
+}
+
+.user-detail__state--error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #ff6b81;
+}
+
+.user-detail__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .6rem .9rem;
+  border-radius: 8px;
+  background: rgba(0, 209, 255, .08);
+  border: 1px solid rgba(0, 209, 255, .3);
+  color: rgb(0, 209, 255);
+  text-decoration: none;
+  font-weight: 600;
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease;
+}
+
+.user-detail__button:hover {
+  background: rgba(0, 209, 255, .14);
+  border-color: rgba(0, 209, 255, .5);
+}
+
+.user-detail__empty {
+  padding: 1.5rem;
+  color: #737a91;
+  text-align: center;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+/* ------------------------------------------
+   TABLET / SMALL LAPTOP
+   ------------------------------------------ */
+
+@media (max-width: 900px) {
+
+  .user-detail__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-detail-order {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* ------------------------------------------
+   MOBILE
+   ------------------------------------------ */
+
+@media (max-width: 600px) {
+
+  .user-detail-page {
+    gap: 1rem;
+  }
+
+  /* HEADER */
+
+  .user-detail__header {
+    width: 100%;
+  }
+
+  .user-detail__eyebrow {
+    margin-top: .65rem;
+    font-size: .68rem;
+  }
+
+  .user-detail__header h1 {
+    font-size: 1.4rem;
+    line-height: 1.25;
+  }
+
+  .user-detail__header p {
+    font-size: .85rem;
+    line-height: 1.5;
+  }
+
+  .user-detail__back {
+    font-size: .82rem;
+  }
+
+
+  /* CARDS */
+
+  .user-detail-card {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .user-detail-card__header {
+    align-items: flex-start;
+    gap: .75rem;
+    margin-bottom: 1rem;
+  }
+
+  .user-detail-card__header h2 {
+    font-size: .98rem;
+  }
+
+  .user-detail-card__label {
+    font-size: .68rem;
+  }
+
+
+  /* PERFIL */
+
+  .user-detail-profile {
+    align-items: flex-start;
+    gap: .75rem;
+  }
+
+  .user-detail-profile__avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.15rem;
+  }
+
+  .user-detail-profile h2 {
+    font-size: 1rem;
+  }
+
+  .user-detail-profile p {
+    font-size: .82rem;
+    line-height: 1.4;
+  }
+
+
+  /* INFO */
+
+  .user-detail-info {
+    grid-template-columns: 1fr;
+    gap: .8rem;
+    margin-top: 1.2rem;
+    padding-top: .9rem;
+  }
+
+  .user-detail-info strong,
+  .user-detail-order strong {
+    font-size: .85rem;
+  }
+
+
+  /* ROL */
+
+  .user-detail__role {
+    padding: .3rem .55rem;
+    font-size: .68rem;
+  }
+
+
+  /* ESTADÍSTICAS */
+
+  .user-detail-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: .65rem;
+  }
+
+  .user-detail-stat {
+    padding: .85rem;
+  }
+
+  .user-detail-stat span {
+    font-size: .7rem;
+  }
+
+  .user-detail-stat strong {
+    font-size: 1.15rem;
+  }
+
+
+  /* ÚLTIMO PEDIDO */
+
+  .user-detail-order {
+    grid-template-columns: 1fr 1fr;
+    gap: .9rem;
+  }
+
+
+  /* ESTADO DEL PEDIDO */
+
+  .user-detail__status {
+    padding: .28rem .5rem;
+    font-size: .67rem;
+  }
+
+
+  /* LOADING / ERROR */
+
+  .user-detail__state {
+    padding: 1.5rem 1rem;
+    font-size: .85rem;
+  }
+
+  .user-detail__state--error {
+    gap: .85rem;
+  }
+
+  .user-detail__button {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .user-detail__empty {
+    padding: 1.25rem .75rem;
+    font-size: .85rem;
+    line-height: 1.5;
+  }
+
+}
+
+
+/* ------------------------------------------
+   VERY SMALL MOBILE
+   ------------------------------------------ */
+
+@media (max-width: 380px) {
+
+  .user-detail-card {
+    padding: .85rem;
+  }
+
+  .user-detail__header h1 {
+    font-size: 1.25rem;
+  }
+
+  .user-detail-profile {
+    gap: .65rem;
+  }
+
+  .user-detail-profile__avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+
+  .user-detail-profile h2 {
+    font-size: .92rem;
+  }
+
+  .user-detail-profile p {
+    font-size: .76rem;
+  }
+
+  .user-detail-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .user-detail-order {
+    grid-template-columns: 1fr;
+    gap: .75rem;
+  }
+
+  .user-detail-card__header {
+    gap: .5rem;
+  }
+
+  .user-detail__role {
+    font-size: .64rem;
+  }
+
+}
+
+
+/* ==========================================
+   MOBILE: cada pedido pasa a ser una tarjeta
+   (va al final para pisar las reglas anteriores)
+   ========================================== */
+
+@media (max-width: 700px) {
+
+  .user-orders-table-wrapper {
+    width: 100%;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .user-orders-table,
+  .user-orders-table tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Encabezado oculto visualmente (queda para lectores de pantalla) */
+  .user-orders-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .user-orders-table tbody tr {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin-bottom: .75rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .025);
+    border: 1px solid rgba(255, 255, 255, .07);
+  }
+
+  .user-orders-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .user-orders-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0;
+    border-bottom: none;
+    white-space: normal;
+    text-align: right;
+  }
+
+  .user-orders-table td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    color: #737a91;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    text-align: left;
+  }
+
+}

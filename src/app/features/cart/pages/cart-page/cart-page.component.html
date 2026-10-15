@@ -1,0 +1,557 @@
+<section class="cart container">
+
+  <!-- HEADER -->
+
+  <div class="cart__header">
+
+    <div>
+      <span
+        class="cart__eyebrow"
+        i18n="Etiqueta superior de la página del carrito@@cartEyebrow"
+      >
+        SHOPSPHERE
+      </span>
+
+      <h1 i18n="Título de la página del carrito@@cartTitle">
+        Tu carrito
+      </h1>
+
+      @if (cart.items().length > 0) {
+
+        <p
+          class="cart__subtitle"
+          i18n="Descripción de la página del carrito@@cartSubtitle"
+        >
+          Revisá tus productos antes de finalizar tu compra.
+        </p>
+
+      }
+
+    </div>
+
+    @if (cart.items().length > 0) {
+
+      <div class="cart__count">
+
+        <strong>
+          {{ cart.itemCount() }}
+        </strong>
+
+        <span
+          i18n="Etiqueta de cantidad de productos en carrito@@cartItemCount"
+        >
+          productos
+        </span>
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- ==========================================
+       CARRITO VACÍO
+       ========================================== -->
+
+  @if (cart.items().length === 0) {
+
+    <div class="cart-empty">
+
+      <div class="cart-empty__icon" aria-hidden="true">
+        🛒
+      </div>
+
+      <span
+        class="cart-empty__eyebrow"
+        i18n="Etiqueta del carrito vacío@@cartEmptyEyebrow"
+      >
+        TU CARRITO
+      </span>
+
+      <h2
+        i18n="Título del carrito cuando está vacío@@cartEmptyTitle"
+      >
+        Todavía no hay nada acá
+      </h2>
+
+      <p
+        i18n="Mensaje mostrado cuando el carrito está vacío@@cartEmptyDescription"
+      >
+        Cuando agregues productos del catálogo van a aparecer en esta lista.
+      </p>
+
+      <a
+        routerLink="/catalogo"
+        class="btn btn-primary cart-empty__button"
+        i18n="Botón para ver el catálogo desde el carrito vacío@@cartViewCatalog"
+      >
+        Ver el catálogo
+      </a>
+
+    </div>
+
+  } @else {
+
+
+    <!-- ==========================================
+         CONTENIDO
+         ========================================== -->
+
+    <div class="cart__layout">
+
+
+      <!-- ========================================
+           PRODUCTOS
+           ======================================== -->
+
+      <div class="cart-products">
+
+        <div class="cart-products__header">
+
+          <h2
+            i18n="Título de la lista de productos del carrito@@cartProductsTitle"
+          >
+            Productos
+          </h2>
+
+          <span
+            i18n="Etiqueta de revisión de productos@@cartProductsReview"
+          >
+            Revisá tu selección
+          </span>
+
+        </div>
+
+
+        <ul class="cart-products__list">
+
+          @for (
+            item of cart.items();
+            track item.product.id
+          ) {
+
+            <li class="cart-line">
+
+
+              <!-- IMAGEN -->
+
+              <div class="cart-line__image-wrapper">
+
+                <img
+                  [src]="item.product.imageUrl"
+                  [alt]="item.product.name"
+                  class="cart-line__image"
+                />
+
+              </div>
+
+
+              <!-- INFORMACIÓN -->
+
+              <div class="cart-line__info">
+
+                <span class="cart-line__category">
+                  {{ item.product.category }}
+                </span>
+
+                <h3>
+                  {{ item.product.name }}
+                </h3>
+
+                <p class="cart-line__unit-price">
+
+                  {{ item.product.price | usd }}
+
+                  <span
+                    i18n="Texto que indica el precio por unidad@@cartPricePerUnit"
+                  >
+                    por unidad
+                  </span>
+
+                </p>
+
+
+                <!-- STOCK -->
+
+                @if (item.product.stock <= 0) {
+
+                  <div class="stock-message stock-message--out">
+
+                    <span
+                      class="stock-message__icon"
+                      aria-hidden="true"
+                    >
+                      !
+                    </span>
+
+                    <span
+                      i18n="Mensaje cuando no hay stock@@cartOutOfStock"
+                    >
+                      Sin stock
+                    </span>
+
+                  </div>
+
+                } @else if (
+                  item.quantity >= item.product.stock
+                ) {
+
+                  <div class="stock-message stock-message--max">
+
+                    <span
+                      class="stock-message__icon"
+                      aria-hidden="true"
+                    >
+                      !
+                    </span>
+
+                    <span
+                      i18n="Mensaje cuando se alcanza el stock máximo@@cartMaxStockReached"
+                    >
+                      Stock máximo alcanzado
+                    </span>
+
+                  </div>
+
+                } @else {
+
+                  <div class="stock-available">
+
+                    <span
+                      i18n="Texto que indica el stock restante del producto@@cartRemainingStock"
+                    >
+                      Stock restante:
+                    </span>
+
+                    <strong>
+                      {{
+                        getStockRestante(
+                          item.product.stock,
+                          item.quantity
+                        )
+                      }}
+                    </strong>
+
+                    @if (
+                      getStockRestante(
+                        item.product.stock,
+                        item.quantity
+                      ) === 1
+                    ) {
+
+                      <span
+                        i18n="Unidad singular del stock restante@@cartRemainingUnit"
+                      >
+                        unidad
+                      </span>
+
+                    } @else {
+
+                      <span
+                        i18n="Unidad plural del stock restante@@cartRemainingUnits"
+                      >
+                        unidades
+                      </span>
+
+                    }
+
+                  </div>
+
+                }
+
+              </div>
+
+
+              <!-- CANTIDAD -->
+
+              <div class="cart-line__quantity">
+
+                <span
+                  class="cart-line__quantity-label"
+                  i18n="Etiqueta de cantidad@@cartQuantityLabel"
+                >
+                  Cantidad
+                </span>
+
+                <div
+                  class="stepper"
+                  [class.stepper--max]="
+                    item.product.stock > 0 &&
+                    item.quantity >= item.product.stock
+                  "
+                >
+
+                  <button
+                    type="button"
+                    (click)="decrement(
+                      item.product.id,
+                      item.quantity
+                    )"
+                    [disabled]="item.quantity <= 1"
+                    aria-label="Quitar una unidad"
+                    i18n-aria-label="Botón para quitar una unidad del carrito@@cartDecreaseQuantity"
+                  >
+                    −
+                  </button>
+
+                  <span class="stepper__quantity">
+                    {{ item.quantity }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="stepper__increase"
+                    [class.stepper__increase--disabled]="
+                      item.quantity >= item.product.stock
+                    "
+                    [disabled]="
+                      item.quantity >= item.product.stock
+                    "
+                    (click)="increment(
+                      item.product.id,
+                      item.quantity
+                    )"
+                    [attr.title]="
+                      item.quantity >= item.product.stock
+                        ? 'Stock máximo alcanzado'
+                        : 'Agregar una unidad'
+                    "
+                    [attr.aria-label]="
+                      item.quantity >= item.product.stock
+                        ? 'Stock máximo alcanzado'
+                        : 'Agregar una unidad'
+                    "
+                  >
+                    +
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <!-- SUBTOTAL -->
+
+              <div class="cart-line__total">
+
+                <span
+                  class="cart-line__total-label"
+                  i18n="Etiqueta del subtotal del producto@@cartLineSubtotal"
+                >
+                  Subtotal
+                </span>
+
+                <strong>
+                  {{
+                    item.product.price *
+                    item.quantity
+                    | usd
+                  }}
+                </strong>
+
+              </div>
+
+
+              <!-- QUITAR -->
+
+              <button
+                type="button"
+                class="cart-line__remove"
+                (click)="cart.removeItem(
+                  item.product.id
+                )"
+                i18n="Botón para quitar un producto del carrito@@cartRemoveItem"
+              >
+                Quitar
+              </button>
+
+            </li>
+
+          }
+
+        </ul>
+
+      </div>
+
+
+      <!-- ========================================
+           RESUMEN
+           ======================================== -->
+
+      <aside class="cart-summary">
+
+        <div class="cart-summary__header">
+
+          <span
+            class="cart-summary__eyebrow"
+            i18n="Etiqueta superior del resumen@@cartSummaryEyebrow"
+          >
+            TU COMPRA
+          </span>
+
+          <h2
+            i18n="Título del resumen del carrito@@cartSummary"
+          >
+            Resumen
+          </h2>
+
+        </div>
+
+
+        <!-- ARTÍCULOS -->
+
+        <div class="cart-summary__row">
+
+          <span>
+
+            {{ cart.itemCount() }}
+
+            <span
+              i18n="Cantidad de artículos del carrito@@cartItems"
+            >
+              artículos
+            </span>
+
+          </span>
+
+          <span class="price">
+            {{ cart.subtotal() | usd }}
+          </span>
+
+        </div>
+
+
+        <!-- ENVÍO -->
+
+        <div class="cart-summary__row cart-summary__row--muted">
+
+          <span
+            i18n="Etiqueta del costo de envío@@cartShipping"
+          >
+            Envío
+          </span>
+
+          @if (costoEnvio === 0) {
+
+            <span class="cart-summary__free">
+
+              <span aria-hidden="true">
+                ✓
+              </span>
+
+              <span
+                i18n="Envío gratis@@cartShippingFree"
+              >
+                Gratis
+              </span>
+
+            </span>
+
+          } @else {
+
+            <span>
+              {{ costoEnvio | usd }}
+            </span>
+
+          }
+
+        </div>
+
+
+        <!-- ENVÍO GRATIS -->
+
+        @if (
+          subtotal > 0 &&
+          subtotal < UMBRAL_ENVIO
+        ) {
+
+          <div class="cart-summary__shipping-hint">
+
+            <span
+              class="cart-summary__shipping-icon"
+              aria-hidden="true"
+            >
+              🚚
+            </span>
+
+            <p
+              i18n="Mensaje sobre envío gratis@@cartFreeShippingHint"
+            >
+              Te faltan
+              {{ (UMBRAL_ENVIO - subtotal) | usd }}
+              para obtener envío gratis.
+            </p>
+
+          </div>
+
+        } @else if (subtotal >= UMBRAL_ENVIO) {
+
+          <div class="cart-summary__shipping-success">
+
+            <span aria-hidden="true">
+              ✓
+            </span>
+
+            <span
+              i18n="Mensaje de envío gratis alcanzado@@cartFreeShippingSuccess"
+            >
+              Tenés envío gratis.
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- TOTAL -->
+
+        <div class="cart-summary__total">
+
+          <span
+            i18n="Etiqueta del total del carrito@@cartTotal"
+          >
+            Total
+          </span>
+
+          <strong>
+            {{ totalFinal | usd }}
+          </strong>
+
+        </div>
+
+
+        <!-- CHECKOUT -->
+
+        <button
+          type="button"
+          class="btn btn-primary cart-summary__cta"
+          (click)="irAlCheckout()"
+          i18n="Botón para comenzar el proceso de pago@@cartCheckout"
+        >
+          Ir a pagar
+          <span aria-hidden="true">→</span>
+        </button>
+
+
+        <div class="cart-summary__secure">
+
+          <span aria-hidden="true">
+            🔒
+          </span>
+
+          <span
+            i18n="Mensaje de compra segura@@cartSecureMessage"
+          >
+            Compra segura y protegida
+          </span>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  }
+
+</section>

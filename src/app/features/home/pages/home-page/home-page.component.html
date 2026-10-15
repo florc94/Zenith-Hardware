@@ -1,0 +1,578 @@
+<main class="home">
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="hero">
+
+    <div class="hero__background">
+      <div class="hero__orb hero__orb--one"></div>
+      <div class="hero__orb hero__orb--two"></div>
+    </div>
+
+    <div class="hero__content">
+
+      <span
+        class="hero__eyebrow"
+        i18n="Etiqueta superior del hero@@homeHeroEyebrow"
+      >
+        Zenith Hardware
+      </span>
+
+      <h1 i18n="Título principal del Home@@homeHeroTitle">
+        Todo lo que necesitás.
+        <span>En un solo lugar.</span>
+      </h1>
+
+      <p i18n="Descripción principal del Home@@homeHeroDescription">
+        Tecnología, accesorios y productos seleccionados
+        para acompañarte todos los días.
+      </p>
+
+      <div class="hero__actions">
+
+        <a
+          [routerLink]="catalogRoute"
+          class="btn btn-primary"
+          i18n="Botón principal del hero@@homeHeroPrimaryButton"
+        >
+          Ver catálogo
+        </a>
+
+        <a
+          [routerLink]="catalogRoute"
+          class="hero__secondary-link"
+        >
+          <span i18n="Enlace secundario del hero@@homeHeroSecondaryLink">
+            Explorar productos
+          </span>
+
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+
+      <div class="hero__trust">
+
+        <div class="hero__trust-item">
+          <strong>{{ totalProducts() }}</strong>
+
+          <span i18n="Cantidad de productos disponibles@@homeHeroProductsLabel">
+            productos disponibles
+          </span>
+        </div>
+
+        <div class="hero__trust-divider"></div>
+
+        <div class="hero__trust-item">
+          <strong>24/7</strong>
+
+          <span i18n="Atención al cliente@@homeHeroSupportLabel">
+            atención online
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="hero__visual">
+
+      @if (products().length > 0) {
+
+        <a
+          class="hero__card"
+          [routerLink]="[productRoute, products()[0].id]"
+        >
+
+          <div class="hero__product-glow"></div>
+
+          <div class="hero__product-image">
+            <img
+              [src]="products()[0].imageUrl"
+              [alt]="products()[0].name"
+            />
+          </div>
+
+          <div class="hero__product-info">
+
+            <span
+              i18n="Etiqueta producto destacado del hero@@homeHeroProductCategory"
+            >
+              PRODUCTO DESTACADO
+            </span>
+
+            <strong>{{ products()[0].name }}</strong>
+
+            <div class="hero__product-rating">
+              <span aria-hidden="true">★★★★★</span>
+              <span>{{ products()[0].rating }}</span>
+            </div>
+
+            <strong class="hero__product-price">
+              {{ products()[0].price | usd }}
+            </strong>
+
+          </div>
+
+        </a>
+
+      }
+
+      <div class="floating-card floating-card--top">
+
+        <div class="floating-card__icon">✓</div>
+
+        <div>
+          <strong i18n="Beneficio de compra segura@@homeFloatingSecureTitle">
+            Compra segura
+          </strong>
+
+          <small
+            i18n="Descripción de compra segura@@homeFloatingSecureDescription"
+          >
+            Pagos protegidos
+          </small>
+        </div>
+
+      </div>
+
+      <div class="floating-card floating-card--bottom">
+
+        <div class="floating-card__icon">⚡</div>
+
+        <div>
+          <strong i18n="Beneficio de envío rápido@@homeFloatingShippingTitle">
+            Envíos rápidos
+          </strong>
+
+          <small
+            i18n="Descripción de envío rápido@@homeFloatingShippingDescription"
+          >
+            Recibí tus productos rápido
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       CATEGORÍAS
+       ===================================================== -->
+
+  <section class="categories section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <span
+          class="section-heading__eyebrow"
+          i18n="Etiqueta de categorías@@homeCategoriesEyebrow"
+        >
+          CATEGORÍAS
+        </span>
+
+        <h2 i18n="Título de categorías@@homeCategoriesTitle">
+          Encontrá lo que buscás
+        </h2>
+
+      </div>
+
+      <a
+        [routerLink]="catalogRoute"
+        class="section-heading__link"
+        i18n="Enlace para ver todas las categorías@@homeCategoriesLink"
+      >
+        Ver todo →
+      </a>
+
+    </div>
+
+    <div class="categories__grid">
+
+      <a
+        class="category-card"
+        [routerLink]="catalogRoute"
+        [queryParams]="{ categoria: 'Notebooks' }"
+      >
+
+        <div class="category-card__icon">💻</div>
+
+        <div class="category-card__content">
+          <h3>Notebooks</h3>
+
+          <p
+            i18n="Descripción categoría Notebooks@@homeCategoryNotebooksDescription"
+          >
+            Equipos portátiles
+          </p>
+        </div>
+
+        <span class="category-card__arrow" aria-hidden="true">→</span>
+
+      </a>
+
+      <a
+        class="category-card"
+        [routerLink]="catalogRoute"
+        [queryParams]="{ categoria: 'PCs Mini' }"
+      >
+
+        <div class="category-card__icon">🖥️</div>
+
+        <div class="category-card__content">
+          <h3>PCs Mini</h3>
+
+          <p
+            i18n="Descripción categoría PCs Mini@@homeCategoryMiniPcDescription"
+          >
+            Computadoras compactas
+          </p>
+        </div>
+
+        <span class="category-card__arrow" aria-hidden="true">→</span>
+
+      </a>
+
+      <a
+        class="category-card"
+        [routerLink]="catalogRoute"
+        [queryParams]="{ categoria: 'Combos Actualización PC' }"
+      >
+
+        <div class="category-card__icon">🔧</div>
+
+        <div class="category-card__content">
+          <h3>Combos Actualización PC</h3>
+
+          <p
+            i18n="Descripción categoría Combos@@homeCategoryCombosDescription"
+          >
+            Actualizá tu PC
+          </p>
+        </div>
+
+        <span class="category-card__arrow" aria-hidden="true">→</span>
+
+      </a>
+
+      <a
+        class="category-card"
+        [routerLink]="catalogRoute"
+        [queryParams]="{ categoria: 'Motherboards' }"
+      >
+
+        <div class="category-card__icon">🧩</div>
+
+        <div class="category-card__content">
+          <h3>Motherboards</h3>
+
+          <p
+            i18n="Descripción categoría Motherboards@@homeCategoryMotherboardsDescription"
+          >
+            Placas madre
+          </p>
+        </div>
+
+        <span class="category-card__arrow" aria-hidden="true">→</span>
+
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       PRODUCTOS DESTACADOS
+       ===================================================== -->
+
+  <section class="featured section">
+
+    <div class="section-heading">
+
+      <div>
+
+        <span
+          class="section-heading__eyebrow"
+          i18n="Etiqueta productos destacados@@homeFeaturedEyebrow"
+        >
+          DESTACADOS
+        </span>
+
+        <h2 i18n="Título productos destacados@@homeFeaturedTitle">
+          Productos destacados
+        </h2>
+
+      </div>
+
+      <a
+        [routerLink]="catalogRoute"
+        class="section-heading__link"
+        i18n="Enlace para ver todos los productos@@homeFeaturedLink"
+      >
+        Ver catálogo →
+      </a>
+
+    </div>
+
+    @if (products().length > 0) {
+
+      <div class="products-grid">
+
+        @for (product of products(); track product.id) {
+
+          <a
+            class="product-card"
+            [routerLink]="[productRoute, product.id]"
+          >
+
+            <div class="product-card__image">
+              <img
+                [src]="product.imageUrl"
+                [alt]="product.name"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="product-card__body">
+
+              <span class="product-card__category">
+                {{ product.category }}
+              </span>
+
+              <h3>{{ product.name }}</h3>
+
+              <div
+                class="product-card__rating"
+                [attr.aria-label]="'Calificación: ' + product.rating + ' de 5'"
+              >
+                <span aria-hidden="true">★★★★★</span>
+                <span>{{ product.rating }}</span>
+              </div>
+
+              <div class="product-card__footer">
+
+                <strong>{{ product.price | usd }}</strong>
+
+                <span
+                  class="product-card__button"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+
+              </div>
+
+            </div>
+
+          </a>
+
+        }
+
+      </div>
+
+    }
+
+    @else {
+
+      <div class="featured__empty">
+
+        <p
+          i18n="Mensaje cuando no hay productos destacados@@homeFeaturedEmpty"
+        >
+          No hay productos destacados disponibles.
+        </p>
+
+        <a
+          [routerLink]="catalogRoute"
+          class="btn btn-primary"
+          i18n="Botón para ir al catálogo desde estado vacío@@homeFeaturedEmptyButton"
+        >
+          Ver catálogo
+        </a>
+
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- =====================================================
+       SHIPPING
+       ===================================================== -->
+
+  <section class="shipping-banner section">
+
+    <div class="shipping-banner__content">
+
+      <div class="shipping-banner__icon">🚚</div>
+
+      <div>
+
+        <span
+          class="shipping-banner__eyebrow"
+          i18n="Etiqueta del banner de envío@@homeShippingEyebrow"
+        >
+          ENVÍOS
+        </span>
+
+        <h2 i18n="Título del banner de envío@@homeShippingTitle">
+          Envío gratis en compras superiores a $50
+        </h2>
+
+        <p i18n="Descripción del banner de envío@@homeShippingDescription">
+          Recibí tus productos de forma rápida y segura.
+        </p>
+
+      </div>
+
+      <a
+        [routerLink]="isEnglish ? '/shipping' : '/envios'"
+        class="shipping-banner__button"
+        i18n="Botón información de envíos@@homeShippingButton"
+      >
+        Ver envíos
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       BENEFICIOS
+       ===================================================== -->
+
+  <section class="benefits section">
+
+    <div class="section-heading section-heading--center">
+
+      <span
+        class="section-heading__eyebrow"
+        i18n="Etiqueta beneficios@@homeBenefitsEyebrow"
+      >
+        ZENITHHARDWARE
+      </span>
+
+      <h2 i18n="Título beneficios@@homeBenefitsTitle">
+        Comprá con confianza
+      </h2>
+
+    </div>
+
+    <div class="benefits__grid">
+
+      <article class="benefit">
+
+        <div class="benefit__icon">🔒</div>
+
+        <h3 i18n="Beneficio seguridad@@homeBenefitSecureTitle">
+          Compra segura
+        </h3>
+
+        <p
+          i18n="Descripción beneficio seguridad@@homeBenefitSecureDescription"
+        >
+          Tus datos y pagos están protegidos.
+        </p>
+
+      </article>
+
+      <article class="benefit">
+
+        <div class="benefit__icon">🚚</div>
+
+        <h3 i18n="Beneficio envíos@@homeBenefitShippingTitle">
+          Envíos rápidos
+        </h3>
+
+        <p
+          i18n="Descripción beneficio envíos@@homeBenefitShippingDescription"
+        >
+          Recibí tus productos de forma rápida y segura.
+        </p>
+
+      </article>
+
+      <article class="benefit">
+
+        <div class="benefit__icon">↩</div>
+
+        <h3 i18n="Beneficio devoluciones@@homeBenefitReturnsTitle">
+          Devoluciones simples
+        </h3>
+
+        <p
+          i18n="Descripción beneficio devoluciones@@homeBenefitReturnsDescription"
+        >
+          Gestioná tus devoluciones fácilmente.
+        </p>
+
+      </article>
+
+      <article class="benefit">
+
+        <div class="benefit__icon">💬</div>
+
+        <h3 i18n="Beneficio atención@@homeBenefitSupportTitle">
+          Atención online
+        </h3>
+
+        <p
+          i18n="Descripción beneficio atención@@homeBenefitSupportDescription"
+        >
+          Estamos disponibles para ayudarte.
+        </p>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FINAL CTA
+       ===================================================== -->
+
+  <section class="final-cta section">
+
+    <div class="final-cta__content">
+
+      <span
+        class="final-cta__eyebrow"
+        i18n="Etiqueta CTA final@@homeFinalCtaEyebrow"
+      >
+        TODO LO QUE NECESITÁS
+      </span>
+
+      <h2 i18n="Título CTA final@@homeFinalCtaTitle">
+        Encontrá tu próximo producto favorito.
+      </h2>
+
+      <p i18n="Descripción CTA final@@homeFinalCtaDescription">
+        Explorá nuestro catálogo y descubrí productos
+        seleccionados para vos.
+      </p>
+
+      <a
+        [routerLink]="catalogRoute"
+        class="btn"
+        i18n="Botón CTA final@@homeFinalCtaButton"
+      >
+        Explorar catálogo
+      </a>
+
+    </div>
+
+  </section>
+
+</main>

@@ -1,0 +1,87 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+}
+
+/* =========================================
+   NOTIFICACIÓN DEL CARRITO
+   ========================================= */
+
+.cart-notification {
+  position: fixed;
+  top: 90px;
+  right: 24px;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 280px;
+  max-width: 380px;
+
+  padding: 14px 18px;
+
+  background: #10121a;
+  color: #ffffff;
+
+  border: 1px solid rgb(57, 255, 143);
+  border-radius: 10px;
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  animation: cartNotificationIn 0.25s ease-out;
+}
+
+.cart-notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  border-radius: 8px;
+
+  background: rgba(57, 255, 143, 0.1);
+
+  font-size: 17px;
+}
+
+.cart-notification-message {
+  line-height: 1.4;
+}
+
+@keyframes cartNotificationIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .cart-notification {
+    top: 75px;
+    right: 16px;
+    left: 16px;
+
+    min-width: auto;
+    max-width: none;
+  }
+}

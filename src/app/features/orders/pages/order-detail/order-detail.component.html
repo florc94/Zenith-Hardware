@@ -1,0 +1,432 @@
+<section class="order-detail">
+
+  <!-- Volver -->
+  <a
+    routerLink="/pedidos"
+    class="order-detail__back-link"
+    i18n="Enlace para volver al historial de pedidos@@orderDetailBack"
+  >
+    ← Volver a mis pedidos
+  </a>
+
+  <!-- Loading -->
+  @if (loading()) {
+
+    <div class="order-detail__loading">
+      <div class="loading-spinner"></div>
+
+      <p
+        i18n="Mensaje mostrado mientras se carga el detalle del pedido@@orderDetailLoading"
+      >
+        Cargando pedido...
+      </p>
+    </div>
+
+  } @else if (error()) {
+
+    <!-- Error -->
+    <div class="order-detail__error">
+
+      <div class="error-icon">
+        !
+      </div>
+
+      <h1
+        i18n="Título cuando no se puede cargar el pedido@@orderDetailErrorTitle"
+      >
+        No se pudo cargar el pedido
+      </h1>
+
+      <p
+        i18n="Mensaje cuando no se puede cargar el pedido@@orderDetailErrorDescription"
+      >
+        El pedido que estás buscando no existe o no está disponible.
+      </p>
+
+      <a
+        routerLink="/pedidos"
+        class="btn-primary"
+        i18n="Botón para volver a los pedidos@@orderDetailBackToOrders"
+      >
+        Volver a mis pedidos
+      </a>
+
+    </div>
+
+  } @else {
+
+    @if (order()) {
+
+      <!-- Encabezado -->
+      <header class="order-detail__header">
+
+        <div class="order-detail__header-main">
+
+          <div>
+            <span
+              class="overline"
+              i18n="Etiqueta superior del detalle del pedido@@orderDetailOverline"
+            >
+              Confirmación de pedido
+            </span>
+
+            <h1>
+              Pedido #{{ order()!.id }}
+            </h1>
+
+            <p class="order-detail__date">
+              <span
+                i18n="Texto antes de la fecha del pedido@@orderDetailCreated"
+              >
+                Realizado el
+              </span>
+
+              {{ getCreatedDate() }}
+            </p>
+          </div>
+
+          <span
+            class="status-badge"
+            [attr.data-status]="order()!.status"
+          >
+            {{ statusLabels[order()!.status] }}
+          </span>
+
+        </div>
+
+      </header>
+
+      <!-- Card principal -->
+      <div class="order-detail__card">
+
+        <!-- ========================= -->
+        <!-- SEGUIMIENTO -->
+        <!-- ========================= -->
+
+        <section class="tracking-section">
+
+          <div class="section-heading">
+
+            <div>
+              <span
+                class="section-eyebrow"
+                i18n="Etiqueta de la sección de seguimiento@@orderTrackingEyebrow"
+              >
+                Seguimiento
+              </span>
+
+              <h2
+                i18n="Título de seguimiento@@orderTrackingTitle"
+              >
+                Estado del pedido
+              </h2>
+            </div>
+
+          </div>
+
+          <div class="progress-wrapper">
+
+            <div
+              class="progress-bar"
+              [style.--progress]="progressPercentage() + '%'"
+            >
+
+              <div class="progress-bar__track"></div>
+
+              <div class="progress-bar__fill"></div>
+
+              @for (
+                status of orderStatusFlow;
+                track status;
+                let i = $index
+              ) {
+
+                <div
+                  class="progress-bar__step"
+                  [class.active]="i === currentStatusIndex()"
+                  [class.completed]="isStatusCompleted(i)"
+                >
+
+                  <div class="step-circle">
+
+                    @if (isStatusCompleted(i)) {
+                      <span class="step-check">✓</span>
+                    } @else {
+                      <span class="step-number">
+                        {{ i + 1 }}
+                      </span>
+                    }
+
+                  </div>
+
+                  <span class="step-label">
+                    {{ statusLabels[status] }}
+                  </span>
+
+                  @if (getStatusDate(status)) {
+                    <span class="step-date">
+                      {{ formatDate(getStatusDate(status)) }}
+                    </span>
+                  }
+
+                </div>
+
+              }
+
+            </div>
+
+          </div>
+
+          <!-- Tracking separado de la línea -->
+          <div class="tracking-number">
+
+            <div class="tracking-number__icon">
+              ↗
+            </div>
+
+            <div class="tracking-number__content">
+
+              <span
+                class="tracking-number__label"
+                i18n="Etiqueta del número de seguimiento@@orderTrackingNumberLabel"
+              >
+                Número de seguimiento
+              </span>
+
+              <strong>
+                {{ order()!.trackingNumber }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- PRODUCTOS -->
+        <!-- ========================= -->
+
+        <section class="products-section">
+
+          <div class="section-heading">
+
+            <div>
+              <span
+                class="section-eyebrow"
+                i18n="Etiqueta de productos@@orderProductsEyebrow"
+              >
+                Compra
+              </span>
+
+              <h2
+                i18n="Título de productos del pedido@@orderProductsTitle"
+              >
+                Productos
+              </h2>
+            </div>
+
+            <span class="item-count">
+              {{ itemCount() }}
+
+              @if (itemCount() === 1) {
+                <span
+                  i18n="Unidad singular@@orderProductUnit"
+                >
+                  producto
+                </span>
+              } @else {
+                <span
+                  i18n="Unidad plural@@orderProductUnits"
+                >
+                  productos
+                </span>
+              }
+            </span>
+
+          </div>
+
+          <div class="products-list">
+
+            @for (
+              item of order()!.items;
+              track item.productId
+            ) {
+
+              <article class="product-row">
+
+                <div class="product-row__info">
+
+                  <div class="product-row__number">
+                    {{ $index + 1 }}
+                  </div>
+
+                  <div class="product-row__details">
+
+                    <h3>
+                      {{ item.name }}
+                    </h3>
+
+                    <p>
+                      {{ item.quantity }}
+
+                      @if (item.quantity === 1) {
+                        <span
+                          i18n="Cantidad singular@@orderUnit"
+                        >
+                          unidad
+                        </span>
+                      } @else {
+                        <span
+                          i18n="Cantidad plural@@orderUnits"
+                        >
+                          unidades
+                        </span>
+                      }
+
+                      · {{ item.price | usd }} c/u
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <strong class="product-row__subtotal">
+                  {{ item.subtotal | usd }}
+                </strong>
+
+              </article>
+
+            }
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- RESUMEN -->
+        <!-- ========================= -->
+
+        <section class="summary-section">
+
+          <div class="summary-row">
+
+            <span
+              i18n="Etiqueta subtotal@@orderSubtotal"
+            >
+              Subtotal
+            </span>
+
+            <strong>
+              {{ subtotal() | usd }}
+            </strong>
+
+          </div>
+
+          <div class="summary-row">
+
+            <span
+              i18n="Etiqueta envío@@orderShipping"
+            >
+              Envío
+            </span>
+
+            @if (shippingCost() === 0) {
+
+              <strong class="free-shipping">
+                <span
+                  i18n="Texto de envío gratis@@orderFreeShipping"
+                >
+                  Gratis
+                </span>
+              </strong>
+
+            } @else {
+
+              <strong>
+                {{ shippingCost() | usd }}
+              </strong>
+
+            }
+
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+
+            <span
+              i18n="Etiqueta total@@orderTotal"
+            >
+              Total
+            </span>
+
+            <strong>
+              {{ order()!.total | usd }}
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- INFORMACIÓN DEL ENVÍO -->
+        <!-- ========================= -->
+
+        @if (order()!.shippingAddress) {
+
+          <section class="shipping-section">
+
+            <div class="section-heading">
+
+              <div>
+                <span
+                  class="section-eyebrow"
+                  i18n="Etiqueta de dirección@@orderShippingEyebrow"
+                >
+                  Entrega
+                </span>
+
+                <h2
+                  i18n="Título de dirección@@orderShippingTitle"
+                >
+                  Dirección de envío
+                </h2>
+              </div>
+
+            </div>
+
+            <div class="shipping-address">
+
+              <div class="shipping-address__icon">
+                ⌖
+              </div>
+
+              <div>
+                <strong
+                  i18n="Etiqueta de dirección de entrega@@orderDeliveryAddress"
+                >
+                  Dirección de entrega
+                </strong>
+
+                <p>
+                  {{ order()!.shippingAddress }}
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        }
+
+      </div>
+
+    }
+
+  }
+
+</section>

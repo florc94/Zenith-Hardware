@@ -1,0 +1,605 @@
+<!-- ==========================================
+     NOTIFICACIÓN FLOTANTE
+     ========================================== -->
+
+@if (saved()) {
+  <div class="toast-success" role="status" aria-live="polite">
+    <div class="toast-success__icon" aria-hidden="true">✓</div>
+
+    <div class="toast-success__content">
+      <strong i18n="Título del aviso de éxito@@accountToastTitle">
+        Mi cuenta
+      </strong>
+
+      <p i18n="Mensaje del aviso de éxito@@accountToastMessage">
+        Tus datos fueron actualizados correctamente.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="toast-success__close"
+      aria-label="Cerrar notificación"
+      i18n-aria-label="Cerrar aviso de éxito@@accountToastClose"
+      (click)="closeToast()"
+    >
+      ×
+    </button>
+  </div>
+}
+
+<section class="account">
+  <div class="container">
+
+    <!-- ENCABEZADO -->
+    <header class="account__header">
+      <h1 i18n="Título de la página Mi cuenta@@accountTitle">
+        Mi cuenta
+      </h1>
+
+      <p
+        class="account__lede"
+        i18n="Descripción de la página Mi cuenta@@accountLede"
+      >
+        Administrá tus datos personales, tu domicilio y tu condición fiscal.
+      </p>
+    </header>
+
+    <!-- AVISO: FALTAN DATOS DE CONTACTO -->
+    @if (missingContactData()) {
+      <div class="account__notice" role="alert">
+        <strong i18n="Título del aviso de datos faltantes@@accountMissingTitle">
+          Por favor completa tus datos
+        </strong>
+
+        <p i18n="Detalle del aviso de datos faltantes@@accountMissingMessage">
+          Ingresá tu código de área, teléfono y DNI/CUIL.
+          Completá también todos los datos de facturación para poder realizar compras.
+        </p>
+      </div>
+    }
+
+    <!-- CARGA Y ERROR -->
+    @if (loading()) {
+      <div class="account__state" role="status">
+        <span i18n="Mensaje mientras se cargan los datos de la cuenta@@accountLoading">
+          Cargando tus datos...
+        </span>
+      </div>
+    } @else if (loadError()) {
+      <div class="account__state account__state--error" role="alert">
+        <p i18n="Error al cargar los datos de la cuenta@@accountLoadError">
+          No pudimos cargar tus datos.
+        </p>
+
+        <button
+          type="button"
+          class="account__retry"
+          (click)="loadProfile()"
+          i18n="Botón para reintentar la carga@@accountRetry"
+        >
+          Reintentar
+        </button>
+      </div>
+    } @else {
+
+      <!-- FORMULARIO -->
+      <form
+        class="account__form"
+        [formGroup]="form"
+        (ngSubmit)="save()"
+        novalidate
+      >
+        <div class="account__grid">
+
+          <!-- DATOS PERSONALES -->
+          <section class="card">
+            <h2
+              class="card__title"
+              i18n="Título de la tarjeta de datos personales@@accountPersonalTitle"
+            >
+              Datos personales
+            </h2>
+
+            <p
+              class="card__note"
+              i18n="Aviso de campos obligatorios@@accountRequiredNote"
+            >
+              * Todos los campos son obligatorios
+            </p>
+
+            <div class="card__row">
+              <div class="field field--readonly field--small">
+                <label for="acc-id">
+                  <span i18n="ID del cliente@@accountClientId">
+                    ID cliente
+                  </span>
+                </label>
+
+                <input
+                  id="acc-id"
+                  type="text"
+                  readonly
+                  tabindex="-1"
+                  [value]="profile()?.id ?? ''"
+                />
+              </div>
+
+              <div class="field field--readonly">
+                <label for="acc-email">
+                  <span i18n="Email del cliente@@accountEmail">
+                    Email
+                  </span>
+                </label>
+
+                <input
+                  id="acc-email"
+                  type="email"
+                  readonly
+                  tabindex="-1"
+                  [value]="profile()?.email ?? ''"
+                />
+              </div>
+            </div>
+
+            <div class="card__row">
+              <div
+                class="field"
+                [class.field--invalid]="isInvalid('name')"
+              >
+                <label for="acc-name">
+                  <span i18n="Nombre y apellido@@accountName">
+                    Nombre y apellido
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-name"
+                  type="text"
+                  formControlName="name"
+                  autocomplete="name"
+                  maxlength="120"
+                />
+
+                @if (isInvalid('name')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de nombre@@accountNameError"
+                  >
+                    Ingresá tu nombre y apellido.
+                  </span>
+                }
+              </div>
+
+              <div
+                class="field field--small"
+                [class.field--invalid]="isInvalid('dni')"
+              >
+                <label for="acc-dni">
+                  <span i18n="DNI personal@@accountDni">
+                    DNI personal
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-dni"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  formControlName="dni"
+                  maxlength="8"
+                  placeholder="Ej. 30123456"
+                  i18n-placeholder="Ejemplo de DNI@@accountDniPlaceholder"
+                />
+
+                @if (isInvalid('dni')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de DNI@@accountDniError"
+                  >
+                    Ingresá un DNI de 7 u 8 números.
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="card__row">
+              <div
+                class="field field--small"
+                [class.field--invalid]="isInvalid('phoneArea')"
+              >
+                <label for="acc-area">
+                  <span i18n="Código de área@@accountPhoneArea">
+                    Código de área
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-area"
+                  type="text"
+                  inputmode="numeric"
+                  formControlName="phoneArea"
+                  maxlength="5"
+                  autocomplete="tel-area-code"
+                />
+
+                @if (isInvalid('phoneArea')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de código de área@@accountPhoneAreaError"
+                  >
+                    Ingresá un código de área válido, solo números.
+                  </span>
+                }
+              </div>
+
+              <div
+                class="field"
+                [class.field--invalid]="isInvalid('phone')"
+              >
+                <label for="acc-phone">
+                  <span i18n="Teléfono de contacto@@accountPhone">
+                    Teléfono de contacto
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-phone"
+                  type="tel"
+                  inputmode="numeric"
+                  formControlName="phone"
+                  autocomplete="tel-national"
+                  maxlength="10"
+                />
+
+                @if (isInvalid('phone')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de teléfono@@accountPhoneError"
+                  >
+                    Ingresá un teléfono válido, sin el código de área.
+                  </span>
+                }
+              </div>
+            </div>
+          </section>
+
+          <!-- DOMICILIO -->
+          <section class="card">
+            <h2
+              class="card__title"
+              i18n="Título de la tarjeta de domicilio@@accountAddressTitle"
+            >
+              Domicilio de facturación
+            </h2>
+
+            <p
+              class="card__note"
+              i18n="Aviso de campos obligatorios del domicilio@@accountAddressNote"
+            >
+              * Campos obligatorios, salvo piso / departamento.
+            </p>
+
+            <div
+              class="field"
+              [class.field--invalid]="isInvalid('street')"
+            >
+              <label for="acc-street">
+                <span i18n="Dirección fiscal@@accountStreet">
+                  Dirección fiscal
+                </span> *
+              </label>
+
+              <input
+                id="acc-street"
+                type="text"
+                formControlName="street"
+                autocomplete="street-address"
+                maxlength="160"
+                placeholder="Calle y número"
+                i18n-placeholder="Ejemplo de dirección@@accountStreetPlaceholder"
+              />
+
+              @if (isInvalid('street')) {
+                <span
+                  class="field__error"
+                  i18n="Error de dirección@@accountStreetError"
+                >
+                  Ingresá tu dirección.
+                </span>
+              }
+            </div>
+
+            <div class="card__row">
+              <div class="field">
+                <label for="acc-floor">
+                  <span i18n="Piso o departamento@@accountFloorApt">
+                    Piso / departamento
+                  </span>
+                </label>
+
+                <input
+                  id="acc-floor"
+                  type="text"
+                  formControlName="floorApt"
+                  maxlength="40"
+                />
+              </div>
+
+              <div
+                class="field"
+                [class.field--invalid]="isInvalid('postalCode')"
+              >
+                <label for="acc-postal">
+                  <span i18n="Código postal@@accountPostalCode">
+                    Código postal
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-postal"
+                  type="text"
+                  formControlName="postalCode"
+                  autocomplete="postal-code"
+                  maxlength="8"
+                />
+
+                @if (isInvalid('postalCode')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de código postal@@accountPostalCodeError"
+                  >
+                    Ingresá un código postal válido.
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="card__row">
+              <div
+                class="field"
+                [class.field--invalid]="isInvalid('city')"
+              >
+                <label for="acc-city">
+                  <span i18n="Localidad@@accountCity">
+                    Localidad
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-city"
+                  type="text"
+                  formControlName="city"
+                  autocomplete="address-level2"
+                  maxlength="100"
+                />
+
+                @if (isInvalid('city')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de localidad@@accountCityError"
+                  >
+                    Ingresá tu localidad.
+                  </span>
+                }
+              </div>
+
+              <div
+                class="field"
+                [class.field--invalid]="isInvalid('province')"
+              >
+                <label for="acc-province">
+                  <span i18n="Provincia@@accountProvince">
+                    Provincia
+                  </span> *
+                </label>
+
+                <input
+                  id="acc-province"
+                  type="text"
+                  formControlName="province"
+                  autocomplete="address-level1"
+                  maxlength="100"
+                />
+
+                @if (isInvalid('province')) {
+                  <span
+                    class="field__error"
+                    i18n="Error de provincia@@accountProvinceError"
+                  >
+                    Ingresá tu provincia.
+                  </span>
+                }
+              </div>
+            </div>
+          </section>
+
+          <!-- CONDICIÓN FISCAL -->
+          <section class="card">
+            <h2
+              class="card__title"
+              i18n="Título de la tarjeta de condición fiscal@@accountTaxTitle"
+            >
+              Condición fiscal
+            </h2>
+
+            <p
+              class="card__note"
+              i18n="Indicación de tipo de factura@@accountTaxNote"
+            >
+              Seleccioná tu condición fiscal.
+            </p>
+
+            <fieldset class="tax">
+              <legend class="visually-hidden">
+                <span i18n="Leyenda de condición fiscal@@accountTaxLegend">
+                  Condición fiscal
+                </span>
+              </legend>
+
+              <label class="radio">
+                <input
+                  type="radio"
+                  formControlName="taxCondition"
+                  value="final_consumer"
+                />
+                <span class="radio__dot" aria-hidden="true"></span>
+                <span i18n="Consumidor final@@accountTaxFinalConsumer">
+                  Consumidor final
+                </span>
+              </label>
+
+              <label class="radio">
+                <input
+                  type="radio"
+                  formControlName="taxCondition"
+                  value="registered"
+                />
+                <span class="radio__dot" aria-hidden="true"></span>
+                <span i18n="Responsable inscripto@@accountTaxRegistered">
+                  Responsable inscripto
+                </span>
+              </label>
+
+              <label class="radio">
+                <input
+                  type="radio"
+                  formControlName="taxCondition"
+                  value="unregistered"
+                />
+                <span class="radio__dot" aria-hidden="true"></span>
+                <span i18n="Responsable no inscripto@@accountTaxUnregistered">
+                  Responsable no inscripto
+                </span>
+              </label>
+
+              <label class="radio">
+                <input
+                  type="radio"
+                  formControlName="taxCondition"
+                  value="monotributo"
+                />
+                <span class="radio__dot" aria-hidden="true"></span>
+                <span i18n="Monotributo@@accountTaxMonotributo">
+                  Monotributo
+                </span>
+              </label>
+
+              <label class="radio">
+                <input
+                  type="radio"
+                  formControlName="taxCondition"
+                  value="exempt"
+                />
+                <span class="radio__dot" aria-hidden="true"></span>
+                <span i18n="Exento@@accountTaxExempt">
+                  Exento
+                </span>
+              </label>
+            </fieldset>
+
+            <!-- IDENTIFICACIÓN PARA FACTURACIÓN -->
+            <div
+              class="field"
+              [class.field--invalid]="isInvalid('taxId')"
+            >
+              <label for="acc-tax-id">
+                <span i18n="DNI o CUIT/CUIL de facturación@@accountTaxId">
+                  DNI / CUIT / CUIL para facturación
+                </span> *
+              </label>
+
+              <input
+                id="acc-tax-id"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                formControlName="taxId"
+                maxlength="11"
+                placeholder="DNI de 7-8 dígitos o CUIT/CUIL de 11"
+                i18n-placeholder="Ejemplo de identificación fiscal@@accountTaxIdPlaceholder"
+                aria-describedby="acc-tax-id-help"
+              />
+
+              <small
+                id="acc-tax-id-help"
+                class="field__hint"
+                i18n="Ayuda para identificación fiscal@@accountTaxIdHelp"
+              >
+                Consumidor final: DNI o CUIT/CUIL. Las demás condiciones requieren CUIT de 11 dígitos.
+              </small>
+
+              @if (isInvalid('taxId')) {
+                <span
+                  class="field__error"
+                  i18n="Error de DNI o CUIT@@accountTaxIdError"
+                >
+                  {{ taxIdErrorMessage() }}
+                </span>
+              }
+            </div>
+
+            <div
+              class="field"
+              [class.field--invalid]="isInvalid('taxName')"
+            >
+              <label for="acc-tax-name">
+                <span i18n="Nombre o razón social@@accountTaxName">
+                  Nombre / razón social para la factura
+                </span> *
+              </label>
+
+              <input
+                id="acc-tax-name"
+                type="text"
+                formControlName="taxName"
+                autocomplete="organization"
+                maxlength="120"
+              />
+
+              @if (isInvalid('taxName')) {
+                <span
+                  class="field__error"
+                  i18n="Error de nombre fiscal@@accountTaxNameError"
+                >
+                  Ingresá el nombre o razón social para la factura.
+                </span>
+              }
+            </div>
+          </section>
+        </div>
+
+        <!-- MENSAJES Y BOTÓN DE GUARDADO -->
+        <div class="account__actions">
+          @if (saveError()) {
+            <p
+              class="account__feedback account__feedback--error"
+              role="alert"
+            >
+              <span i18n="Error al guardar los datos@@accountSaveError">
+                No pudimos guardar tus datos. Probá de nuevo.
+              </span>
+            </p>
+          }
+
+          <button
+            type="submit"
+            class="account__save"
+            [disabled]="saving()"
+          >
+            @if (saving()) {
+              <span i18n="Botón guardando@@accountSaving">
+                Guardando...
+              </span>
+            } @else {
+              <span aria-hidden="true">✓</span>
+              <span i18n="Botón para guardar los datos@@accountSave">
+                Guardar datos
+              </span>
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</section>

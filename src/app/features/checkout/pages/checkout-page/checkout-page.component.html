@@ -1,0 +1,643 @@
+<section class="checkout container">
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+
+  <div class="checkout__header">
+
+    <div class="checkout__header-content">
+
+      <span
+        class="checkout__eyebrow"
+        i18n="Etiqueta superior del checkout@@checkoutEyebrow"
+      >
+        ZENITHHARDWARE
+      </span>
+
+      <h1
+        i18n="Título principal de la página de checkout@@checkoutTitle"
+      >
+        Finalizar compra
+      </h1>
+
+      <p
+        class="checkout__subtitle"
+        i18n="Descripción principal del checkout@@checkoutSubtitle"
+      >
+        Completá tus datos para confirmar tu pedido.
+      </p>
+
+    </div>
+
+    <div class="checkout__secure">
+
+      <span
+        class="checkout__secure-icon"
+        aria-hidden="true"
+      >
+        🔒
+      </span>
+
+      <div>
+        <strong
+          i18n="Título de compra segura@@checkoutSecureTitle"
+        >
+          Compra segura
+        </strong>
+
+        <span
+          i18n="Descripción de compra segura@@checkoutSecureDescription"
+        >
+          Tus datos están protegidos
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       CARRITO VACÍO
+       ========================================== -->
+
+  @if (cart.items().length === 0) {
+
+    <div class="checkout-empty">
+
+      <div
+        class="checkout-empty__icon"
+        aria-hidden="true"
+      >
+        🛒
+      </div>
+
+      <span
+        class="checkout-empty__eyebrow"
+        i18n="Etiqueta del checkout vacío@@checkoutEmptyEyebrow"
+      >
+        CHECKOUT
+      </span>
+
+      <h2
+        i18n="Título cuando no hay productos para pagar@@checkoutEmptyTitle"
+      >
+        No hay nada para pagar
+      </h2>
+
+      <p
+        i18n="Mensaje cuando el carrito está vacío en checkout@@checkoutEmptyDescription"
+      >
+        Agregá algún producto al carrito antes de continuar.
+      </p>
+
+      <a
+        routerLink="/catalogo"
+        class="btn btn-primary checkout-empty__button"
+        i18n="Botón para volver al catálogo desde checkout@@checkoutViewCatalog"
+      >
+        Ver el catálogo
+      </a>
+
+    </div>
+
+  } @else {
+
+    <!-- ==========================================
+         CHECKOUT
+         ========================================== -->
+
+    <div class="checkout__layout">
+
+      <!-- ========================================
+           FORMULARIO
+           ======================================== -->
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class="checkout-form"
+      >
+
+        <!-- ========================================
+             DATOS DE ENVÍO
+             ======================================== -->
+
+        <div class="checkout-form__section">
+
+          <div class="checkout-form__section-header">
+
+            <div class="checkout-form__step">
+              01
+            </div>
+
+            <div class="checkout-form__section-info">
+
+              <span
+                class="checkout-form__eyebrow"
+                i18n="Etiqueta de datos de envío@@checkoutShippingEyebrow"
+              >
+                ENTREGA
+              </span>
+
+              <h2
+                i18n="Título de la sección de datos de envío@@checkoutShippingData"
+              >
+                Datos de envío
+              </h2>
+
+              <p
+                i18n="Descripción de datos de envío@@checkoutShippingDescription"
+              >
+                ¿Dónde querés recibir tu pedido?
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="checkout-form__fields">
+
+            <!-- NOMBRE -->
+
+            <label class="field">
+
+              <span
+                i18n="Etiqueta del campo nombre completo@@checkoutFullName"
+              >
+                Nombre completo
+              </span>
+
+              <input
+                type="text"
+                formControlName="fullName"
+                autocomplete="name"
+                placeholder="Nombre y apellido"
+                i18n-placeholder="Placeholder del nombre completo@@checkoutFullNamePlaceholder"
+              />
+
+              @if (
+                f.fullName.touched &&
+                f.fullName.invalid
+              ) {
+
+                <small
+                  class="field-error"
+                  i18n="Mensaje de validación para el nombre completo@@checkoutFullNameError"
+                >
+                  Escribí tu nombre y apellido.
+                </small>
+
+              }
+
+            </label>
+
+
+            <!-- DIRECCIÓN -->
+
+            <label class="field">
+
+              <span
+                i18n="Etiqueta del campo dirección@@checkoutAddress"
+              >
+                Dirección
+              </span>
+
+              <input
+                type="text"
+                formControlName="address"
+                autocomplete="street-address"
+                placeholder="Calle y número"
+                i18n-placeholder="Placeholder de dirección@@checkoutAddressPlaceholder"
+              />
+
+              @if (
+                f.address.touched &&
+                f.address.invalid
+              ) {
+
+                <small
+                  class="field-error"
+                  i18n="Mensaje de validación para la dirección@@checkoutAddressError"
+                >
+                  Falta la dirección de entrega.
+                </small>
+
+              }
+
+            </label>
+
+
+            <!-- CIUDAD -->
+
+            <label class="field">
+
+              <span
+                i18n="Etiqueta del campo ciudad@@checkoutCity"
+              >
+                Ciudad
+              </span>
+
+              <input
+                type="text"
+                formControlName="city"
+                autocomplete="address-level2"
+                placeholder="Ciudad"
+                i18n-placeholder="Placeholder de ciudad@@checkoutCityPlaceholder"
+              />
+
+              @if (
+                f.city.touched &&
+                f.city.invalid
+              ) {
+
+                <small
+                  class="field-error"
+                  i18n="Mensaje de validación para la ciudad@@checkoutCityError"
+                >
+                  Falta la ciudad.
+                </small>
+
+              }
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- ========================================
+             PAGO
+             ======================================== -->
+
+        <div class="checkout-form__section">
+
+          <div class="checkout-form__section-header">
+
+            <div class="checkout-form__step">
+              02
+            </div>
+
+            <div class="checkout-form__section-info">
+
+              <span
+                class="checkout-form__eyebrow"
+                i18n="Etiqueta de pago@@checkoutPaymentEyebrow"
+              >
+                PAGO
+              </span>
+
+              <h2
+                i18n="Título de la sección de pago@@checkoutPayment"
+              >
+                Método de pago
+              </h2>
+
+              <p
+                i18n="Descripción del método de pago@@checkoutPaymentDescription"
+              >
+                Ingresá los datos de tu tarjeta.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="payment-card">
+
+            <div class="payment-card__header">
+
+              <span
+                i18n="Etiqueta de tarjeta de crédito@@checkoutCardLabel"
+              >
+                Tarjeta
+              </span>
+
+              <span
+                class="payment-card__brand"
+                aria-hidden="true"
+              >
+                CARD
+              </span>
+
+            </div>
+
+
+            <label class="field">
+
+              <span
+                i18n="Etiqueta del campo número de tarjeta@@checkoutCardNumber"
+              >
+                Número de tarjeta
+              </span>
+
+              <input
+                type="text"
+                formControlName="cardNumber"
+                maxlength="16"
+                inputmode="numeric"
+                autocomplete="cc-number"
+                placeholder="16 dígitos"
+                i18n-placeholder="Placeholder del número de tarjeta@@checkoutCardNumberPlaceholder"
+              />
+
+              @if (
+                f.cardNumber.touched &&
+                f.cardNumber.invalid
+              ) {
+
+                <small
+                  class="field-error"
+                  i18n="Mensaje de validación para el número de tarjeta@@checkoutCardNumberError"
+                >
+                  La tarjeta tiene que tener 16 números, sin espacios.
+                </small>
+
+              }
+
+            </label>
+
+
+            <div class="payment-card__secure">
+
+              <span aria-hidden="true">
+                🔒
+              </span>
+
+              <span
+                i18n="Mensaje de seguridad de pago@@checkoutPaymentSecure"
+              >
+                Tus datos de pago se procesan de forma segura.
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ========================================
+             CONFIRMAR
+             ======================================== -->
+
+        <button
+          type="submit"
+          class="btn btn-primary checkout-form__submit"
+          [disabled]="submitting"
+        >
+
+          @if (submitting) {
+
+            <span
+              i18n="Texto del botón mientras se confirma la compra@@checkoutConfirming"
+            >
+              Confirmando…
+            </span>
+
+          } @else {
+
+            <span
+              i18n="Texto del botón para confirmar la compra@@checkoutConfirm"
+            >
+              Confirmar compra
+            </span>
+
+            <span aria-hidden="true">
+              →
+            </span>
+
+          }
+
+        </button>
+
+      </form>
+
+
+      <!-- ========================================
+           RESUMEN
+           ======================================== -->
+
+      <aside class="checkout-summary">
+
+        <div class="checkout-summary__header">
+
+          <span
+            class="checkout-summary__eyebrow"
+            i18n="Etiqueta superior del resumen del checkout@@checkoutSummaryEyebrow"
+          >
+            TU PEDIDO
+          </span>
+
+          <h2
+            i18n="Título del resumen del pedido@@checkoutOrderSummary"
+          >
+            Resumen del pedido
+          </h2>
+
+        </div>
+
+
+        <!-- PRODUCTOS -->
+
+        <ul class="checkout-summary__items">
+
+          @for (
+            item of cart.items();
+            track item.product.id
+          ) {
+
+            <li>
+
+              <div class="checkout-summary__product">
+
+                <div class="checkout-summary__image">
+
+                  <img
+                    [src]="item.product.imageUrl"
+                    [alt]="item.product.name"
+                  />
+
+                  <span>
+                    {{ item.quantity }}
+                  </span>
+
+                </div>
+
+                <div class="checkout-summary__product-info">
+
+                  <strong>
+                    {{ item.product.name }}
+                  </strong>
+
+                  <small>
+                    {{ item.product.price | usd }}
+
+                    <span
+                      i18n="Texto por unidad del resumen@@checkoutPerUnit"
+                    >
+                      por unidad
+                    </span>
+                  </small>
+
+                </div>
+
+              </div>
+
+              <strong class="checkout-summary__item-total">
+                {{
+                  item.product.price *
+                  item.quantity
+                  | usd
+                }}
+              </strong>
+
+            </li>
+
+          }
+
+        </ul>
+
+
+        <!-- SUBTOTAL -->
+
+        <div class="checkout-summary__row">
+
+          <span
+            i18n="Etiqueta del subtotal del pedido@@checkoutSubtotal"
+          >
+            Subtotal
+          </span>
+
+          <span>
+            {{ subtotal | usd }}
+          </span>
+
+        </div>
+
+
+        <!-- ENVÍO -->
+
+        <div class="checkout-summary__row">
+
+          <span
+            i18n="Etiqueta del costo de envío en checkout@@checkoutShipping"
+          >
+            Envío
+          </span>
+
+          @if (costoEnvio === 0) {
+
+            <span class="checkout-summary__free">
+
+              <span aria-hidden="true">
+                ✓
+              </span>
+
+              <span
+                i18n="Indica que el envío no tiene costo@@checkoutFreeShipping"
+              >
+                Gratis
+              </span>
+
+            </span>
+
+          } @else {
+
+            <span>
+              {{ costoEnvio | usd }}
+            </span>
+
+          }
+
+        </div>
+
+
+        <!-- ENVÍO GRATIS -->
+
+        @if (
+          subtotal > 0 &&
+          subtotal < UMBRAL_ENVIO
+        ) {
+
+          <div class="checkout-summary__shipping-hint">
+
+            <span aria-hidden="true">
+              🚚
+            </span>
+
+            <p
+              i18n="Mensaje sobre envío gratis en checkout@@checkoutFreeShippingHint"
+            >
+              Te faltan
+              {{ (UMBRAL_ENVIO - subtotal) | usd }}
+              para obtener envío gratis.
+            </p>
+
+          </div>
+
+        } @else if (
+          subtotal >= UMBRAL_ENVIO
+        ) {
+
+          <div class="checkout-summary__shipping-success">
+
+            <span aria-hidden="true">
+              ✓
+            </span>
+
+            <span
+              i18n="Mensaje de envío gratis alcanzado en checkout@@checkoutFreeShippingSuccess"
+            >
+              Tenés envío gratis.
+            </span>
+
+          </div>
+
+        }
+
+
+        <!-- TOTAL -->
+
+        <div class="checkout-summary__total">
+
+          <span
+            i18n="Etiqueta del total de la compra@@checkoutTotal"
+          >
+            Total
+          </span>
+
+          <strong>
+            {{ totalFinal | usd }}
+          </strong>
+
+        </div>
+
+
+        <!-- SEGURIDAD -->
+
+        <div class="checkout-summary__secure">
+
+          <span aria-hidden="true">
+            🔒
+          </span>
+
+          <span
+            i18n="Mensaje de compra segura del resumen@@checkoutSummarySecure"
+          >
+            Compra segura y protegida
+          </span>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  }
+
+</section>

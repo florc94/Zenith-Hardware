@@ -1,0 +1,320 @@
+<section class="admin-page user-detail-page">
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+
+  <div class="user-detail__header">
+
+    <div>
+
+      <a
+        class="user-detail__back"
+        routerLink="/admin/users"
+      >
+        ← Volver a usuarios
+      </a>
+
+      <span class="user-detail__eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h1>
+        Detalle de usuario
+      </h1>
+
+      <p>
+        Información de la cuenta y actividad de compras.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       LOADING
+       ========================================== -->
+
+  @if (loading()) {
+
+    <div class="user-detail__state">
+      Cargando usuario...
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       ERROR
+       ========================================== -->
+
+  @if (!loading() && error()) {
+
+    <div class="user-detail__state user-detail__state--error">
+
+      {{ error() }}
+
+      <a
+        class="user-detail__button"
+        routerLink="/admin/users"
+      >
+        Volver a usuarios
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       CONTENIDO
+       ========================================== -->
+
+  @if (!loading() && !error() && user(); as u) {
+
+    <div class="user-detail__grid">
+
+      <!-- PERFIL -->
+
+      <article class="user-detail-card">
+
+        <div class="user-detail-card__header">
+
+          <div>
+            <span class="user-detail-card__label">
+              Perfil
+            </span>
+
+            <h2>
+              Datos de la cuenta
+            </h2>
+          </div>
+
+          <span
+            class="user-detail__role"
+            [class.user-detail__role--admin]="u.role === 'admin'"
+          >
+            {{ u.role === 'admin' ? 'Admin' : 'Usuario' }}
+          </span>
+
+        </div>
+
+
+        <div class="user-detail-profile">
+
+          <div class="user-detail-profile__avatar">
+            {{ u.name.charAt(0).toUpperCase() }}
+          </div>
+
+          <div>
+            <h2>{{ u.name }}</h2>
+            <p>{{ u.email }}</p>
+          </div>
+
+        </div>
+
+
+        <div class="user-detail-info">
+
+          <div>
+            <span>ID</span>
+            <strong>#{{ u.id }}</strong>
+          </div>
+
+          <div>
+            <span>Registro</span>
+            <strong>
+              {{ u.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- ACTIVIDAD -->
+
+      <article class="user-detail-card">
+
+        <div class="user-detail-card__header">
+
+          <div>
+            <span class="user-detail-card__label">
+              Actividad
+            </span>
+
+            <h2>
+              Estadísticas
+            </h2>
+          </div>
+
+        </div>
+
+
+        <div class="user-detail-stats">
+
+          <div class="user-detail-stat">
+            <span>Pedidos</span>
+            <strong>{{ u.orderCount }}</strong>
+          </div>
+
+          <div class="user-detail-stat">
+            <span>Total gastado</span>
+            <strong>{{ u.totalSpent | currency }}</strong>
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ÚLTIMO PEDIDO -->
+
+    @if (u.orders && u.orders.length > 0) {
+
+      <article class="user-detail-card">
+
+        <div class="user-detail-card__header">
+
+          <div>
+            <span class="user-detail-card__label">
+              Más reciente
+            </span>
+
+            <h2>
+              Último pedido
+            </h2>
+          </div>
+
+        </div>
+
+
+        <div class="user-detail-order">
+
+          <div>
+            <span>Pedido</span>
+            <strong>#{{ u.orders[0].id }}</strong>
+          </div>
+
+          <div>
+            <span>Fecha</span>
+            <strong>
+              {{ u.orders[0].createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Estado</span>
+            <span
+              class="user-detail__status"
+              [class]="'user-detail__status user-detail__status--' + getStatusClass(u.orders[0].status)"
+            >
+              {{ getStatusLabel(u.orders[0].status) }}
+            </span>
+          </div>
+
+          <div>
+            <span>Total</span>
+            <strong>{{ u.orders[0].total | currency }}</strong>
+          </div>
+
+        </div>
+
+      </article>
+
+    }
+
+
+    <!-- HISTORIAL DE PEDIDOS -->
+
+    <article class="user-detail-card">
+
+      <div class="user-detail-card__header">
+
+        <div>
+          <span class="user-detail-card__label">
+            Historial
+          </span>
+
+          <h2>
+            Pedidos
+          </h2>
+        </div>
+
+        <span class="user-detail-card__count">
+          {{ u.orders.length }}
+        </span>
+
+      </div>
+
+
+      @if (u.orders && u.orders.length > 0) {
+
+        <div class="user-orders-table-wrapper">
+
+          <table class="user-orders-table">
+
+            <thead>
+
+              <tr>
+                <th>Pedido</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Total</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              @for (order of u.orders; track order.id) {
+
+                <tr>
+
+                  <td data-label="Pedido">
+                    #{{ order.id }}
+                  </td>
+
+                  <td data-label="Fecha">
+                    {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                  </td>
+
+                  <td data-label="Estado">
+                    <span
+                      [class]="'user-detail__status user-detail__status--' + getStatusClass(order.status)"
+                    >
+                      {{ getStatusLabel(order.status) }}
+                    </span>
+                  </td>
+
+                  <td data-label="Total">
+                    {{ order.total | currency }}
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      } @else {
+
+        <div class="user-detail__empty">
+          Este usuario todavía no realizó pedidos.
+        </div>
+
+      }
+
+    </article>
+
+  }
+
+</section>

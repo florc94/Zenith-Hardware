@@ -1,0 +1,110 @@
+<div class="page-container">
+  <div class="faq-content-wrapper">
+
+    <!-- Encabezado -->
+    <div class="page-header">
+
+      <p
+        class="eyebrow"
+        i18n="Categoría de la página de preguntas frecuentes@@faqEyebrow"
+      >
+        Ayuda y Soporte
+      </p>
+
+      <h1 i18n="Título de la página de preguntas frecuentes@@faqTitle">
+        Preguntas Frecuentes
+      </h1>
+
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="field search-box">
+
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Buscar preguntas (ej. envío, devoluciones)..."
+        i18n-placeholder="Placeholder del buscador de preguntas frecuentes@@faqSearchPlaceholder"
+      />
+
+    </div>
+
+    <!-- Listado de FAQs o mensaje si no hay resultados -->
+    @if (filteredFaqs().length === 0) {
+
+      <p
+        class="no-results"
+        i18n="Mensaje mostrado cuando no se encuentran preguntas coincidentes@@faqNoResults"
+      >
+        No se encontraron preguntas coincidentes. ¡Probá con otro término o contactanos abajo!
+      </p>
+
+    } @else {
+
+      <div class="faq-list">
+
+        @for (item of filteredFaqs(); track item.q; let index = $index) {
+
+          <div
+            class="order-card faq-item"
+            (click)="toggleAccordion(index)"
+          >
+
+            <div class="faq-question-row">
+
+              <p class="faq-q-text">
+                {{ item.q }}
+              </p>
+
+              <span class="faq-toggle-icon">
+                {{ openIndex() === index ? '−' : '+' }}
+              </span>
+
+            </div>
+
+            @if (openIndex() === index) {
+
+              <p class="faq-answer-text">
+                {{ item.a }}
+              </p>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+    <!-- CTA de Soporte -->
+    <div class="order-card support-card">
+
+      <p
+        class="support-title"
+        i18n="Pregunta del bloque de soporte de preguntas frecuentes@@faqSupportTitle"
+      >
+        ¿Todavía tenés dudas?
+      </p>
+
+      <p
+        class="support-subtitle"
+        i18n="Descripción del bloque de soporte de preguntas frecuentes@@faqSupportDescription"
+      >
+        ¿No encontrás lo que buscás? Comunicate directamente con nuestro equipo de atención.
+      </p>
+
+      <a
+        href="mailto:soporte@zenithhardware.com?subject=Consulta%20sobre%20mi%20pedido"
+        class="btn btn-sm btn-primary"
+        i18n="Botón para contactar al soporte@@faqContactSupport"
+      >
+        Contactar soporte →
+      </a>
+
+    </div>
+
+  </div>
+</div>

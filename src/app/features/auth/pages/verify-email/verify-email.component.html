@@ -1,0 +1,113 @@
+@if (showContactModal) {
+  <div class="contact-overlay" role="presentation">
+    <div
+      class="contact-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="contact-title"
+    >
+      <h2 id="contact-title" class="contact-modal__title">
+        Por favor completa tus datos
+      </h2>
+
+      <p class="contact-modal__text">
+        Necesitamos tu código de área, teléfono y DNI o CUIL
+        para que puedas realizar compras.
+      </p>
+
+      <form
+        [formGroup]="contactForm"
+        (ngSubmit)="saveContact()"
+        novalidate
+      >
+        <div class="contact-row">
+          <div
+            class="contact-field contact-field--small"
+            [class.contact-field--invalid]="isInvalid('phoneArea')"
+          >
+            <label for="vc-area">Código de área *</label>
+            <input
+              id="vc-area"
+              type="text"
+              inputmode="numeric"
+              autocomplete="tel-area-code"
+              maxlength="5"
+              formControlName="phoneArea"
+            />
+            @if (isInvalid('phoneArea')) {
+              <span class="contact-field__error">
+                Ingresá un código de área válido, solo números.
+              </span>
+            }
+          </div>
+
+          <div
+            class="contact-field"
+            [class.contact-field--invalid]="isInvalid('phone')"
+          >
+            <label for="vc-phone">Teléfono de contacto *</label>
+            <input
+              id="vc-phone"
+              type="tel"
+              inputmode="numeric"
+              autocomplete="tel-national"
+              maxlength="10"
+              formControlName="phone"
+            />
+            @if (isInvalid('phone')) {
+              <span class="contact-field__error">
+                Ingresá un teléfono válido, sin el código de área.
+              </span>
+            }
+          </div>
+        </div>
+
+        <div
+          class="contact-field"
+          [class.contact-field--invalid]="isInvalid('document')"
+        >
+          <label for="vc-doc">DNI o CUIL *</label>
+          <input
+            id="vc-doc"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="11"
+            placeholder="DNI de 7-8 dígitos o CUIL de 11"
+            formControlName="document"
+          />
+          @if (isInvalid('document')) {
+            <span class="contact-field__error">
+              Ingresá un DNI de 7 u 8 números o un CUIL de 11.
+            </span>
+          }
+        </div>
+
+        @if (contactError) {
+          <p class="contact-modal__error" role="alert">
+            {{ contactError }}
+          </p>
+        }
+
+        <div class="contact-modal__actions">
+          <button
+            type="button"
+            class="contact-modal__skip"
+            (click)="skipContact()"
+            [disabled]="savingContact"
+          >
+            Completar más tarde
+          </button>
+
+          <button
+            type="submit"
+            class="contact-modal__save"
+            [disabled]="savingContact"
+          >
+            {{ savingContact ? 'Guardando...' : 'Guardar datos' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

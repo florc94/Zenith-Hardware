@@ -1,0 +1,836 @@
+/* =========================================================
+   BARRA FLOTANTE DEL COMPARADOR
+   ========================================================= */
+
+:host {
+  --bar-surface: #11131c;
+  --bar-surface-2: #181b27;
+  --bar-border: #262a3b;
+
+  --bar-text: #f4f5fb;
+  --bar-muted: #aab0c6;
+
+  --bar-accent-rgb: 57, 255, 143;
+  --bar-accent-2-rgb: 0, 209, 255;
+
+  --bar-on-accent: #04110a;
+
+  --bar-accent: rgb(var(--bar-accent-rgb));
+  --bar-accent-2: rgb(var(--bar-accent-2-rgb));
+
+  --bar-grad:
+    linear-gradient(
+      135deg,
+      var(--bar-accent),
+      var(--bar-accent-2)
+    );
+
+  --bar-warning: #ffb02e;
+  --bar-heart-rgb: 255, 77, 141;
+}
+
+
+/* =========================================================
+   ANIMACIÓN
+   ========================================================= */
+
+@keyframes bar-in {
+
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+button:focus-visible {
+  outline: 2px solid var(--bar-accent-2);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   BARRA
+   ========================================================= */
+
+.bar {
+  position: fixed;
+
+  bottom: 1rem;
+  left: 50%;
+
+  z-index: 40;
+
+  width: min(
+    960px,
+    calc(100% - 7.5rem)
+  );
+
+  padding: 0.75rem 1rem;
+
+  background: rgba(17, 19, 28, 0.94);
+
+  border: 1px solid
+    rgba(
+      var(--bar-accent-2-rgb),
+      0.45
+    );
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    0 0 28px
+      rgba(
+        var(--bar-accent-2-rgb),
+        0.15
+      );
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  color: var(--bar-text);
+
+  transform: translateX(-50%);
+
+  animation:
+    bar-in 0.25s ease-out;
+}
+
+
+/* =========================================================
+   AVISO
+   ========================================================= */
+
+.bar__notice {
+
+  margin: 0 0 0.65rem;
+
+  padding: 0.55rem 0.8rem;
+
+  border: 1px solid
+    rgba(255, 176, 46, 0.45);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 176, 46, 0.1);
+
+  color: var(--bar-warning);
+
+  font-size: 0.82rem;
+  font-weight: 600;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   FILA PRINCIPAL
+   ========================================================= */
+
+.bar__inner {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   CONTADOR
+   ========================================================= */
+
+.bar__title {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.25rem;
+
+  flex: 0 0 auto;
+
+  min-width: 48px;
+}
+
+
+.bar__title strong {
+
+  color: var(--bar-accent);
+
+  font-size: 1.05rem;
+
+  line-height: 1;
+}
+
+
+.bar__category {
+
+  max-width: 130px;
+
+  overflow: hidden;
+
+  color: var(--bar-accent-2);
+
+  font-size: 0.62rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-overflow: ellipsis;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   PRODUCTOS
+   ========================================================= */
+
+.bar__items {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  margin: 0;
+
+  padding: 0;
+
+  overflow-x: auto;
+
+  list-style: none;
+
+  scrollbar-width: none;
+}
+
+
+.bar__items::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* =========================================================
+   PRODUCTO
+   ========================================================= */
+
+.bar__item {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  flex: 0 1 190px;
+
+  min-width: 0;
+
+  padding:
+    0.35rem
+    1.9rem
+    0.35rem
+    0.35rem;
+
+  border: 1px solid var(--bar-border);
+
+  border-radius: 12px;
+
+  background:
+    var(--bar-surface-2);
+}
+
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+
+.bar__thumb {
+
+  display: block;
+
+  flex: 0 0 44px;
+
+  width: 44px;
+  height: 44px;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background: #fff;
+}
+
+
+.bar__thumb img {
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 2px;
+
+  box-sizing: border-box;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   NOMBRE
+   ========================================================= */
+
+.bar__name {
+
+  display: -webkit-box;
+
+  overflow: hidden;
+
+  color: var(--bar-text);
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  line-clamp: 2;
+}
+
+
+/* =========================================================
+   QUITAR
+   ========================================================= */
+
+.bar__remove {
+
+  position: absolute;
+
+  top: 50%;
+  right: 0.4rem;
+
+  display: grid;
+
+  place-items: center;
+
+  width: 22px;
+  height: 22px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: var(--bar-muted);
+
+  font-size: 1.1rem;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+.bar__remove:hover {
+
+  background:
+    rgba(
+      var(--bar-heart-rgb),
+      0.16
+    );
+
+  color:
+    rgb(var(--bar-heart-rgb));
+}
+
+
+/* =========================================================
+   SLOTS VACÍOS
+   ========================================================= */
+
+.bar__slot {
+
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 52px;
+
+  height: 52px;
+
+  border:
+    1px dashed
+    var(--bar-border);
+
+  border-radius: 12px;
+
+  color: var(--bar-muted);
+
+  font-size: 1.2rem;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.bar__actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  flex: 0 0 auto;
+}
+
+
+/* =========================================================
+   LIMPIAR
+   ========================================================= */
+
+.bar__clear {
+
+  padding:
+    0.5rem
+    0.4rem;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--bar-muted);
+
+  font-family: inherit;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+.bar__clear:hover {
+  color: #ff5a6e;
+}
+
+
+/* =========================================================
+   COMPARAR
+   ========================================================= */
+
+.bar__cta {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  min-height: 44px;
+
+  padding:
+    0 1.2rem;
+
+  border: 0;
+
+  border-radius: 999px;
+
+  background:
+    var(--bar-grad);
+
+  color: var(--bar-on-accent);
+
+  font-family: inherit;
+
+  font-size: 0.85rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    opacity 0.2s ease;
+}
+
+
+.bar__cta:hover:not(:disabled) {
+
+  transform: translateY(-2px);
+
+  filter:
+    brightness(1.12)
+    drop-shadow(
+      0 0 12px
+      rgba(
+        var(--bar-accent-rgb),
+        0.5
+      )
+    );
+}
+
+
+.bar__cta:disabled {
+
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .bar {
+    width:
+      min(
+        700px,
+        calc(100% - 6rem)
+      );
+  }
+
+
+  .bar__name {
+    display: none;
+  }
+
+
+  .bar__item {
+
+    flex: 0 0 auto;
+
+    padding-right: 1.8rem;
+  }
+
+
+  .bar__category {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .bar {
+
+    bottom: 0.6rem;
+
+    left: 0.6rem;
+
+    right: 4.8rem;
+
+    width: auto;
+
+    padding:
+      0.6rem
+      0.7rem;
+
+    border-radius: 16px;
+
+    transform: none;
+
+    animation: none;
+  }
+
+
+  .bar__inner {
+
+    gap: 0.55rem;
+  }
+
+
+  .bar__title {
+
+    min-width: 42px;
+  }
+
+
+  .bar__title strong {
+
+    font-size: 0.9rem;
+  }
+
+
+  .bar__items {
+
+    gap: 0.45rem;
+  }
+
+
+  .bar__thumb {
+
+    flex-basis: 38px;
+
+    width: 38px;
+    height: 38px;
+  }
+
+
+  .bar__item {
+
+    padding:
+      0.3rem
+      1.65rem
+      0.3rem
+      0.3rem;
+
+    border-radius: 10px;
+  }
+
+
+  .bar__remove {
+
+    right: 0.25rem;
+
+    width: 20px;
+    height: 20px;
+
+    font-size: 1rem;
+  }
+
+
+  .bar__slot {
+    display: none;
+  }
+
+
+  .bar__clear {
+    display: none;
+  }
+
+
+  .bar__cta {
+
+    min-height: 40px;
+
+    padding:
+      0 0.75rem;
+
+    font-size: 0.7rem;
+
+    letter-spacing: 0.02em;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .bar {
+
+    right: 4.5rem;
+
+    padding:
+      0.5rem
+      0.55rem;
+
+    border-radius: 14px;
+  }
+
+
+  .bar__inner {
+
+    gap: 0.4rem;
+  }
+
+
+  .bar__title {
+
+    min-width: 38px;
+  }
+
+
+  .bar__title strong {
+
+    font-size: 0.82rem;
+  }
+
+
+  .bar__items {
+
+    gap: 0.35rem;
+  }
+
+
+  .bar__thumb {
+
+    flex-basis: 34px;
+
+    width: 34px;
+    height: 34px;
+  }
+
+
+  .bar__item {
+
+    padding:
+      0.25rem
+      1.45rem
+      0.25rem
+      0.25rem;
+  }
+
+
+  .bar__remove {
+
+    right: 0.2rem;
+
+    width: 18px;
+    height: 18px;
+
+    font-size: 0.9rem;
+  }
+
+
+  .bar__cta {
+
+    min-height: 36px;
+
+    padding:
+      0 0.65rem;
+
+    font-size: 0.65rem;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE MUY PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .bar {
+
+    right: 4.2rem;
+
+    padding:
+      0.45rem
+      0.5rem;
+  }
+
+
+  .bar__title {
+
+    min-width: 34px;
+  }
+
+
+  .bar__title strong {
+
+    font-size: 0.78rem;
+  }
+
+
+  .bar__thumb {
+
+    flex-basis: 32px;
+
+    width: 32px;
+    height: 32px;
+  }
+
+
+  .bar__item {
+
+    padding-right: 1.3rem;
+  }
+
+
+  .bar__cta {
+
+    min-height: 34px;
+
+    padding:
+      0 0.55rem;
+
+    font-size: 0.6rem;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCIR MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .bar {
+    animation: none;
+  }
+
+
+  .bar__remove,
+  .bar__clear,
+  .bar__cta {
+
+    transition: none;
+  }
+
+}

@@ -1,0 +1,367 @@
+/* =========================================================
+   PALETA GAMING
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.25);
+
+  --danger: #ff5a6e;
+}
+
+/* =========================================================
+   CONFIRM DIALOG
+   ========================================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1.5rem;
+
+  background: rgba(8, 9, 15, 0.78);
+  backdrop-filter: blur(6px);
+
+  z-index: 4000;
+
+  animation: overlay-in 0.18s ease-out;
+}
+
+/* =========================================================
+   DIALOG
+   ========================================================= */
+
+.dialog {
+  width: 100%;
+  max-width: 380px;
+
+  padding: 1.5rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24, 27, 39, 0.98),
+      rgba(17, 19, 28, 0.98)
+    );
+
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 35px rgba(var(--accent-rgb), 0.08);
+
+  color: var(--text);
+
+  animation: dialog-in 0.2s ease-out;
+
+  h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  p {
+    margin: 0.75rem 0 1.5rem;
+
+    color: var(--muted);
+
+    font-size: var(--size-sm);
+    line-height: 1.6;
+  }
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 0.75rem;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+  min-height: 42px;
+
+  padding: 0.65rem 1rem;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.btn-outline {
+  color: var(--text);
+
+  background: transparent;
+  border-color: var(--border-strong);
+
+  &:hover {
+    background: var(--surface-2);
+    border-color: var(--accent-2);
+    color: var(--accent-2);
+  }
+}
+
+.btn-primary {
+  color: #08090f;
+
+  background: var(--accent);
+  border-color: var(--accent);
+
+  &:hover {
+    box-shadow: var(--glow);
+  }
+}
+
+.btn-danger {
+  color: #fff;
+
+  background: var(--danger);
+  border-color: var(--danger);
+
+  &:hover {
+    box-shadow: 0 0 24px rgba(255, 90, 110, 0.25);
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .overlay {
+    padding: 1rem;
+  }
+
+  .dialog {
+    max-width: 100%;
+    padding: 1.25rem;
+
+    border-radius: 12px;
+
+    h2 {
+      font-size: 1.05rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  .dialog__actions {
+    gap: 0.6rem;
+  }
+
+  .btn {
+    min-height: 40px;
+    padding: 0.6rem 0.9rem;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .overlay {
+    align-items: flex-end;
+
+    padding: 0.75rem;
+  }
+
+  .dialog {
+    width: 100%;
+    max-width: none;
+
+    padding: 1.15rem;
+
+    border-radius: 14px 14px 10px 10px;
+
+    h2 {
+      font-size: 1rem;
+    }
+
+    p {
+      margin: 0.65rem 0 1.15rem;
+
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+  }
+
+  .dialog__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   350px – 380px
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .overlay {
+    padding: 0.6rem;
+  }
+
+  .dialog {
+    padding: 1rem;
+
+    h2 {
+      font-size: 0.95rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+  }
+
+  .dialog__actions {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    min-height: 38px;
+
+    padding: 0.55rem 0.7rem;
+
+    font-size: 0.8rem;
+  }
+}
+
+/* =========================================================
+   EXTREMELY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 340px) {
+  .overlay {
+    padding: 0.5rem;
+  }
+
+  .dialog {
+    padding: 0.9rem;
+
+    h2 {
+      font-size: 0.9rem;
+    }
+
+    p {
+      font-size: 0.78rem;
+    }
+  }
+
+  .dialog__actions {
+    grid-template-columns: 1fr;
+
+    gap: 0.5rem;
+  }
+
+  .btn {
+    min-height: 38px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .dialog {
+    animation: none;
+  }
+
+  .btn {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

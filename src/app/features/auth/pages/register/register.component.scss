@@ -1,0 +1,405 @@
+/* =========================================================
+   ZENITHHARDWARE — LOGIN
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --glow: 0 0 28px rgba(var(--accent-rgb), 0.3);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+.login {
+  min-height: 70vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3rem 1.5rem;
+
+  color: var(--text);
+
+  &__panel {
+    width: 100%;
+    max-width: 400px;
+
+    padding: 2.25rem 2rem;
+
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(var(--accent-rgb), 0.12),
+        transparent 60%
+      ),
+      var(--surface);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    border-radius: 20px;
+
+    box-shadow:
+      var(--glow),
+      0 20px 50px rgba(0, 0, 0, 0.5);
+
+    box-sizing: border-box;
+
+    h1,
+    h2 {
+      margin: 0;
+
+      color: #ffffff;
+
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(1.7rem, 4vw, 2rem);
+      line-height: 1.15;
+    }
+  }
+
+  &__note {
+    margin: 0.9rem 0 1.75rem;
+
+    padding: 0.7rem 0.8rem;
+
+    font-size: 0.85rem;
+    line-height: 1.5;
+
+    color: var(--muted);
+
+    background: rgba(var(--accent-2-rgb), 0.08);
+
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 8px 8px 0;
+
+    overflow-wrap: anywhere;
+
+    code {
+      font-family: var(--font-body);
+
+      background: var(--bg);
+
+      border: 1px solid var(--border-strong);
+
+      padding: 0.05rem 0.4rem;
+
+      border-radius: 4px;
+
+      color: var(--accent);
+
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.1rem;
+  }
+
+  &__skip {
+    display: block;
+
+    margin-top: 1.5rem;
+
+    text-align: center;
+
+    font-size: 0.9rem;
+    line-height: 1.45;
+
+    color: var(--muted);
+
+    transition:
+      color 0.2s ease,
+      opacity 0.2s ease;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.45rem;
+
+  min-width: 0;
+
+  span {
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    color: var(--text);
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    padding: 0.8rem 0.9rem;
+
+    font: inherit;
+    font-size: 0.95rem;
+
+    color: var(--text);
+
+    background: var(--surface-2);
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    outline: none;
+
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+
+    &::placeholder {
+      color: rgba(170, 176, 198, 0.55);
+    }
+
+    &:hover {
+      border-color: var(--border-strong);
+    }
+
+    &:focus {
+      border-color: var(--accent-2);
+
+      box-shadow:
+        0 0 0 3px rgba(var(--accent-2-rgb), 0.1),
+        0 0 18px rgba(var(--accent-2-rgb), 0.08);
+
+      background: #1b1e2b;
+    }
+  }
+}
+
+/* =========================================================
+   ERRORES
+   ========================================================= */
+
+.field-error {
+  display: block;
+
+  margin-top: 0.05rem;
+
+  font-size: 0.78rem;
+  line-height: 1.4;
+
+  color: #ff6b81;
+}
+
+/* =========================================================
+   BOTÓN
+   ========================================================= */
+
+.btn {
+  width: 100%;
+
+  min-height: 46px;
+
+  border: 0;
+  border-radius: 9px;
+
+  font: inherit;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+
+    transform: none;
+  }
+}
+
+.btn-primary {
+  color: #07100b;
+
+  background: var(--accent);
+
+  box-shadow:
+    0 0 20px rgba(var(--accent-rgb), 0.18);
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 0 28px rgba(var(--accent-rgb), 0.32);
+  }
+
+  &:not(:disabled):active {
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   TABLET / MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .login {
+    min-height: auto;
+
+    padding: 2.5rem 1.25rem;
+
+    &__panel {
+      max-width: 440px;
+
+      padding: 2rem 1.5rem;
+
+      border-radius: 18px;
+    }
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .login {
+    padding: 2rem 1rem;
+
+    &__panel {
+      padding: 1.75rem 1.25rem;
+
+      border-radius: 16px;
+
+      box-shadow:
+        0 0 20px rgba(var(--accent-rgb), 0.18),
+        0 14px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    &__note {
+      margin-top: 0.75rem;
+      margin-bottom: 1.5rem;
+
+      font-size: 0.8rem;
+    }
+
+    &__form {
+      gap: 1rem;
+    }
+
+    &__skip {
+      margin-top: 1.25rem;
+
+      font-size: 0.85rem;
+    }
+  }
+
+  .field {
+    gap: 0.4rem;
+
+    span {
+      font-size: 0.85rem;
+    }
+
+    input {
+      min-height: 44px;
+
+      padding: 0.72rem 0.8rem;
+
+      font-size: 0.9rem;
+    }
+  }
+
+  .btn {
+    min-height: 44px;
+  }
+}
+
+/* =========================================================
+   MOBILE PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .login {
+    padding: 1.5rem 0.75rem;
+
+    &__panel {
+      padding: 1.5rem 1rem;
+
+      border-radius: 14px;
+    }
+
+    &__note {
+      padding: 0.6rem 0.7rem;
+
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
+    &__skip {
+      font-size: 0.8rem;
+    }
+  }
+
+  .field {
+    input {
+      min-height: 42px;
+
+      padding: 0.65rem 0.75rem;
+    }
+  }
+
+  .btn {
+    min-height: 42px;
+  }
+}
+
+/* =========================================================
+   REDUCIR ANIMACIONES
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .field input,
+  .login__skip {
+    transition: none;
+  }
+
+  .btn-primary:not(:disabled):hover {
+    transform: none;
+  }
+}

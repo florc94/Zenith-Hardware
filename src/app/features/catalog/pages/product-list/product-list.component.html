@@ -1,0 +1,528 @@
+<div class="catalog">
+
+  <!-- =====================================================
+       HERO DEL CATÁLOGO
+       ===================================================== -->
+
+  <section class="catalog__hero">
+
+    <div class="container">
+
+      <div class="catalog__hero-content">
+
+        <span
+          class="catalog__eyebrow"
+          i18n="Etiqueta superior del catálogo@@catalogEyebrow"
+        >
+          ZENITH-HARDWARE · CATÁLOGO
+        </span>
+
+        <h1 i18n="Título principal del catálogo@@catalogTitle">
+          Todo lo que buscás, en un solo lugar.
+        </h1>
+
+        <p
+          class="catalog__lede"
+          i18n="Descripción principal del catálogo@@catalogDescription"
+        >
+          Explorá nuestra selección de productos y encontrá exactamente lo que necesitás.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="container catalog__content">
+
+    <!-- =====================================================
+         LAYOUT
+         (el buscador vive en el navbar)
+         ===================================================== -->
+
+    <div class="catalog__layout">
+
+
+      <!-- ===================================================
+           SIDEBAR
+           =================================================== -->
+
+      <aside class="sidebar">
+
+        <h2
+          class="sidebar__title"
+          i18n="Título del panel de categorías@@catalogSidebarTitle"
+        >
+          Categorías
+        </h2>
+
+        <ul class="sidebar__list">
+
+          <!-- TODAS -->
+
+          <li>
+
+            <button
+              type="button"
+              class="sidebar__item"
+              [class.sidebar__item--active]="selectedCategory === ''"
+              (click)="selectCategory('')"
+            >
+
+              <span class="sidebar__radio"></span>
+
+              <span
+                i18n="Opción para ver todas las categorías@@catalogSidebarAll"
+              >
+                Todas
+              </span>
+
+            </button>
+
+          </li>
+
+
+          <!-- CATEGORÍAS -->
+
+          @for (cat of categories(); track cat) {
+
+            <li>
+
+              <button
+                type="button"
+                class="sidebar__item"
+                [class.sidebar__item--active]="selectedCategory === cat"
+                (click)="selectCategory(cat)"
+              >
+
+                <span class="sidebar__radio"></span>
+
+                <span>{{ cat }}</span>
+
+              </button>
+
+            </li>
+
+          }
+
+        </ul>
+
+      </aside>
+
+
+      <!-- ===================================================
+           COLUMNA PRINCIPAL
+           =================================================== -->
+
+      <div class="catalog__main">
+
+
+        <!-- =================================================
+             BÚSQUEDA ACTIVA
+             Solo aparece cuando se llegó con ?search=...
+             ================================================= -->
+
+        @if (search.trim()) {
+
+          <div class="catalog__search-chip">
+
+            <span>
+
+              <span
+                i18n="Texto previo al término buscado@@catalogResultsFor"
+              >
+                Resultados para
+              </span>
+
+              "<strong>{{ search.trim() }}</strong>"
+
+            </span>
+
+            <button
+              type="button"
+              class="catalog__search-clear"
+              aria-label="Quitar búsqueda"
+              i18n-aria-label="Botón para quitar la búsqueda activa@@catalogClearSearch"
+              (click)="clearSearch()"
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+
+          </div>
+
+        }
+
+
+        <!-- =================================================
+             TOOLBAR
+             ================================================= -->
+
+        <section class="catalog__toolbar">
+
+          <div class="catalog__results">
+
+            <span
+              class="catalog__results-label"
+              i18n="Etiqueta de cantidad de productos@@catalogProductsLabel"
+            >
+              Productos
+            </span>
+
+            <strong>{{ total() }}</strong>
+
+          </div>
+
+
+          <div class="catalog__filters">
+
+            <label class="catalog__select">
+
+              <span
+                class="visually-hidden"
+                i18n="Etiqueta accesible del filtro de orden@@catalogSortLabel"
+              >
+                Orden
+              </span>
+
+              <select
+                class="control"
+                [(ngModel)]="sortBy"
+                (ngModelChange)="onFilterChange()"
+              >
+
+                <option
+                  value=""
+                  i18n="Opción de orden sugerido@@catalogSuggestedOrder"
+                >
+                  Orden sugerido
+                </option>
+
+                <option
+                  value="price-asc"
+                  i18n="Ordenar productos del más barato al más caro@@catalogPriceAsc"
+                >
+                  Más barato primero
+                </option>
+
+                <option
+                  value="price-desc"
+                  i18n="Ordenar productos del más caro al más barato@@catalogPriceDesc"
+                >
+                  Más caro primero
+                </option>
+
+                <option
+                  value="name"
+                  i18n="Ordenar productos por nombre@@catalogNameOrder"
+                >
+                  Por nombre
+                </option>
+
+              </select>
+
+            </label>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SIN RESULTADOS
+             ================================================= -->
+
+        @if (products().length === 0) {
+
+          <div class="catalog__empty">
+
+            <div class="catalog__empty-icon">◌</div>
+
+            <h2
+              i18n="Título cuando no hay productos que coincidan@@catalogNoResults"
+            >
+              Nada coincide con esa búsqueda
+            </h2>
+
+            <p
+              i18n="Mensaje cuando no hay productos que coincidan con los filtros@@catalogNoResultsDescription"
+            >
+              Probá con otra palabra o quitá los filtros para ver el catálogo completo.
+            </p>
+
+          </div>
+
+        } @else {
+
+
+          <!-- =================================================
+               PRODUCTOS
+               ================================================= -->
+
+          <ul class="catalog__grid">
+
+            @for (product of products(); track product.id) {
+
+              <li class="tile">
+
+
+                <!-- =========================================
+                     PRODUCTO (link al detalle)
+                     ========================================= -->
+
+                <a
+                  [routerLink]="[getCatalogRoute(), product.id]"
+                  class="tile__link"
+                >
+
+                  <div class="tile__frame">
+
+                    <img
+                      [src]="product.imageUrl"
+                      [alt]="product.name"
+                      loading="lazy"
+                    />
+
+                    <!-- CATEGORÍA (arriba a la izquierda) -->
+
+                    <span class="tile__category-badge">
+                      {{ product.category }}
+                    </span>
+
+                    <!-- SIN STOCK (abajo a la izquierda) -->
+
+                    @if (product.stock === 0) {
+
+                      <span
+                        class="tile__sold"
+                        i18n="Indicador de producto sin stock@@catalogOutOfStock"
+                      >
+                        Sin stock
+                      </span>
+
+                    }
+
+                    <!-- PRECIO (abajo a la derecha) -->
+
+                    <span class="price-tag tile__price">
+                      {{ product.price | usd }}
+                    </span>
+
+                  </div>
+
+
+                  <!-- INFORMACIÓN -->
+
+                  <div class="tile__body">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <!-- Solo se muestra cuando quedan pocas unidades -->
+
+                    @if (product.stock > 0 && product.stock <= 5) {
+
+                      <div class="tile__meta">
+
+                        <span class="tile__availability tile__availability--low">
+
+                          <span class="tile__availability-dot"></span>
+
+                          <span
+                            i18n="Indicador de pocas unidades@@catalogLowStock"
+                          >
+                            Últimas unidades
+                          </span>
+
+                        </span>
+
+                      </div>
+
+                    }
+
+                    <!--
+                      Estrellas: reactivar cuando existan las reviews reales (ítem 4 del roadmap).
+
+                      <div class="tile__meta">
+                        <span class="tile__rating">★★★★★</span>
+                      </div>
+                    -->
+
+                  </div>
+
+                </a>
+
+
+                <!-- =========================================
+                     FAVORITO (arriba a la derecha, sobre la foto)
+                     Va FUERA del <a> para no anidar botón dentro de link
+                     ========================================= -->
+
+                <button
+                  type="button"
+                  class="tile__favorite"
+                  [class.tile__favorite--active]="isFavorite(product.id)"
+                  [attr.aria-pressed]="isFavorite(product.id)"
+                  [attr.aria-label]="
+                    isFavorite(product.id)
+                      ? 'Quitar de favoritos'
+                      : 'Agregar a favoritos'
+                  "
+                  [attr.title]="
+                    isFavorite(product.id)
+                      ? 'Quitar de favoritos'
+                      : 'Agregar a favoritos'
+                  "
+                  (click)="toggleFavorite(product.id, $event)"
+                >
+
+                  @if (isFavorite(product.id)) {
+
+                    <span aria-hidden="true">♥</span>
+
+                  } @else {
+
+                    <span aria-hidden="true">♡</span>
+
+                  }
+
+                </button>
+
+
+                <!-- =========================================
+                     COMPARAR (debajo del corazón, sobre la foto)
+                     ========================================= -->
+
+                <button
+                  type="button"
+                  class="tile__compare"
+                  [class.tile__compare--active]="compare.isSelected(product.id)"
+                  [attr.aria-pressed]="compare.isSelected(product.id)"
+                  [attr.aria-label]="
+                    compare.isSelected(product.id)
+                      ? 'Quitar del comparador'
+                      : 'Agregar al comparador'
+                  "
+                  [attr.title]="
+                    compare.isSelected(product.id)
+                      ? 'Quitar del comparador'
+                      : 'Comparar'
+                  "
+                  (click)="toggleCompare(product, $event)"
+                >
+
+                  <span aria-hidden="true">⇄</span>
+
+                </button>
+
+
+                <!-- =========================================
+                     AGREGAR AL CARRITO
+                     ========================================= -->
+
+                <button
+                  type="button"
+                  class="tile__add"
+                  [disabled]="product.stock === 0"
+                  (click)="addToCart(product, $event)"
+                >
+
+                  @if (product.stock === 0) {
+
+                    <span i18n="Botón para producto agotado@@catalogSoldOut">
+                      Agotado
+                    </span>
+
+                  } @else {
+
+                    <span i18n="Botón para agregar un producto@@catalogAdd">
+                      Agregar al carrito
+                    </span>
+
+                    <span class="tile__add-icon">+</span>
+
+                  }
+
+                </button>
+
+              </li>
+
+            }
+
+          </ul>
+
+
+          <!-- =================================================
+               PAGINACIÓN
+               ================================================= -->
+
+          @if (totalPages > 1) {
+
+            <nav
+              class="pager"
+              aria-label="Paginación del catálogo"
+              i18n-aria-label="Etiqueta accesible de la paginación@@catalogPagination"
+            >
+
+              <!-- ANTERIOR -->
+
+              <button
+                type="button"
+                [disabled]="page === 1"
+                (click)="goToPage(page - 1)"
+                aria-label="Página anterior"
+                i18n-aria-label="Página anterior@@catalogPreviousPage"
+              >
+                ←
+              </button>
+
+
+              <!-- NÚMEROS -->
+
+              @for (item of visiblePages; track $index) {
+
+                @if (item !== null) {
+
+                  <button
+                    type="button"
+                    [class.active]="page === item"
+                    [attr.aria-current]="page === item ? 'page' : null"
+                    (click)="goToPage(item)"
+                  >
+                    {{ item }}
+                  </button>
+
+                } @else {
+
+                  <span class="pager__ellipsis" aria-hidden="true">…</span>
+
+                }
+
+              }
+
+
+              <!-- SIGUIENTE -->
+
+              <button
+                type="button"
+                [disabled]="page === totalPages"
+                (click)="goToPage(page + 1)"
+                aria-label="Página siguiente"
+                i18n-aria-label="Página siguiente@@catalogNextPage"
+              >
+                →
+              </button>
+
+            </nav>
+
+          }
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

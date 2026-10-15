@@ -1,0 +1,209 @@
+<div class="admin-page admin-page--narrow">
+
+  <!-- Volver -->
+  <a
+    routerLink="/admin/orders"
+    class="back-link"
+  >
+    ← Volver a Fulfillment
+  </a>
+
+  @if (order(); as o) {
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="order-detail__header">
+
+      <div>
+        <p class="eyebrow">
+          Pedido
+        </p>
+
+        <h1>
+          #{{ o.id }}
+        </h1>
+      </div>
+
+      <span
+        class="badge"
+        [attr.data-status]="o.status"
+      >
+        {{ statusLabels[o.status] }}
+      </span>
+
+    </div>
+
+    <!-- =====================================================
+         META
+         ===================================================== -->
+
+    <p class="order-detail__meta">
+      Hecho el
+      {{ o.createdAt | date:'d MMM y, HH:mm' }}
+      ·
+      {{ o.client }}
+      ·
+      Tracking {{ o.trackingNumber }}
+    </p>
+
+    <!-- =====================================================
+         PANEL PRINCIPAL
+         ===================================================== -->
+
+    <div class="panel order-detail__panel">
+
+      <!-- ===================================================
+           TIMELINE
+           =================================================== -->
+
+      @if (o.status !== 'cancelled') {
+
+        <ol class="timeline">
+
+          @for (
+            status of statusFlow;
+            track status;
+            let i = $index
+          ) {
+
+            <li
+              class="timeline__step"
+              [class.timeline__step--reached]="
+                i <= currentStatusIndex()
+              "
+            >
+
+              <span
+                class="timeline__dot"
+                aria-hidden="true"
+              ></span>
+
+              <span class="timeline__label">
+                {{ statusLabels[status] }}
+              </span>
+
+            </li>
+
+          }
+
+        </ol>
+
+      } @else {
+
+        <!-- =================================================
+             CANCELADO
+             ================================================= -->
+
+        <p class="order-detail__cancelled-note">
+          Este pedido fue cancelado.
+        </p>
+
+      }
+
+      <!-- ===================================================
+           PRODUCTOS
+           =================================================== -->
+
+      <ul class="order-detail__items">
+
+        @for (item of o.items; track item.productId) {
+
+          <li>
+
+            <span>
+              {{ item.quantity }} × {{ item.name }}
+            </span>
+
+            <span class="price">
+              {{ item.subtotal | usd }}
+            </span>
+
+          </li>
+
+        }
+
+      </ul>
+
+      <!-- ===================================================
+           TOTAL
+           =================================================== -->
+
+      <div class="order-detail__total">
+
+        <span>
+          Total
+        </span>
+
+        <span class="price">
+          {{ o.total | usd }}
+        </span>
+
+      </div>
+
+      <!-- ===================================================
+           ACCIONES ADMIN
+           =================================================== -->
+
+      @if (!isFinalStatus(o.status)) {
+
+        <div class="order-detail__actions">
+
+          <p class="eyebrow">
+            Admin: avanzar el pedido
+          </p>
+
+          <div class="order-detail__actions-buttons">
+
+            @if (nextStepLabel(); as next) {
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="advance()"
+              >
+                Avanzar a {{ next }}
+              </button>
+
+            }
+
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="cancel()"
+            >
+              Cancelar pedido
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  } @else if (loading()) {
+
+    <!-- =====================================================
+         LOADING
+         ===================================================== -->
+
+    <p class="admin-page__loading">
+      Cargando pedido…
+    </p>
+
+  } @else {
+
+    <!-- =====================================================
+         ERROR
+         ===================================================== -->
+
+    <p class="admin-page__loading">
+      No se encontró ese pedido.
+    </p>
+
+  }
+
+</div>

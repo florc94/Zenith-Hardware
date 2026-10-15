@@ -1,0 +1,47 @@
+<div class="admin-shell">
+
+  <nav class="admin-nav">
+
+    <div class="admin-page admin-nav__inner">
+
+      <a
+        routerLink="/admin/products"
+        routerLinkActive="is-active"
+        i18n="Enlace de navegación de productos del panel de administración@@adminNavProducts"
+      >
+        Productos
+      </a>
+
+      <a
+        routerLink="/admin/orders"
+        routerLinkActive="is-active"
+        i18n="Enlace de navegación de fulfillment del panel de administración@@adminNavFulfillment"
+      >
+        Fulfillment
+      </a>
+
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="is-active"
+        i18n="Enlace de navegación del dashboard del panel de administración@@adminNavDashboard"
+      >
+        Dashboard
+      </a>
+
+      <a
+        routerLink="/admin/users"
+        routerLinkActive="is-active"
+        i18n="Enlace de navegación de usuarios del panel de administración@@adminNavUsers"
+      >
+        Usuarios
+      </a>
+
+    </div>
+
+  </nav>
+
+  <router-outlet></router-outlet>
+
+  <app-confirm-dialog></app-confirm-dialog>
+
+</div>

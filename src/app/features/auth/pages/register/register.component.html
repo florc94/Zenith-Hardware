@@ -1,0 +1,149 @@
+
+<section class="login">
+  <div class="login__panel panel">
+
+    @if (registrationCompleted) {
+      <h1>Revisá tu correo</h1>
+
+      <p class="login__note">
+        Creamos tu cuenta de ShopSphere. Para activarla,
+        abrí el enlace de verificación que enviamos a:
+      </p>
+
+      <p class="login__note">
+        <strong>{{ registeredEmail }}</strong>
+      </p>
+
+      <p class="login__note">
+        Si no encontrás el mensaje, revisá también la carpeta
+        de spam o correo no deseado.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="goToCatalog()"
+      >
+        Continuar navegando
+      </button>
+
+      <a
+        routerLink="/login"
+        class="login__skip"
+      >
+        Ya verifiqué mi correo. Ingresar
+      </a>
+    } @else {
+      <h1>Crear cuenta</h1>
+
+      <p class="login__note">
+        Creá tu cuenta de ShopSphere para realizar compras
+        y consultar tus pedidos.
+      </p>
+
+      <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class="login__form"
+      >
+        <label class="field">
+          <span>Nombre</span>
+
+          <input
+            type="text"
+            formControlName="name"
+            autocomplete="name"
+            placeholder="Tu nombre"
+          />
+
+          @if (f.name.touched && f.name.invalid) {
+            <small class="field-error">
+              Ingresá tu nombre (mínimo 2 caracteres).
+            </small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+
+          <input
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            placeholder="tu@email.com"
+          />
+
+          @if (f.email.touched && f.email.invalid) {
+            <small class="field-error">
+              Escribí un email con formato válido.
+            </small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Contraseña</span>
+
+          <input
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+            placeholder="Mínimo 6 caracteres"
+          />
+
+          @if (f.password.touched && f.password.invalid) {
+            <small class="field-error">
+              Usá al menos 6 caracteres.
+            </small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Confirmar contraseña</span>
+
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Repetí tu contraseña"
+          />
+
+          @if (
+            f.confirmPassword.touched &&
+            f.confirmPassword.invalid
+          ) {
+            <small class="field-error">
+              Confirmá tu contraseña.
+            </small>
+          }
+        </label>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="submitting"
+        >
+          @if (submitting) {
+            <span>Creando cuenta…</span>
+          } @else {
+            <span>Crear cuenta</span>
+          }
+        </button>
+      </form>
+
+      <a
+        routerLink="/login"
+        class="login__skip"
+      >
+        ¿Ya tenés una cuenta? Ingresar
+      </a>
+
+      <a
+        [routerLink]="isEnglishRoute() ? '/catalog' : '/catalogo'"
+        class="login__skip"
+      >
+        Seguir mirando sin cuenta
+      </a>
+    }
+
+  </div>
+</section>

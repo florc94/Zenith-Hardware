@@ -1,0 +1,603 @@
+/* =========================================================
+   PALETA GAMING
+   ========================================================= */
+
+:host {
+  display: block;
+
+  --bg: #08090f;
+  --surface: #11131c;
+  --surface-2: #181b27;
+  --border: #262a3b;
+  --border-strong: #343a52;
+
+  --text: #f4f5fb;
+  --muted: #aab0c6;
+
+  --accent-rgb: 57, 255, 143;
+  --accent-2-rgb: 0, 209, 255;
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --grad: linear-gradient(90deg, var(--accent), var(--accent-2));
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.25);
+
+  --danger: #ff5a6e;
+}
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.order-detail {
+  min-width: 0;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    min-width: 0;
+  }
+
+  &__header > div {
+    min-width: 0;
+  }
+
+  &__header h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  &__meta {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  /* =======================================================
+     PANEL
+     ======================================================= */
+
+  &__panel {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(var(--accent-rgb), 0.1),
+        transparent 60%
+      ),
+      var(--surface);
+
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 16px;
+
+    box-shadow:
+      var(--glow),
+      0 16px 40px rgba(0, 0, 0, 0.4);
+
+    min-width: 0;
+  }
+
+  /* =======================================================
+     PRODUCTOS
+     ======================================================= */
+
+  &__items {
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    margin: 1.5rem 0 0;
+    padding: 1.25rem 0 0;
+
+    border-top: 1px solid var(--border);
+
+    li {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+
+      gap: 1rem;
+
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+
+      min-width: 0;
+
+      span:first-child {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      span:last-child {
+        flex: 0 0 auto;
+
+        color: #ffffff;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  /* =======================================================
+     TOTAL
+     ======================================================= */
+
+  &__total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    margin-top: 1rem;
+    padding-top: 1rem;
+
+    border-top: 1px solid var(--border);
+
+    color: #ffffff;
+    font-weight: 700;
+
+    .price {
+      color: var(--accent);
+      font-size: 1.25rem;
+      font-weight: 800;
+
+      text-shadow:
+        0 0 16px rgba(var(--accent-rgb), 0.4);
+
+      white-space: nowrap;
+    }
+  }
+
+  /* =======================================================
+     PEDIDO CANCELADO
+     ======================================================= */
+
+  &__cancelled-note {
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+
+    background: rgba(255, 90, 110, 0.12);
+    border: 1px solid rgba(255, 90, 110, 0.5);
+    border-radius: 10px;
+
+    color: #ffb3bd;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* =======================================================
+     ACCIONES
+     ======================================================= */
+
+  &__actions {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+
+    border-top: 1px dashed var(--border-strong);
+  }
+
+  &__actions-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    margin-top: 0.75rem;
+  }
+
+  &__actions-buttons .btn {
+    min-height: 44px;
+  }
+}
+
+/* =========================================================
+   TIMELINE
+   ========================================================= */
+
+.timeline {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  list-style: none;
+
+  margin: 0 0 1.5rem;
+  padding: 0;
+
+  min-width: 0;
+}
+
+/* =========================================================
+   PASO
+   ========================================================= */
+
+.timeline__step {
+  position: relative;
+
+  display: flex;
+  flex: 1;
+
+  flex-direction: column;
+  align-items: center;
+
+  gap: 0.45rem;
+
+  min-width: 0;
+
+  text-align: center;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+
+    top: 7px;
+    left: -50%;
+
+    width: 100%;
+    height: 2px;
+
+    background: var(--border-strong);
+
+    z-index: 0;
+  }
+
+  &:first-child::before {
+    display: none;
+  }
+
+  &--reached::before {
+    background: var(--grad);
+
+    box-shadow:
+      0 0 10px rgba(var(--accent-rgb), 0.6);
+  }
+}
+
+/* =========================================================
+   DOT
+   ========================================================= */
+
+.timeline__dot {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  width: 16px;
+  height: 16px;
+
+  box-sizing: border-box;
+
+  border-radius: 50%;
+
+  background: var(--bg);
+  border: 2px solid var(--border-strong);
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  .timeline__step--reached & {
+    background: var(--accent);
+    border-color: var(--accent);
+
+    box-shadow:
+      0 0 0 4px rgba(var(--accent-rgb), 0.18),
+      0 0 12px rgba(var(--accent-rgb), 0.7);
+  }
+}
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.timeline__label {
+  max-width: 110px;
+
+  color: var(--muted);
+
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+
+  overflow-wrap: anywhere;
+
+  .timeline__step--reached & {
+    color: var(--accent);
+    font-weight: 700;
+  }
+}
+
+/* =========================================================
+   FECHA
+   ========================================================= */
+
+.timeline__date {
+  color: var(--muted);
+
+  font-size: 0.74rem;
+  line-height: 1.3;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .order-detail {
+
+    &__panel {
+      padding: 1.25rem;
+    }
+
+    &__meta {
+      font-size: 0.9rem;
+    }
+
+    &__items li {
+      gap: 0.75rem;
+    }
+  }
+
+  .timeline__label {
+    max-width: 90px;
+    font-size: 0.76rem;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .order-detail {
+
+    &__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    &__header .badge {
+      align-self: flex-start;
+    }
+
+    &__meta {
+      margin-top: 0.75rem;
+
+      font-size: 0.86rem;
+      line-height: 1.65;
+    }
+
+    &__panel {
+      margin-top: 1.25rem;
+      padding: 1rem;
+
+      border-radius: 14px;
+    }
+
+    &__items {
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+
+      li {
+        align-items: flex-start;
+        gap: 0.75rem;
+
+        font-size: 0.88rem;
+      }
+    }
+
+    &__total {
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+
+      font-size: 0.95rem;
+
+      .price {
+        font-size: 1.15rem;
+      }
+    }
+
+    &__cancelled-note {
+      padding: 0.75rem 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    &__actions {
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+    }
+
+    &__actions-buttons {
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    &__actions-buttons .btn {
+      width: 100%;
+      min-height: 46px;
+      justify-content: center;
+    }
+  }
+
+  /* Timeline más compacta */
+  .timeline {
+    margin-bottom: 1.25rem;
+  }
+
+  .timeline__step {
+    gap: 0.4rem;
+
+    &::before {
+      top: 6px;
+    }
+  }
+
+  .timeline__dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline__label {
+    max-width: 68px;
+    font-size: 0.68rem;
+    line-height: 1.25;
+  }
+
+  .timeline__date {
+    font-size: 0.65rem;
+  }
+}
+
+/* =========================================================
+   MOBILE PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .order-detail {
+
+    &__header h1 {
+      font-size: 1.7rem;
+    }
+
+    &__meta {
+      font-size: 0.82rem;
+    }
+
+    &__panel {
+      padding: 0.85rem;
+      border-radius: 12px;
+    }
+
+    &__items {
+      gap: 0.6rem;
+
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+
+        span:last-child {
+          align-self: flex-end;
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    &__total {
+      font-size: 0.9rem;
+
+      .price {
+        font-size: 1.05rem;
+      }
+    }
+  }
+
+  .timeline {
+    /*
+     * Mantiene los 5 estados en una sola línea,
+     * pero evita que los textos largos rompan el layout.
+     */
+    width: 100%;
+  }
+
+  .timeline__label {
+    max-width: 58px;
+    font-size: 0.62rem;
+  }
+
+  .timeline__dot {
+    width: 13px;
+    height: 13px;
+  }
+
+  .timeline__step::before {
+    top: 5.5px;
+  }
+}
+
+/* =========================================================
+   MOBILE MUY PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .order-detail {
+
+    &__header h1 {
+      font-size: 1.55rem;
+    }
+
+    &__panel {
+      padding: 0.75rem;
+    }
+
+    &__meta {
+      font-size: 0.78rem;
+    }
+
+    &__items li {
+      font-size: 0.82rem;
+    }
+  }
+
+  .timeline__label {
+    max-width: 48px;
+    font-size: 0.58rem;
+  }
+
+  .timeline__dot {
+    width: 12px;
+    height: 12px;
+  }
+
+  .timeline__step::before {
+    top: 5px;
+  }
+}
+
+/* =========================================================
+   REDUCIR MOVIMIENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

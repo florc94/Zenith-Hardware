@@ -1,0 +1,113 @@
+<section class="login">
+  <div class="login__panel panel">
+
+    <h1 i18n="Título de la página de inicio de sesión@@loginTitle">
+      Ingresar
+    </h1>
+
+    <p
+      class="login__note"
+      i18n="Información sobre el funcionamiento de la autenticación de la demo@@loginDemoNote"
+    >
+      Esta demo no valida contraseñas — cualquiera funciona. El email sí importa:
+      <code>admin&#64;shopsphere.com</code> entra como administrador,
+      cualquier otro email entra como comprador.
+    </p>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="login__form"
+    >
+
+      <label class="field">
+
+        <span i18n="Etiqueta del campo de email@@loginEmailLabel">
+          Email
+        </span>
+
+        <input
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+        />
+
+        @if (f.email.touched && f.email.invalid) {
+
+          <small
+            class="field-error"
+            i18n="Mensaje de error para un email inválido@@loginEmailError"
+          >
+            Escribí un email con formato válido.
+          </small>
+
+        }
+
+      </label>
+
+      <label class="field">
+
+        <span i18n="Etiqueta del campo de contraseña@@loginPasswordLabel">
+          Contraseña
+        </span>
+
+        <input
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+
+        @if (f.password.touched && f.password.invalid) {
+
+          <small
+            class="field-error"
+            i18n="Mensaje de error para una contraseña demasiado corta@@loginPasswordError"
+          >
+            Usá al menos 6 caracteres.
+          </small>
+
+        }
+
+      </label>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="submitting"
+      >
+
+        @if (submitting) {
+
+          <span i18n="Texto mostrado mientras se inicia sesión@@loginSubmitting">
+            Entrando…
+          </span>
+
+        } @else {
+
+          <span i18n="Texto del botón para iniciar sesión@@loginSubmit">
+            Ingresar
+          </span>
+
+        }
+
+      </button>
+
+    </form>
+
+    <a
+      routerLink="/registro"
+      class="login__skip"
+    >
+      ¿No tenés una cuenta? Crear cuenta
+    </a>
+
+    <a
+      routerLink="/catalogo"
+      class="login__skip"
+      i18n="Enlace para continuar navegando sin iniciar sesión@@loginContinueWithoutAccount"
+    >
+      Seguir mirando sin cuenta
+    </a>
+
+  </div>
+</section>

@@ -1,0 +1,394 @@
+<section class="container orders">
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+
+  <div class="orders__header">
+
+    <p
+      class="orders__overline"
+      i18n="Etiqueta superior del historial de pedidos@@ordersEyebrow"
+    >
+      Compras
+    </p>
+
+    <h1
+      i18n="Título de la página de historial de pedidos@@ordersTitle"
+    >
+      Mis pedidos
+    </h1>
+
+    @if (totalItems() > 0) {
+
+      <p class="orders__count">
+
+        {{ totalItems() }}
+
+        @if (totalItems() === 1) {
+          <span i18n="Pedido en singular@@ordersSingleCount">
+            pedido
+          </span>
+        } @else {
+          <span i18n="Pedidos en plural@@ordersMultipleCount">
+            pedidos
+          </span>
+        }
+
+      </p>
+
+    }
+
+  </div>
+
+
+  <!-- ==========================================
+       CARGANDO
+       ========================================== -->
+
+  @if (loading()) {
+
+    <div class="orders__loading">
+
+      <div
+        class="loading-spinner"
+        aria-hidden="true"
+      ></div>
+
+      <p
+        i18n="Mensaje mostrado mientras se cargan los pedidos@@ordersLoading"
+      >
+        Buscando tus pedidos…
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       ERROR
+       ========================================== -->
+
+  @else if (error()) {
+
+    <div class="orders__empty">
+
+      <div
+        class="orders__empty-icon orders__empty-icon--error"
+        aria-hidden="true"
+      >
+        !
+      </div>
+
+      <h2
+        i18n="Título del error al cargar pedidos@@ordersErrorTitle"
+      >
+        No pudimos cargar tus pedidos
+      </h2>
+
+      <p
+        i18n="Descripción del error al cargar pedidos@@ordersErrorDescription"
+      >
+        Ocurrió un problema al consultar tu historial.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="loadPage(currentPage())"
+        i18n="Botón para reintentar cargar pedidos@@ordersRetry"
+      >
+        Reintentar
+      </button>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       SIN PEDIDOS
+       ========================================== -->
+
+  @else if (orders().length === 0) {
+
+    <div class="orders__empty">
+
+      <div
+        class="orders__empty-icon"
+        aria-hidden="true"
+      >
+        ◌
+      </div>
+
+      <h2
+        i18n="Título cuando el usuario todavía no tiene pedidos@@ordersEmptyTitle"
+      >
+        Sin pedidos todavía
+      </h2>
+
+      <p
+        i18n="Mensaje mostrado cuando no hay pedidos registrados@@ordersEmptyDescription"
+      >
+        Las compras que hagas van a quedar registradas acá.
+      </p>
+
+      <a
+        routerLink="/catalogo"
+        class="btn btn-primary"
+        i18n="Botón para ver el catálogo desde el historial de pedidos@@ordersViewCatalog"
+      >
+        Ver el catálogo
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- ==========================================
+       LISTADO
+       ========================================== -->
+
+  @else {
+
+    <ul class="orders__list">
+
+      @for (
+        order of orders();
+        track order.id
+      ) {
+
+        <li>
+
+          <a
+            class="order order--clickable"
+            [routerLink]="[order.id]"
+          >
+
+            <!-- ==================================
+                 INFORMACIÓN PRINCIPAL
+                 ================================== -->
+
+            <div class="order__main">
+
+              <div class="order__top">
+
+                <h2>
+                  Pedido #{{ order.id }}
+                </h2>
+
+                <span
+                  class="badge"
+                  [attr.data-status]="order.status"
+                >
+                  {{ statusLabels[order.status] }}
+                </span>
+
+              </div>
+
+
+              <div class="order__meta">
+
+                <span>
+                  {{ order.createdAt | date:'d MMM yyyy, HH:mm' }}
+                </span>
+
+                <span
+                  class="order__separator"
+                  aria-hidden="true"
+                >
+                  ·
+                </span>
+
+                <span>
+
+                  {{ getItemCount(order) }}
+
+                  @if (getItemCount(order) === 1) {
+                    <span i18n="Producto en singular@@ordersSingleProduct">
+                      producto
+                    </span>
+                  } @else {
+                    <span i18n="Productos en plural@@ordersMultipleProducts">
+                      productos
+                    </span>
+                  }
+
+                </span>
+
+              </div>
+
+
+              <!-- TRACKING -->
+
+              <div class="order__tracking">
+
+                <span
+                  class="order__tracking-label"
+                  i18n="Etiqueta del número de seguimiento@@ordersTracking"
+                >
+                  Seguimiento
+                </span>
+
+                <strong>
+                  {{ order.trackingNumber }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 TOTAL
+                 ================================== -->
+
+            <div class="order__right">
+
+              <span
+                class="order__total-label"
+                i18n="Etiqueta del total del pedido@@ordersTotal"
+              >
+                Total
+              </span>
+
+              <strong class="order__total">
+                {{ order.total | usd }}
+              </strong>
+
+              <span
+                class="order__detail-link"
+                i18n="Enlace para ver el detalle del pedido@@ordersViewDetail"
+              >
+                Ver detalle
+
+                <span
+                  class="order__arrow"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+
+              </span>
+
+            </div>
+
+          </a>
+
+        </li>
+
+      }
+
+    </ul>
+
+
+    <!-- ==========================================
+         PAGINACIÓN
+         ========================================== -->
+
+    @if (totalPages() > 1) {
+
+      <nav
+        class="pagination"
+        aria-label="Paginación de pedidos"
+      >
+
+        <button
+          type="button"
+          class="pagination__arrow"
+          aria-label="Página anterior"
+          [disabled]="
+            currentPage() === 1 ||
+            loading()
+          "
+          (click)="goToPage(currentPage() - 1)"
+        >
+          ‹
+        </button>
+
+
+        <div class="pagination__pages">
+
+          @for (
+            page of pageNumbers();
+            track $index
+          ) {
+
+            @if (page === null) {
+
+              <span
+                class="pagination__ellipsis"
+                aria-hidden="true"
+              >
+                …
+              </span>
+
+            } @else {
+
+              <button
+                type="button"
+                class="pagination__page"
+                [class.pagination__page--active]="
+                  page === currentPage()
+                "
+                [attr.aria-current]="
+                  page === currentPage()
+                    ? 'page'
+                    : null
+                "
+                [attr.aria-label]="'Página ' + page"
+                [disabled]="loading()"
+                (click)="goToPage(page)"
+              >
+                {{ page }}
+              </button>
+
+            }
+
+          }
+
+        </div>
+
+
+        <button
+          type="button"
+          class="pagination__arrow"
+          aria-label="Página siguiente"
+          [disabled]="
+            currentPage() === totalPages() ||
+            loading()
+          "
+          (click)="goToPage(currentPage() + 1)"
+        >
+          ›
+        </button>
+
+      </nav>
+
+
+      <p class="orders__pagination-info">
+
+        Mostrando
+        <strong>
+          {{ firstItem() }}–{{ lastItem() }}
+        </strong>
+
+        de
+
+        <strong>
+          {{ totalItems() }}
+        </strong>
+
+        <span i18n="Texto de pedidos en paginación@@ordersPaginationOrders">
+          pedidos
+        </span>
+
+      </p>
+
+    }
+
+  }
+
+</section>

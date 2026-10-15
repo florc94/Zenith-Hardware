@@ -1,0 +1,1160 @@
+/* ---------------------------------------------------------------
+   ShopSphere — sistema de diseño (tema gaming oscuro)
+   --------------------------------------------------------------- */
+
+:root {
+  color-scheme: dark;
+
+  /* =========================================================
+     COLORES
+     (se mantienen los nombres de siempre, ahora en modo oscuro)
+     ========================================================= */
+
+  --ink: #f4f5fb;          /* texto principal */
+  --ink-soft: #cfd4e6;     /* texto secundario */
+
+  --paper: #08090f;        /* fondo de página */
+  --surface: #11131c;      /* tarjetas, paneles */
+  --surface-2: #181b27;    /* fondos de apoyo */
+
+  --line: #262a3b;
+  --line-strong: #343a52;
+
+  --muted: #aab0c6;
+
+  /* Acentos (formato RGB para poder usar transparencias) */
+  --accent-rgb: 57, 255, 143;    /* verde neón */
+  --accent-2-rgb: 0, 209, 255;   /* cian */
+  --on-accent: #04110a;          /* texto sobre botones de color */
+
+  --accent: rgb(var(--accent-rgb));
+  --accent-2: rgb(var(--accent-2-rgb));
+
+  --grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  --signal: var(--accent);
+  --signal-dark: #1fc774;
+  --signal-soft: rgba(var(--accent-rgb), 0.12);
+  --signal-light: rgba(var(--accent-rgb), 0.2);
+
+  /* Semánticos */
+  --alert: #ff5a6e;
+  --success: #34d399;
+  --warning: #ffb02e;
+  --info: #38bdf8;
+
+  /* ---- ALTERNATIVAS (reemplazá las 3 variables de acentos) ----
+     ROJO:    --accent-rgb: 255, 61, 87;   --accent-2-rgb: 255, 138, 61;  --on-accent: #1a0206;
+     VIOLETA: --accent-rgb: 139, 92, 246;  --accent-2-rgb: 34, 211, 238;  --on-accent: #07070d;
+     AZUL:    --accent-rgb: 59, 130, 246;  --accent-2-rgb: 34, 211, 238;  --on-accent: #031022;
+  */
+
+  /* =========================================================
+     TIPOGRAFÍA
+     ========================================================= */
+
+  --font-display:
+    'Bricolage Grotesque',
+    'Inter',
+    system-ui,
+    sans-serif;
+
+  --font-body:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
+
+  --size-xs: 0.75rem;
+  --size-sm: 0.875rem;
+  --size-base: 1rem;
+  --size-md: 1.25rem;
+  --size-lg: 1.5625rem;
+  --size-xl: 1.953rem;
+  --size-2xl: 2.441rem;
+
+  /* =========================================================
+     ESPACIADO Y FORMA
+     ========================================================= */
+
+  --space: 1rem;
+
+  --radius: 9px;
+  --radius-lg: 14px;
+
+  /* =========================================================
+     SOMBRAS
+     ========================================================= */
+
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 22px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 34px rgba(0, 0, 0, 0.55);
+
+  --glow: 0 0 28px rgba(var(--accent-rgb), 0.3);
+  --glow-2: 0 0 28px rgba(var(--accent-2-rgb), 0.3);
+}
+
+
+/* =========================================================
+   RESET / BASE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  min-height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0d1018 0%,
+      #08090f 45%
+    );
+
+  background-color: #08090f;
+
+  color: var(--ink);
+
+  font-family: var(--font-body);
+
+  font-size: var(--size-base);
+
+  line-height: 1.55;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+
+body {
+  min-height: 100vh;
+}
+
+
+h1,
+h2,
+h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-family: var(--font-display);
+
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
+
+  line-height: 1.1;
+}
+
+
+h1 {
+  font-size: var(--size-2xl);
+}
+
+
+h2 {
+  font-size: var(--size-lg);
+}
+
+
+h3 {
+  font-size: var(--size-base);
+
+  font-weight: 600;
+
+  letter-spacing: -0.01em;
+}
+
+
+p {
+  margin: 0;
+}
+
+
+a {
+  color: inherit;
+
+  text-decoration: none;
+}
+
+
+img {
+  display: block;
+
+  max-width: 100%;
+}
+
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+
+  font-size: inherit;
+
+  color: inherit;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+
+select option {
+  background: var(--surface);
+
+  color: var(--ink);
+}
+
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.35);
+
+  color: #ffffff;
+}
+
+
+/* scrollbar acorde al tema */
+* {
+  scrollbar-color: var(--line-strong) var(--paper);
+}
+
+
+/* =========================================================
+   FOCO ACCESIBLE
+   ========================================================= */
+
+:where(
+  a,
+  button,
+  input,
+  select,
+  textarea
+):focus-visible {
+  outline: 2px solid var(--accent-2);
+
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.container {
+  width: 100%;
+
+  max-width: 1160px;
+
+  margin: 0 auto;
+
+  padding: 0 1.5rem;
+}
+
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+
+.price {
+  font-family: var(--font-display);
+
+  font-weight: 800;
+
+  font-variant-numeric: tabular-nums;
+
+  letter-spacing: -0.02em;
+
+  color: var(--accent);
+}
+
+
+.price-tag {
+  display: inline-block;
+
+  background: rgba(8, 9, 15, 0.88);
+
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+
+  color: var(--accent);
+
+  padding: 0.25rem 0.6rem;
+
+  border-radius: 7px;
+
+  font-family: var(--font-display);
+
+  font-weight: 800;
+
+  font-variant-numeric: tabular-nums;
+
+  font-size: var(--size-base);
+
+  letter-spacing: -0.02em;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  padding: 0.65rem 1.1rem;
+
+  border: 1px solid transparent;
+
+  border-radius: 9px;
+
+  font-weight: 700;
+
+  font-size: var(--size-sm);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+
+/* PRIMARY */
+
+.btn-primary {
+  background: var(--grad);
+
+  border-color: transparent;
+
+  color: var(--on-accent);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+
+    filter: brightness(1.12);
+
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+
+/* OUTLINE */
+
+.btn-outline {
+  background: transparent;
+
+  border-color: rgba(var(--accent-rgb), 0.6);
+
+  color: var(--accent);
+
+  &:hover:not(:disabled) {
+    background: var(--grad);
+
+    border-color: transparent;
+
+    color: var(--on-accent);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.35);
+  }
+}
+
+
+/* DANGER */
+
+.btn-danger {
+  background: var(--alert);
+
+  border-color: var(--alert);
+
+  color: #1a0206;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 0 18px rgba(255, 90, 110, 0.4);
+  }
+}
+
+
+/* SMALL */
+
+.btn-sm {
+  padding: 0.4rem 0.7rem;
+
+  font-size: var(--size-xs);
+}
+
+
+.btn:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   CAMPOS DE FORMULARIO
+   ========================================================= */
+
+.field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.4rem;
+}
+
+
+.field > span {
+  color: var(--ink-soft);
+
+  font-size: var(--size-sm);
+
+  font-weight: 600;
+}
+
+
+.field input,
+.field select,
+.field textarea,
+input.control,
+select.control,
+textarea.control {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 0.7rem 0.8rem;
+
+  background: var(--paper);
+
+  border: 1px solid var(--line-strong);
+
+  border-radius: 9px;
+
+  color: var(--ink);
+
+  font-size: var(--size-sm);
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.field input::placeholder,
+.field textarea::placeholder,
+input.control::placeholder,
+textarea.control::placeholder {
+  color: #7d839b;
+}
+
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+input.control:focus,
+select.control:focus,
+textarea.control:focus {
+  border-color: var(--accent);
+
+  box-shadow:
+    0 0 0 3px rgba(var(--accent-rgb), 0.18);
+}
+
+
+.field textarea,
+textarea.control {
+  resize: vertical;
+
+  min-height: 110px;
+}
+
+
+.field-error {
+  color: var(--alert);
+
+  font-size: var(--size-xs);
+
+  font-weight: 500;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.panel {
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* =========================================================
+   STEPPER (selector de cantidad)
+   ========================================================= */
+
+.stepper {
+  display: inline-flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line-strong);
+
+  border-radius: 9px;
+}
+
+
+.stepper button {
+  width: 2.4rem;
+
+  height: 2.4rem;
+
+  background: transparent;
+
+  border: 0;
+
+  color: var(--ink);
+
+  font-size: var(--size-md);
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.stepper button:hover:not(:disabled) {
+  background: rgba(var(--accent-rgb), 0.14);
+
+  color: var(--accent);
+}
+
+
+.stepper button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+
+.stepper span {
+  min-width: 2.1rem;
+
+  text-align: center;
+
+  color: #ffffff;
+
+  font-weight: 700;
+
+  font-variant-numeric: tabular-nums;
+
+  border-inline: 1px solid var(--line-strong);
+
+  line-height: 2.4rem;
+}
+
+
+/* =========================================================
+   ADMIN — LAYOUT
+   ========================================================= */
+
+.admin-page {
+  width: 100%;
+
+  max-width: 1160px;
+
+  margin: 0 auto;
+
+  padding: 2.75rem 1.5rem 5rem;
+
+
+  &__header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    margin-bottom: 1.75rem;
+
+
+    p {
+      margin-top: 0.4rem;
+
+      color: var(--muted);
+
+      font-size: var(--size-sm);
+
+      line-height: 1.5;
+    }
+  }
+
+
+  &__loading {
+    color: var(--muted);
+
+    font-size: var(--size-sm);
+  }
+}
+
+
+/* =========================================================
+   ADMIN — VARIANTES DE ANCHO
+   ========================================================= */
+
+.admin-page--narrow {
+  max-width: 680px;
+}
+
+
+.admin-page--wide {
+  max-width: 1400px;
+}
+
+
+/* =========================================================
+   ADMIN — BACK LINK
+   ========================================================= */
+
+.back-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.35rem;
+
+  margin-bottom: 1.25rem;
+
+  color: var(--muted);
+
+  font-size: var(--size-sm);
+
+  font-weight: 600;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+
+
+  &:hover {
+    color: var(--accent);
+
+    transform: translateX(-2px);
+  }
+}
+
+
+/* =========================================================
+   ADMIN — FORM GRID
+   ========================================================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 1.1rem;
+
+  padding: 1.5rem;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: 14px;
+
+  box-shadow: var(--shadow-sm);
+
+
+  &__span2 {
+    grid-column: span 2;
+  }
+
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+
+    padding: 1.15rem;
+
+
+    &__span2 {
+      grid-column: span 1;
+    }
+  }
+}
+
+
+/* =========================================================
+   ADMIN — FORM ACTIONS
+   ========================================================= */
+
+.form-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.75rem;
+
+  padding-top: 0.5rem;
+
+  margin-top: 0.25rem;
+
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+
+/* =========================================================
+   ADMIN — TABLAS
+   ========================================================= */
+
+.table-wrap {
+  width: 100%;
+
+  overflow-x: auto;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: 14px;
+
+  box-shadow: var(--shadow-sm);
+}
+
+
+.table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  color: var(--ink-soft);
+
+  font-size: var(--size-sm);
+
+
+  th,
+  td {
+    padding: 0.9rem 1rem;
+
+    text-align: left;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+
+  thead th {
+    background: var(--surface-2);
+
+    color: var(--muted);
+
+    font-size: var(--size-xs);
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    white-space: nowrap;
+  }
+
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+
+
+    &:hover {
+      background: rgba(var(--accent-rgb), 0.05);
+    }
+
+
+    &:last-child td {
+      border-bottom: 0;
+    }
+  }
+
+
+  &__product {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+
+    white-space: normal;
+
+
+    img {
+      width: 40px;
+
+      height: 40px;
+
+      flex-shrink: 0;
+
+      object-fit: cover;
+
+      background: var(--surface-2);
+
+      border: 1px solid var(--line);
+
+      border-radius: 8px;
+    }
+  }
+
+
+  &__actions-col {
+    text-align: right;
+  }
+
+
+  &__actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 0.5rem;
+  }
+
+
+  &__stock--low {
+    color: var(--warning);
+
+    font-weight: 700;
+  }
+
+
+  &__muted {
+    color: var(--muted);
+
+    font-size: var(--size-xs);
+  }
+}
+
+
+/* =========================================================
+   PAGINACIÓN
+   ========================================================= */
+
+.pager {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 1.25rem;
+
+  margin-top: 1.5rem;
+
+
+  &__state {
+    color: var(--muted);
+
+    font-size: var(--size-sm);
+
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+
+/* =========================================================
+   BADGES DE ESTADO
+   ========================================================= */
+
+.badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 1.6rem;
+
+  padding: 0.25rem 0.65rem;
+
+  border: 1px solid var(--line-strong);
+
+  border-radius: 999px;
+
+  color: var(--ink-soft);
+
+  font-size: var(--size-xs);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+
+/* PAGADO */
+
+.badge[data-status='paid'] {
+  background: rgba(var(--accent-2-rgb), 0.12);
+
+  border-color: rgba(var(--accent-2-rgb), 0.5);
+
+  color: var(--accent-2);
+}
+
+
+/* PREPARANDO */
+
+.badge[data-status='processing'] {
+  background: rgba(255, 176, 46, 0.12);
+
+  border-color: rgba(255, 176, 46, 0.5);
+
+  color: var(--warning);
+}
+
+
+/* ENVIADO */
+
+.badge[data-status='shipped'] {
+  background: rgba(165, 180, 252, 0.12);
+
+  border-color: rgba(165, 180, 252, 0.5);
+
+  color: #a5b4fc;
+}
+
+
+/* ENTREGADO */
+
+.badge[data-status='delivered'] {
+  background: rgba(var(--accent-rgb), 0.12);
+
+  border-color: rgba(var(--accent-rgb), 0.5);
+
+  color: var(--accent);
+}
+
+
+/* CANCELADO */
+
+.badge[data-status='cancelled'] {
+  background: rgba(255, 90, 110, 0.12);
+
+  border-color: rgba(255, 90, 110, 0.5);
+
+  color: var(--alert);
+}
+
+/* =========================================================
+   NOTIFICACIONES (TOAST)
+   El selector repetido (.toast.toast) sube la prioridad para
+   ganarle a los estilos del componente.
+   ========================================================= */
+
+button.toast.toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  padding: 0.85rem 1.25rem;
+
+  background: var(--surface);
+  color: #ffffff;
+
+  border: 1px solid rgba(var(--accent-rgb), 0.6);
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+
+  box-shadow:
+    var(--glow),
+    0 12px 32px rgba(0, 0, 0, 0.55);
+
+  cursor: pointer;
+
+  /* ícono a la izquierda */
+  &::before {
+    content: '✓';
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    background: var(--grad);
+    color: var(--on-accent);
+
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 3px;
+  }
+
+  /* ---------- ERROR ---------- */
+  &[data-type='error'] {
+    border-color: rgba(255, 90, 110, 0.65);
+
+    box-shadow:
+      0 0 28px rgba(255, 90, 110, 0.3),
+      0 12px 32px rgba(0, 0, 0, 0.55);
+
+    &::before {
+      content: '!';
+
+      background: var(--alert);
+      color: #1a0206;
+    }
+  }
+
+  /* ---------- INFO ---------- */
+  &[data-type='info'] {
+    border-color: rgba(var(--accent-2-rgb), 0.65);
+
+    box-shadow:
+      var(--glow-2),
+      0 12px 32px rgba(0, 0, 0, 0.55);
+
+    &::before {
+      content: 'i';
+
+      background: var(--accent-2);
+      color: #031022;
+    }
+  }
+
+  /* ---------- WARNING ---------- */
+  &[data-type='warning'] {
+    border-color: rgba(255, 176, 46, 0.65);
+
+    box-shadow:
+      0 0 28px rgba(255, 176, 46, 0.3),
+      0 12px 32px rgba(0, 0, 0, 0.55);
+
+    &::before {
+      content: '!';
+
+      background: var(--warning);
+      color: #1f1300;
+    }
+  }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD / REDUCIR ANIMACIONES
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE GENERAL
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+  .container {
+    padding: 0 1rem;
+  }
+
+
+  .admin-page {
+    padding: 2.25rem 1rem 4rem;
+  }
+
+
+  h1 {
+    font-size: 1.9rem;
+  }
+
+
+  h2 {
+    font-size: 1.35rem;
+  }
+
+
+  .table-wrap {
+    border-radius: 12px;
+  }
+}
