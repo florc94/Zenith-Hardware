@@ -1,8 +1,8 @@
-# ShopSphere — Full Stack E-commerce
+# Zenith-Hardware — Full Stack E-commerce
 
 [🇪🇸 Español](./README.md) | 🇬🇧 **English**
 
-ShopSphere is a **full stack e-commerce application** developed as a practical project to integrate frontend, backend, database, authentication, order management, administration and internationalization.
+Zenith-Hardware is a **full stack e-commerce application** developed as a practical project to integrate frontend, backend, database, authentication, order management, administration and internationalization.
 
 The project uses a separated architecture based on **Angular + Node.js/Express + PostgreSQL**, communicating through a JWT-protected REST API.
 
